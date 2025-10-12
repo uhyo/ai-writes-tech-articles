@@ -10,3 +10,10 @@ This repository contains a style guide (`style_guide.md`) that outlines the desi
 2. **Article Review**: The generated article is reviewed by another, independent AI agent. The reviewer compares the generated article against the human-written articles in the `human-bench/articles` directory.
 3. **Style Guide Refinement**: Based on the review, the style guide is updated to address any shortcomings or areas for improvement identified in the generated article.
 4. **Iteration**: Steps 1-3 are repeated, with the AI agent generating new articles based on the updated style guide. This process continues until the generated articles are indistinguishable from human-written articles.
+
+## Workflow
+
+The iterative process should be completely AI-driven, consisting of an orchestrator AI agent that manages the workflow, and three sub-agents:
+- **Writer Agent**: Responsible for generating the technical articles based on the style guide.
+- **Reviewer Agent**: Responsible for reviewing the generated articles and providing feedback.
+- **Style Guide Updater Agent**: Responsible for updating the style guide based on the review feedback.
