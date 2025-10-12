@@ -33,7 +33,10 @@ Three specialized agents work together in each iteration:
 
 - **Style Guide**: `style_guide.md` - Evolving guidelines for article generation (Writer's primary input)
 - **Human Benchmarks**: `human-bench/articles/` - Reference articles (Reviewer only)
-- **Iteration Output**: `iterations/{N}/` - Each iteration's article and review
+- **Iteration Output**: `iterations/{N}/` - Each iteration contains:
+  - `article.md` - Generated article
+  - `review.md` - Review feedback
+  - `style_guide.md` - Copy of the style guide used for this iteration (for version tracking)
 
 ### Information Flow
 
@@ -82,11 +85,14 @@ Create a specific, interesting technical topic related to:
 - "ReactのServer Componentsとクライアントコンポーネントの使い分け"
 - "JavaScriptのPromiseとasync/awaitの内部実装"
 
-### Step 3: Create Iteration Directory
+### Step 3: Create Iteration Directory and Archive Style Guide
 
 ```bash
 mkdir -p iterations/{N}
+cp style_guide.md iterations/{N}/style_guide.md
 ```
+
+This archives the current version of the style guide for this iteration, allowing you to track which guidelines were in effect when each article was generated.
 
 ### Step 4: Invoke Writer Agent
 
@@ -228,29 +234,33 @@ Keep track of iterations mentally or in outputs:
 ```
 Iteration 1:
 ├── Topic: "TypeScript 5.0の新機能について"
+├── Archive style guide → iterations/1/style_guide.md (v0.1)
 ├── Write article → iterations/1/article.md
 ├── Review article → iterations/1/review.md (Quality: 6.5/10)
-├── Update style guide (v0.1 → v0.2)
+├── Update root style guide (v0.1 → v0.2)
 └── Continue (quality below threshold)
 
 Iteration 2:
 ├── Topic: "Reactのカスタムフックのパターン"
+├── Archive style guide → iterations/2/style_guide.md (v0.2)
 ├── Write article → iterations/2/article.md
 ├── Review article → iterations/2/review.md (Quality: 7.2/10)
-├── Update style guide (v0.2 → v0.3)
+├── Update root style guide (v0.2 → v0.3)
 └── Continue (quality improving but below threshold)
 
 ...
 
 Iteration 8:
 ├── Topic: "JavaScriptのProxyとReflectの実践的な使い方"
+├── Archive style guide → iterations/8/style_guide.md (v0.7)
 ├── Write article → iterations/8/article.md
 ├── Review article → iterations/8/review.md (Quality: 8.7/10)
-├── Update style guide (v0.7 → v0.8)
+├── Update root style guide (v0.7 → v0.8)
 └── Continue one more iteration to confirm
 
 Iteration 9:
 ├── Topic: "型安全なReactコンポーネントの設計パターン"
+├── Archive style guide → iterations/9/style_guide.md (v0.8)
 ├── Write article → iterations/9/article.md
 ├── Review article → iterations/9/review.md (Quality: 8.8/10)
 └── Success! Quality threshold met for 2 consecutive iterations
