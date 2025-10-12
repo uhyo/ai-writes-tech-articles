@@ -37,6 +37,7 @@ Three specialized agents work together in each iteration:
   - `article.md` - Generated article
   - `review.md` - Review feedback
   - `style_guide.md` - Copy of the style guide used for this iteration (for version tracking)
+  - `changelog.md` - Changes made to the style guide in this iteration
 
 ### Information Flow
 
@@ -141,7 +142,7 @@ After the review is complete, invoke the Style Guide Updater:
 ```
 Task:
 - subagent_type: general-purpose
-- description: Update style guide
+- description: Update style guide and create changelog
 - prompt: |
     You are the Style Guide Updater Agent. Read your agent definition at .claude/agents/style_guide_updater.md.
 
@@ -150,9 +151,10 @@ Task:
     2. Read the review at iterations/{N}/review.md
     3. Read the article at iterations/{N}/article.md for context
     4. Update style_guide.md based on the review feedback
+    5. Create a detailed changelog at iterations/{N}/changelog.md documenting all changes made
 
     Focus on actionable, specific improvements. Add concrete guidelines that address systematic issues.
-    Include a version update in the Version History section.
+    The changelog should explain what changed, why it changed, and what issues it addresses.
 ```
 
 ### Step 7: Analyze Progress
@@ -234,35 +236,36 @@ Keep track of iterations mentally or in outputs:
 ```
 Iteration 1:
 ├── Topic: "TypeScript 5.0の新機能について"
-├── Archive style guide → iterations/1/style_guide.md (v0.1)
+├── Archive style guide → iterations/1/style_guide.md
 ├── Write article → iterations/1/article.md
 ├── Review article → iterations/1/review.md (Quality: 6.5/10)
-├── Update root style guide (v0.1 → v0.2)
+├── Update root style guide + Create changelog → iterations/1/changelog.md
 └── Continue (quality below threshold)
 
 Iteration 2:
 ├── Topic: "Reactのカスタムフックのパターン"
-├── Archive style guide → iterations/2/style_guide.md (v0.2)
+├── Archive style guide → iterations/2/style_guide.md
 ├── Write article → iterations/2/article.md
 ├── Review article → iterations/2/review.md (Quality: 7.2/10)
-├── Update root style guide (v0.2 → v0.3)
+├── Update root style guide + Create changelog → iterations/2/changelog.md
 └── Continue (quality improving but below threshold)
 
 ...
 
 Iteration 8:
 ├── Topic: "JavaScriptのProxyとReflectの実践的な使い方"
-├── Archive style guide → iterations/8/style_guide.md (v0.7)
+├── Archive style guide → iterations/8/style_guide.md
 ├── Write article → iterations/8/article.md
 ├── Review article → iterations/8/review.md (Quality: 8.7/10)
-├── Update root style guide (v0.7 → v0.8)
+├── Update root style guide + Create changelog → iterations/8/changelog.md
 └── Continue one more iteration to confirm
 
 Iteration 9:
 ├── Topic: "型安全なReactコンポーネントの設計パターン"
-├── Archive style guide → iterations/9/style_guide.md (v0.8)
+├── Archive style guide → iterations/9/style_guide.md
 ├── Write article → iterations/9/article.md
 ├── Review article → iterations/9/review.md (Quality: 8.8/10)
+├── Create changelog → iterations/9/changelog.md
 └── Success! Quality threshold met for 2 consecutive iterations
 ```
 

@@ -37,16 +37,25 @@ You will receive:
 - **Be actionable**: Every guideline should be something the Writer Agent can directly apply
 - **Prioritize**: Focus on high-impact improvements that address systematic issues
 - **Maintain coherence**: Ensure new guidelines don't contradict existing ones
-- **Document iteration**: Add a changelog section noting what changed and why
+- **Document changes**: Create a detailed changelog documenting what changed and why
 
 ## Output
 
-Update the `style_guide.md` file directly using the Edit tool. The updated guide should:
-- Incorporate new insights from the review
-- Be well-organized and easy to follow
-- Include specific, actionable guidelines
-- Provide examples where helpful
-- Have a changelog section documenting the update
+You must produce two outputs:
+
+1. **Update `style_guide.md`** using the Edit tool. The updated guide should:
+   - Incorporate new insights from the review
+   - Be well-organized and easy to follow
+   - Include specific, actionable guidelines
+   - Provide examples where helpful
+   - NOT contain version history or changelog sections (those go in the separate changelog file)
+
+2. **Create `iterations/{N}/changelog.md`** using the Write tool. The changelog should document:
+   - What specific changes were made to the style guide
+   - Why these changes address the issues identified in the review
+   - What review scores or problems prompted each change
+   - The overall impact expected from these updates
+   - A clear summary of the iteration's findings and improvements
 
 ## Style Guide Evolution Strategy
 
