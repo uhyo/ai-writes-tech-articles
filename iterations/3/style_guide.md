@@ -54,58 +54,21 @@ Collapsible additional information
    - Consider starting with a direct PR/issue reference, a specific problem, or an interesting observation
    - Examples: "TypeScriptの次のバージョンでは、以下のPRの更新が入ると思われます。もちろんPRの著者はAndersさんです。"
 
-2. **Personal voice**: Use first-person perspective sparingly and naturally
-   - **CRITICAL: Limit "筆者" usage to 3-5 times per article maximum**
-   - Many opinions can be stated directly without attribution
-   - Vary your attribution style:
-     - "個人的には〜" (personal opinion without "筆者")
-     - "自分の経験では〜" (casual self-reference)
-     - Omit attribution entirely when the opinion is clear
-     - Use "筆者" only for emphasis or formal statements
-   - ❌ Bad: "筆者は〜と思う。筆者の経験では〜。筆者が実際に書いた〜。筆者の結論は〜。" (overuse)
-   - ✅ Good: "個人的にはこの機能が最高だと思う。実際に書いた実装は〜。これは確信を持って言える。"
+2. **Personal voice**: Use first-person perspective ("筆者", "私", "自分") when expressing opinions
+   - Share your experiences: "個人的には〜", "筆者は〜", "自分はよく次のような関数を作ります"
    - Include subjective judgments: "〜が嬉しい場面がそれほどありません", "〜の方が好みです"
    - Don't be afraid to express preferences, frustrations, or discoveries
    - Balance objective technical explanation with personal perspective
 
 3. **Natural flow**: Write as if explaining to a colleague over coffee, not lecturing in a classroom
-   - **CRITICAL: Avoid pedagogical scaffolding**:
-     - ❌ "では、〇〇の場合はどうでしょうか" (textbook-style transitions)
-     - ❌ "本題に戻ると" (unnecessary announcement of topic return)
-     - ❌ "ここで〇〇について見ていきましょう" (classroom guide language)
-     - ❌ "次に〇〇を説明します" (explicit structure signaling)
-     - ❌ "理屈はわかった。じゃあ実装してみよう。" (teaching voice that guides the reader)
-     - ❌ "使い方はこう：" (instructional setup before code)
-     - ❌ "例えば、次のように〜" (pedagogical preamble)
-     - ✅ Just transition naturally: "で、〇〇だと話が変わる。"
-     - ✅ Resume topic without announcement: "なぜ〇〇なのか。"
-     - ✅ Jump to code: "で、実際に作ってみる。" or just start with the code
-     - ✅ Casual setup: "試しに〜してみると" (discovery, not instruction)
    - Use conversational connectors: "そう、それは〜です", "試しに〜してみると", "さて、〜"
    - Vary sentence length and structure naturally
    - Include rhetorical pauses and thinking-out-loud moments
    - Let the conversation meander slightly when it adds value
-   - **When introducing code**: Don't announce it formally, just show it
-     - Instead of "使い方はこう：" → Just show the code
-     - Instead of "理屈はわかった。じゃあ〜" → "で、実際に〜" or nothing
 
 4. **Appropriate formality**: Balance politeness with technical precision
    - Use "です/ます" form but keep it light and natural
    - Mix in casual expressions where appropriate: "〜ですね", "〜でしょう", "〜なんです"
-
-5. **Micro-imperfections for authenticity**:
-   - **CRITICAL: Perfect polish is an AI tell** - Humans have minor inconsistencies
-   - Include 1-2 subtle imperfections per article (but NOT typos or errors):
-     - Casual contractions: "んだけど" instead of "のだけど", "んで" instead of "ので"
-     - Self-corrections mid-sentence: "〜というか、正確には〜"
-     - Informal abbreviations: "ちな" for "ちなみに" (use sparingly)
-     - Slight repetition: Repeating a word or phrase in adjacent sentences naturally
-     - Trailing thoughts: Sentences that don't quite complete, using "..."
-   - ❌ Don't include: Typos, grammatical errors, broken code
-   - ✅ Do include: Natural speech patterns, casual shortcuts, minor redundancies
-   - Example: "で、実際に試してみたんだけど、思ったより簡単だった。というか、簡単すぎて拍子抜けした。"
-   - These imperfections should feel natural, not forced or obvious
-   - **Purpose**: Show this is written by a human in flow, not edited to perfection
 
 ## Article Structure
 
@@ -130,13 +93,6 @@ Collapsible additional information
      - Instead: Use descriptive headings that reflect the actual content
      - Example: Instead of "パターン1: useMemoで値を安定化" → "useMemoで値を安定化させる"
      - Even better: Mix different organizational styles within the same article
-
-   - **CRITICAL: Limit section count**:
-     - ❌ 10+ H2 sections makes the article feel over-structured
-     - ✅ Target 6-7 H2 sections maximum for a typical article (200-300 lines)
-     - Combine related topics into single sections rather than splitting everything
-     - Not every subtopic needs its own H2 section
-     - Use H3 subsections to organize within larger sections when needed
 
    - **Vary section lengths dramatically**:
      - Some sections should be 1-2 paragraphs (brief point)
@@ -163,31 +119,17 @@ Collapsible additional information
    - Reference official documentation, PRs, and issues extensively
 
 3. **まとめ (Summary)**
-   - **CRITICAL: Avoid synthesizing everything neatly**
    - **Go beyond simple recap**: Don't just list what was covered
-   - **Real conclusions are messy and incomplete**:
-     - ❌ "重要なポイントをまとめると: [bullet list]" (too organized)
-     - ❌ "今回は〜を見てきました。〜が重要です。" (textbook recap)
-     - ❌ Neat takeaways that tie everything together in a bow
-     - ❌ "筆者の結論: [perfectly balanced summary]" (too synthesized)
-     - ❌ **CRITICAL**: "結局、核心は3つだけ：1. 〜 2. 〜 3. 〜" (numbered synthesis lists)
-     - ❌ "このパターンが理解できれば〜" followed by neat enumeration
-     - Even if the rest of the まとめ is messy, a numbered list makes it feel AI-generated
+   - **Avoid neat, comprehensive summaries**: Real conclusions are messier
    - Consider these ending styles:
-     - End abruptly with a final observation or opinion
-     - Raise remaining questions or uncertainties
-     - Take a controversial stance without balancing it
+     - End abruptly with a final observation
+     - Raise a question or uncertainty
+     - Take a controversial stance
      - Circle back to an unexpected point from earlier
-     - Admit limitations, unknowns, or unresolved issues
-     - Mix resolved insights with loose ends
-     - Let some threads remain unfinished
-     - Trail off into tangential thoughts about related topics
-     - End with open questions or areas for future exploration
-   - Include personal reflection, but make it rough and opinionated
-   - ✅ Good: "結局どう使えばいいのか。個人的には小規模なら最高。でも大規模だと厳しい。あと、この機能を使うなら型システムの理解が必須。"
-   - ✅ Good: End with trailing thoughts that don't wrap everything up perfectly
+     - Admit what you don't know or what remains unsolved
+   - Include personal reflection, but make it specific and opinionated
+   - Avoid: "今回は〜を見てきました。〜が重要です。" (too neat)
    - Avoid: Generic phrases like "いかがでしたでしょうか"
-   - **The まとめ should feel like you're wrapping up a conversation, not delivering a lecture summary**
 
 ### Optional But Recommended Sections
 
@@ -227,7 +169,7 @@ function someFunc(x: unknown) {
   - Reference version changes and evolution of features
   - Include implementation details when relevant
 
-- **CRITICAL: Reference sources with extreme specificity AND natural integration**:
+- **CRITICAL: Reference sources with extreme specificity**:
   - ✅ ALWAYS link to specific GitHub PRs with numbers: "https://github.com/microsoft/TypeScript/pull/49119"
   - ✅ Include PR/issue authors: "もちろんPRの著者はAndersさんです"
   - ✅ Reference specific GitHub discussions: "GitHub issueの #19820 では〜"
@@ -238,28 +180,6 @@ function someFunc(x: unknown) {
   - ❌ Don't just say "GitHub issueで提案されていました" without a link and number
   - ❌ Don't just say "公式ドキュメント" without specific URLs
   - ❌ Don't mention PRs generically without showing you've actually read them
-
-  - **CRITICAL: Make GitHub references feel natural, not cited**:
-    - ❌ Bad (feels like citing sources): "このPRのタイトルは「〇〇」で、コメント欄を読むと分かるんだけど..."
-    - ❌ Bad (too formal): "この機能は GitHub issue #12754 で提案され、PR #40336 で実装されました"
-    - ❌ Bad (too prominent): "PR #2851でshallowとnormalのProxyを別々にtrackする修正が入ったり、#4318で配列のパフォーマンス改善の議論があったりするけど"
-    - ✅ Good (casual mention): "この機能、実はPR #40336で入ったんだけど、issue #12754を見ると数百のupvoteが集まってて..."
-    - ✅ Good (parenthetical): "実は当初の実装ではintrinsicを使っていませんでした。代わりに... ([#40336](...))"
-    - ✅ Good (embedded in story): "去年GitHubで議論されてたissue #19820の話なんだけど、これ面白くて..."
-    - ✅ Good (de-emphasized numbers): "vuejs/coreのreactivityパッケージ見てると、shallow reactiveの扱い(#2851とか)や配列の最適化とか色々議論されてて面白い"
-    - ✅ Best (drop numbers entirely when possible): "reactivityパッケージの実装見てると、shallow proxyの扱いとか配列の最適化とか色々工夫されてて面白い"
-
-  - **Three acceptable patterns for GitHub references**:
-    1. **Parenthetical de-emphasis**: "(#2851とか)" buried in a sentence about something else
-    2. **Drop numbers entirely**: Just describe the content/topic without specific issue numbers
-    3. **Embedded naturally**: Numbers appear mid-sentence, not as the main subject
-
-  - **NEVER make PR/issue numbers the grammatical subject**:
-    - ❌ "PR #2851で〜の修正が入った" (PR number is the subject)
-    - ✅ "shallow reactiveの扱いが変わった(#2851)" (change is the subject, number is parenthetical)
-
-  - Drop PR/issue numbers like you're naturally referencing things, not building a bibliography
-    - Don't explain what the PR title is or describe the comment thread - just reference it
   - **This is how you demonstrate real expertise vs. superficial knowledge**
 
 - **Show evidence of investigation**:
@@ -294,39 +214,14 @@ Example:
 
 ### Make It Human
 
-**Share personal experiences with messy, specific details AND rich context:**
+**Share personal experiences with messy, specific details:**
 - ❌ Generic: "実務でよく遭遇する問題です"
-- ❌ Lacks context: "去年、あるプロジェクトで3日間消費した経験がある"
-- ✅ Rich context: "去年、社内の古いExpress APIをTypeScript化するプロジェクトで、「既存の100個のエンドポイント全部に型つけろ」って無茶振りされた。最初は『stringでいいんじゃない？』って思ってたけど、実際にやり始めたらパスパラメータの抽出で詰まって、気づいたら3日溶けてた"
-
-- **Real stories need contextual richness**:
-  - What kind of project? (company context, team size, tech stack)
-  - Why were you doing this? (requirements, constraints, business needs)
-  - Who else was involved? (team dynamics, stakeholders)
-  - What were you trying to achieve? (specific goals, not just "solve problem")
-  - What alternatives did you consider?
-  - ❌ "あるプロジェクトで" → ✅ "社内の検索API（100個くらいエンドポイントがある）のTypeScript SDKを作る案件で"
-  - ❌ "APIの型を作ってて" → ✅ "「パスパラメータを型安全に扱いたい」って要件が降ってきた"
-
+- ✅ Specific: "先週、〇〇プロジェクトで妙なバグに遭遇して、3時間悩んだ結果〜"
+- ❌ Vague: "筆者は以前、この機能を使ったことがあります"
+- ✅ Detailed: "筆者は去年、大規模なリファクタリング中にこのパターンを試して、結局諦めた経験があります。理由は〜"
 - **Real stories have odd details**: Specific project names, actual time spent, failed attempts, unexpected discoveries
 - **Real stories have imperfect resolutions**: "結局完全には解決しなかった", "今でもベストな方法かわからない"
 - **Real stories include dead ends**: "最初は〜だと思ったけど、違った", "〜を試したけどダメだった"
-
-- **CRITICAL: Real stories digress and meander**:
-  - Humans don't tell stories in a straight line - they add tangential details mid-narrative
-  - Include 1-2 parenthetical asides per major anecdote that don't directly advance the main point
-  - These digressions add authentic flavor without derailing the core story
-  - ❌ Too focused: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって、結局Vueのreactivityを使った"
-  - ✅ Natural digression: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって（ちなみにこのプロジェクト、最初はReduxで書き直す予定だったのが、途中でみんな飽きて別の方向に...）、結局Vueのreactivityを使った"
-  - Types of digressions to include:
-    - Original scope changes: "元々は〜が目的だったのが、いつの間にか〜にシフトしてた"
-    - Team dynamics: "チームの誰々が〜って言い出して"
-    - Unrelated observations: "そういえばこの頃〜という別の問題もあったんだけど"
-    - Project evolution: "このプロジェクト、結局予定の3倍かかった"
-    - Failed approaches: "最初〜でやろうとしたんだけど、全然ダメで"
-  - Digressions should be parenthetical or casual asides, not main narrative points
-  - Digressions can trail off with "..." without resolution
-  - This messiness is what makes stories feel human
 
 **Use natural conversational patterns:**
 - Rhetorical questions that actually add value (not formulaic ones)
@@ -362,27 +257,17 @@ Example:
 - ❌ Formulaic transitions: "それでは〜を見ていきましょう" repeatedly
 - ❌ Generic questions: "〜ではないでしょうか" as a crutch
 - ❌ Textbook explanations: "〜とは何か" followed by dictionary definitions
-- ❌ **CRITICAL: Pedagogical scaffolding**:
-  - "では、〇〇の場合はどうでしょうか" (classroom-style transitions)
-  - "本題に戻ると" (unnecessary announcements)
-  - "ここで〇〇について見ていきましょう" (explicit guiding)
-  - "この型、実は結構問題がある" (unnecessary foreshadowing)
-  - "理屈はわかった。じゃあ実装してみよう。" (teaching voice)
-  - "使い方はこう：" (instructional setup)
 - ❌ Meta-commentary: "今回は〜について解説します", "では、次のパターンを見てみましょう"
 - ❌ Too-smooth transitions: Every section connecting perfectly to the next
-- ❌ **Excessive "筆者" usage**: More than 5-7 times per article feels performative
 
 **Structural patterns to avoid:**
 - ❌ **CRITICAL**: Numbered enumeration patterns (パターン1/2/3, 方法1/2/3)
-- ❌ **CRITICAL**: Too many sections (10+ H2 sections is excessive)
 - ❌ Predictable section order: 基本 → 応用 → まとめ every time
 - ❌ Exhaustive enumeration: listing every possible case mechanically
 - ❌ Over-explanation of obvious points
 - ❌ Same paragraph and sentence lengths throughout
 - ❌ Perfect balance: making every section roughly equal in depth
 - ❌ Neat conclusions that tie everything together in a bow
-- ❌ Too-organized まとめ sections with bullet points and comprehensive synthesis
 
 **Tone patterns to avoid:**
 - ❌ Being overly cautious or hedging everything
@@ -392,8 +277,6 @@ Example:
 - ❌ Robotic transitions between sections
 - ❌ Generic conclusions: "いかがでしたでしょうか"
 - ❌ Too polished: no rough edges, no tangents, no messiness
-- ❌ **CRITICAL: Perfect polish with zero imperfections** (humans have minor quirks)
-- ❌ **CRITICAL: PR/issue numbers as grammatical subjects** ("PR #2851で〜", make them parenthetical instead)
 
 ### Show Expertise
 
@@ -488,17 +371,10 @@ When comparing concepts or versions:
 - ❌ **Too-smooth transitions**: Every section connects perfectly
 
 ### Personal Anecdote Issues
-- ❌ **Generic stories**: "実務でよく遭遇する", "先日レビューしていて", "あるプロジェクトで"
-- ❌ **Lack of contextual richness**: Mentions time spent but not why, what project, what requirements, who was involved
+- ❌ **Generic stories**: "実務でよく遭遇する", "先日レビューしていて"
 - ❌ **Perfect resolutions**: Every story ends neatly solved
-- ❌ **Lack of specifics**: No project details, tech stack, team size, business constraints
+- ❌ **Lack of specifics**: No project names, time spent, failed attempts
 - ❌ **Too clean**: No messy details, dead ends, or imperfect outcomes
-- ❌ **CRITICAL: Stories told in straight lines** - No tangential digressions, parenthetical asides, or meandering details
-- ❌ **Too focused**: Stories that advance the narrative without side observations
-- ❌ Example of insufficient context: "去年、あるプロジェクトでAPIのルーティング型を作ってて、3日間消費した"
-- ❌ Example without digression: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって、結局Vueのreactivityを使った"
-- ✅ Example with rich context: "去年、社内の検索API（100個くらいエンドポイント）のTypeScript SDKを作る案件で、『パスパラメータを型安全に』って要件が降ってきて..."
-- ✅ Example with digression: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって（ちなみにこのプロジェクト、最初はReduxで書き直す予定だったのが、途中でみんな飽きて別の方向に...）、結局Vueのreactivityを使った"
 
 ### Detail Issues
 - ❌ Incorrect footnote references (e.g., `[^pr119]` when URL says `/pull/49119`)
@@ -584,14 +460,12 @@ Before finalizing an article, verify:
 - [ ] Structure is natural, not rigidly formulaic
 - [ ] Section flow is logical but not predictable
 - [ ] **NO numbered enumeration patterns** (パターン1/2/3)
-- [ ] **Target 6-7 H2 sections maximum** (not 10+)
 - [ ] Dramatic variation in section lengths
 
 **Content Quality:**
 - [ ] Code examples are relevant and explained
 - [ ] Technical accuracy is verified with sources
 - [ ] **Specific references**: PR/issue numbers with links
-- [ ] **GitHub references feel natural**, not cited (casual mentions, parenthetical links)
 - [ ] Includes version information and historical context
 - [ ] Explains "why" not just "what"
 - [ ] Shows evidence of investigation or experimentation
@@ -599,34 +473,29 @@ Before finalizing an article, verify:
 
 **Writing Style:**
 - [ ] Written entirely in natural, conversational Japanese
-- [ ] **"筆者" used sparingly (3-5 times maximum)**, varies with "個人的には", omission
-- [ ] **NO pedagogical scaffolding** ("では〇〇の場合は", "本題に戻ると", "理屈はわかった。じゃあ〜", "使い方はこう：")
+- [ ] Includes personal voice and perspective ("筆者は", "個人的には")
 - [ ] Varies sentence structure and paragraph length
 - [ ] Uses natural connectors, not formulaic transitions
 - [ ] Avoids textbook-like explanations
 - [ ] Includes at least one "余談" or detailed supplement
 - [ ] **Takes strong stances**, not just balanced views
-- [ ] **Messy personal anecdotes** with rich contextual details (project specifics, requirements, team dynamics)
-- [ ] **Anecdotes include tangential digressions** (parenthetical asides that don't directly advance narrative)
-- [ ] **Includes 1-2 micro-imperfections** (casual contractions, self-corrections, natural quirks)
+- [ ] **Messy personal anecdotes** with specific details
 
 **Authenticity:**
 - [ ] Feels like a human expert wrote it
 - [ ] Has subjective opinions and judgments where appropriate
 - [ ] Includes discoveries, insights, or "aha moments"
 - [ ] Tone is conversational yet informative
-- [ ] No obvious AI patterns (repetitive structures, generic phrases, pedagogical scaffolding)
+- [ ] No obvious AI patterns (repetitive structures, generic phrases)
 - [ ] Not too polished: has rough edges, tangents, imperfections
 - [ ] Not pedagogical: doesn't sound like a patient teacher
-- [ ] **Conclusion is messy**, not a neat synthesis with bullet points or numbered lists
-- [ ] **GitHub references feel casual** (parenthetical or dropped numbers, not "PR #2851で〜")
 
 **Details:**
 - [ ] Footnote references match URLs correctly
 - [ ] Links and references are complete and specific
 - [ ] No overused adjectives without substance
-- [ ] Conclusion adds insight with rough edges, not just neat recap
-- [ ] Personal stories have messy, imperfect details with rich context (not just time spent)
+- [ ] Conclusion adds insight, not just recap
+- [ ] Personal stories have messy, imperfect details
 
 ---
 

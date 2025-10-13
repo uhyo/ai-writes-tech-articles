@@ -74,38 +74,16 @@ Collapsible additional information
      - ❌ "本題に戻ると" (unnecessary announcement of topic return)
      - ❌ "ここで〇〇について見ていきましょう" (classroom guide language)
      - ❌ "次に〇〇を説明します" (explicit structure signaling)
-     - ❌ "理屈はわかった。じゃあ実装してみよう。" (teaching voice that guides the reader)
-     - ❌ "使い方はこう：" (instructional setup before code)
-     - ❌ "例えば、次のように〜" (pedagogical preamble)
      - ✅ Just transition naturally: "で、〇〇だと話が変わる。"
      - ✅ Resume topic without announcement: "なぜ〇〇なのか。"
-     - ✅ Jump to code: "で、実際に作ってみる。" or just start with the code
-     - ✅ Casual setup: "試しに〜してみると" (discovery, not instruction)
    - Use conversational connectors: "そう、それは〜です", "試しに〜してみると", "さて、〜"
    - Vary sentence length and structure naturally
    - Include rhetorical pauses and thinking-out-loud moments
    - Let the conversation meander slightly when it adds value
-   - **When introducing code**: Don't announce it formally, just show it
-     - Instead of "使い方はこう：" → Just show the code
-     - Instead of "理屈はわかった。じゃあ〜" → "で、実際に〜" or nothing
 
 4. **Appropriate formality**: Balance politeness with technical precision
    - Use "です/ます" form but keep it light and natural
    - Mix in casual expressions where appropriate: "〜ですね", "〜でしょう", "〜なんです"
-
-5. **Micro-imperfections for authenticity**:
-   - **CRITICAL: Perfect polish is an AI tell** - Humans have minor inconsistencies
-   - Include 1-2 subtle imperfections per article (but NOT typos or errors):
-     - Casual contractions: "んだけど" instead of "のだけど", "んで" instead of "ので"
-     - Self-corrections mid-sentence: "〜というか、正確には〜"
-     - Informal abbreviations: "ちな" for "ちなみに" (use sparingly)
-     - Slight repetition: Repeating a word or phrase in adjacent sentences naturally
-     - Trailing thoughts: Sentences that don't quite complete, using "..."
-   - ❌ Don't include: Typos, grammatical errors, broken code
-   - ✅ Do include: Natural speech patterns, casual shortcuts, minor redundancies
-   - Example: "で、実際に試してみたんだけど、思ったより簡単だった。というか、簡単すぎて拍子抜けした。"
-   - These imperfections should feel natural, not forced or obvious
-   - **Purpose**: Show this is written by a human in flow, not edited to perfection
 
 ## Article Structure
 
@@ -170,9 +148,6 @@ Collapsible additional information
      - ❌ "今回は〜を見てきました。〜が重要です。" (textbook recap)
      - ❌ Neat takeaways that tie everything together in a bow
      - ❌ "筆者の結論: [perfectly balanced summary]" (too synthesized)
-     - ❌ **CRITICAL**: "結局、核心は3つだけ：1. 〜 2. 〜 3. 〜" (numbered synthesis lists)
-     - ❌ "このパターンが理解できれば〜" followed by neat enumeration
-     - Even if the rest of the まとめ is messy, a numbered list makes it feel AI-generated
    - Consider these ending styles:
      - End abruptly with a final observation or opinion
      - Raise remaining questions or uncertainties
@@ -181,13 +156,9 @@ Collapsible additional information
      - Admit limitations, unknowns, or unresolved issues
      - Mix resolved insights with loose ends
      - Let some threads remain unfinished
-     - Trail off into tangential thoughts about related topics
-     - End with open questions or areas for future exploration
    - Include personal reflection, but make it rough and opinionated
    - ✅ Good: "結局どう使えばいいのか。個人的には小規模なら最高。でも大規模だと厳しい。あと、この機能を使うなら型システムの理解が必須。"
-   - ✅ Good: End with trailing thoughts that don't wrap everything up perfectly
    - Avoid: Generic phrases like "いかがでしたでしょうか"
-   - **The まとめ should feel like you're wrapping up a conversation, not delivering a lecture summary**
 
 ### Optional But Recommended Sections
 
@@ -242,23 +213,10 @@ function someFunc(x: unknown) {
   - **CRITICAL: Make GitHub references feel natural, not cited**:
     - ❌ Bad (feels like citing sources): "このPRのタイトルは「〇〇」で、コメント欄を読むと分かるんだけど..."
     - ❌ Bad (too formal): "この機能は GitHub issue #12754 で提案され、PR #40336 で実装されました"
-    - ❌ Bad (too prominent): "PR #2851でshallowとnormalのProxyを別々にtrackする修正が入ったり、#4318で配列のパフォーマンス改善の議論があったりするけど"
     - ✅ Good (casual mention): "この機能、実はPR #40336で入ったんだけど、issue #12754を見ると数百のupvoteが集まってて..."
     - ✅ Good (parenthetical): "実は当初の実装ではintrinsicを使っていませんでした。代わりに... ([#40336](...))"
     - ✅ Good (embedded in story): "去年GitHubで議論されてたissue #19820の話なんだけど、これ面白くて..."
-    - ✅ Good (de-emphasized numbers): "vuejs/coreのreactivityパッケージ見てると、shallow reactiveの扱い(#2851とか)や配列の最適化とか色々議論されてて面白い"
-    - ✅ Best (drop numbers entirely when possible): "reactivityパッケージの実装見てると、shallow proxyの扱いとか配列の最適化とか色々工夫されてて面白い"
-
-  - **Three acceptable patterns for GitHub references**:
-    1. **Parenthetical de-emphasis**: "(#2851とか)" buried in a sentence about something else
-    2. **Drop numbers entirely**: Just describe the content/topic without specific issue numbers
-    3. **Embedded naturally**: Numbers appear mid-sentence, not as the main subject
-
-  - **NEVER make PR/issue numbers the grammatical subject**:
-    - ❌ "PR #2851で〜の修正が入った" (PR number is the subject)
-    - ✅ "shallow reactiveの扱いが変わった(#2851)" (change is the subject, number is parenthetical)
-
-  - Drop PR/issue numbers like you're naturally referencing things, not building a bibliography
+    - Drop PR/issue numbers like you're naturally referencing things, not building a bibliography
     - Don't explain what the PR title is or describe the comment thread - just reference it
   - **This is how you demonstrate real expertise vs. superficial knowledge**
 
@@ -312,22 +270,6 @@ Example:
 - **Real stories have imperfect resolutions**: "結局完全には解決しなかった", "今でもベストな方法かわからない"
 - **Real stories include dead ends**: "最初は〜だと思ったけど、違った", "〜を試したけどダメだった"
 
-- **CRITICAL: Real stories digress and meander**:
-  - Humans don't tell stories in a straight line - they add tangential details mid-narrative
-  - Include 1-2 parenthetical asides per major anecdote that don't directly advance the main point
-  - These digressions add authentic flavor without derailing the core story
-  - ❌ Too focused: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって、結局Vueのreactivityを使った"
-  - ✅ Natural digression: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって（ちなみにこのプロジェクト、最初はReduxで書き直す予定だったのが、途中でみんな飽きて別の方向に...）、結局Vueのreactivityを使った"
-  - Types of digressions to include:
-    - Original scope changes: "元々は〜が目的だったのが、いつの間にか〜にシフトしてた"
-    - Team dynamics: "チームの誰々が〜って言い出して"
-    - Unrelated observations: "そういえばこの頃〜という別の問題もあったんだけど"
-    - Project evolution: "このプロジェクト、結局予定の3倍かかった"
-    - Failed approaches: "最初〜でやろうとしたんだけど、全然ダメで"
-  - Digressions should be parenthetical or casual asides, not main narrative points
-  - Digressions can trail off with "..." without resolution
-  - This messiness is what makes stories feel human
-
 **Use natural conversational patterns:**
 - Rhetorical questions that actually add value (not formulaic ones)
 - Good: "では、なぜこのような仕様になっているのでしょうか?"
@@ -367,8 +309,6 @@ Example:
   - "本題に戻ると" (unnecessary announcements)
   - "ここで〇〇について見ていきましょう" (explicit guiding)
   - "この型、実は結構問題がある" (unnecessary foreshadowing)
-  - "理屈はわかった。じゃあ実装してみよう。" (teaching voice)
-  - "使い方はこう：" (instructional setup)
 - ❌ Meta-commentary: "今回は〜について解説します", "では、次のパターンを見てみましょう"
 - ❌ Too-smooth transitions: Every section connecting perfectly to the next
 - ❌ **Excessive "筆者" usage**: More than 5-7 times per article feels performative
@@ -392,8 +332,6 @@ Example:
 - ❌ Robotic transitions between sections
 - ❌ Generic conclusions: "いかがでしたでしょうか"
 - ❌ Too polished: no rough edges, no tangents, no messiness
-- ❌ **CRITICAL: Perfect polish with zero imperfections** (humans have minor quirks)
-- ❌ **CRITICAL: PR/issue numbers as grammatical subjects** ("PR #2851で〜", make them parenthetical instead)
 
 ### Show Expertise
 
@@ -493,12 +431,8 @@ When comparing concepts or versions:
 - ❌ **Perfect resolutions**: Every story ends neatly solved
 - ❌ **Lack of specifics**: No project details, tech stack, team size, business constraints
 - ❌ **Too clean**: No messy details, dead ends, or imperfect outcomes
-- ❌ **CRITICAL: Stories told in straight lines** - No tangential digressions, parenthetical asides, or meandering details
-- ❌ **Too focused**: Stories that advance the narrative without side observations
 - ❌ Example of insufficient context: "去年、あるプロジェクトでAPIのルーティング型を作ってて、3日間消費した"
-- ❌ Example without digression: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって、結局Vueのreactivityを使った"
 - ✅ Example with rich context: "去年、社内の検索API（100個くらいエンドポイント）のTypeScript SDKを作る案件で、『パスパラメータを型安全に』って要件が降ってきて..."
-- ✅ Example with digression: "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって（ちなみにこのプロジェクト、最初はReduxで書き直す予定だったのが、途中でみんな飽きて別の方向に...）、結局Vueのreactivityを使った"
 
 ### Detail Issues
 - ❌ Incorrect footnote references (e.g., `[^pr119]` when URL says `/pull/49119`)
@@ -600,15 +534,13 @@ Before finalizing an article, verify:
 **Writing Style:**
 - [ ] Written entirely in natural, conversational Japanese
 - [ ] **"筆者" used sparingly (3-5 times maximum)**, varies with "個人的には", omission
-- [ ] **NO pedagogical scaffolding** ("では〇〇の場合は", "本題に戻ると", "理屈はわかった。じゃあ〜", "使い方はこう：")
+- [ ] **NO pedagogical scaffolding** ("では〇〇の場合は", "本題に戻ると")
 - [ ] Varies sentence structure and paragraph length
 - [ ] Uses natural connectors, not formulaic transitions
 - [ ] Avoids textbook-like explanations
 - [ ] Includes at least one "余談" or detailed supplement
 - [ ] **Takes strong stances**, not just balanced views
 - [ ] **Messy personal anecdotes** with rich contextual details (project specifics, requirements, team dynamics)
-- [ ] **Anecdotes include tangential digressions** (parenthetical asides that don't directly advance narrative)
-- [ ] **Includes 1-2 micro-imperfections** (casual contractions, self-corrections, natural quirks)
 
 **Authenticity:**
 - [ ] Feels like a human expert wrote it
@@ -618,8 +550,7 @@ Before finalizing an article, verify:
 - [ ] No obvious AI patterns (repetitive structures, generic phrases, pedagogical scaffolding)
 - [ ] Not too polished: has rough edges, tangents, imperfections
 - [ ] Not pedagogical: doesn't sound like a patient teacher
-- [ ] **Conclusion is messy**, not a neat synthesis with bullet points or numbered lists
-- [ ] **GitHub references feel casual** (parenthetical or dropped numbers, not "PR #2851で〜")
+- [ ] **Conclusion is messy**, not a neat synthesis with bullet points
 
 **Details:**
 - [ ] Footnote references match URLs correctly
