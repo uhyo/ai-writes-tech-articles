@@ -21,15 +21,41 @@ You will receive:
 
 ## Process
 
+### STEP 0: Pattern Discovery (EXPLORATORY - NEW)
+
+**Purpose**: Discover systematic differences not yet captured in the style guide.
+
+Before checking known requirements, perform open-ended exploratory analysis:
+
+1. **Read AI article first** to identify potential patterns
+2. **Then read 3-5 human articles** with fresh eyes
+3. **Look for ANY systematic differences**, including:
+   - **Punctuation usage**: Count frequency of ：、。！？etc.
+     * How are code blocks introduced? (With colon? Without?)
+     * How are lists formatted?
+   - **Formatting patterns**: Bold/italic frequency, blockquote usage
+   - **Structural elements**: Footnote frequency, code-to-text ratio
+   - **Phrase patterns**: Repeated transition words, connectors
+   - **Visual structure**: Paragraph lengths, whitespace usage
+
+4. **Quantify differences**: For any pattern that seems different:
+   - Count occurrences in AI article
+   - Count same pattern across human samples
+   - If AI frequency significantly differs from human baseline → document it
+
+5. **Create "Discovered Patterns" section** listing:
+   - Pattern identified
+   - AI frequency vs Human frequency
+   - Potential AI tell (yes/no)
+   - Should this be added to style guide? (recommendation)
+
+**This phase is exploratory** - you may find 0 new patterns or discover 5. Either is valid.
+
 ### STEP 1: Establish Human Baseline (MANDATORY)
 
-Before reviewing the AI-generated article, you MUST:
+Using the same 3-5 human articles from STEP 0:
 
-1. **Random Sample**: Read 3-5 random articles from `human-bench/articles/`
-   - Select different articles each review to avoid bias
-   - Sample across different topics and styles
-
-2. **Extract Linguistic Patterns**: Document patterns you observe:
+1. **Extract Known Linguistic Patterns**: Document patterns from style guide:
    - Sentence ending forms (polite vs casual ratio and contexts)
    - Common sentence starters and their frequencies
    - Verb form usage (-ています vs -てる vs -てます and contexts)
@@ -91,11 +117,26 @@ Create a detailed review markdown file with the following structure:
 ```markdown
 # Review - Iteration {N}
 
+## Pattern Discovery (Exploratory Analysis)
+
+**Sampled Articles**: [List 3-5 article filenames used for comparison]
+
+**New Patterns Discovered**:
+
+For each discovered pattern:
+- **Pattern**: [Description]
+- **AI Article**: [frequency/count]
+- **Human Baseline**: [frequency/count across samples]
+- **Significance**: [Is this a potential AI tell?]
+- **Recommendation**: [Should this be added to style guide?]
+
+[If no new patterns discovered, state: "No significant new patterns identified beyond style guide requirements."]
+
+---
+
 ## Human Baseline Observations
 
-**Sampled Articles**: [List 3-5 article filenames]
-
-**Linguistic Patterns Observed**:
+**Known Linguistic Patterns** (from style guide):
 - Sentence endings: [X%] polite form (-ます/-です), [Y%] casual (-だ/-る), contexts for casual usage
 - Sentence starters: "で、" [frequency], other common starters and frequencies
 - Verb forms: -ています vs -てる vs -てます usage and contexts

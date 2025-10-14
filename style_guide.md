@@ -39,6 +39,12 @@ These patterns have **0% frequency** in human benchmark articles:
 - "で、これを直すには..." → ✅ "これを直すには..." or "そこで、..."
 - Note: "で、" mid-paragraph after context may be acceptable
 
+❌ **Full-width colon (：) to introduce code blocks**:
+- "こんな感じのコードを書いてたんです：" → ✅ "こんな感じのコードを書いてたんです。"
+- Colons in human articles appear ONLY in: section headers, parenthetical notes (訳注：), blockquotes
+- **NEVER use colons to introduce code blocks in prose**
+- Pattern: 0% frequency in human articles for code block introduction
+
 **Acceptable Casual Usage**:
 - ✅ Within sentences: "Proxyで包んで、それを返す"
 - ✅ In subordinate clauses: "書いてある通り", "使ってる場合は"
@@ -47,9 +53,10 @@ These patterns have **0% frequency** in human benchmark articles:
 - ✅ Embedded clauses: "使ってるライブラリは" (before main verb)
 
 **Scoring Impact** (Reviewer must apply):
-- If forbidden patterns appear 3+ times: **Maximum overall score = 7.0/10**
-- If forbidden patterns appear 1-2 times: **Maximum overall score = 8.0/10**
+- If forbidden patterns appear 3+ times total: **Maximum overall score = 7.0/10**
+- If forbidden patterns appear 1-2 times total: **Maximum overall score = 8.0/10**
 - For 9.0+ overall score: **Zero forbidden patterns required**
+- Forbidden patterns include: sentence-ending -てる/-てた/-てます, paragraph-initial "で、", colon before code blocks
 - Polite/casual ratio should match human baseline (~40-60%); unnatural uniformity (>90% or <20%) is an AI tell
 
 ### 2. Frontmatter Format
@@ -89,6 +96,7 @@ Use this to verify articles before submission. Each item links to detailed guida
 - [ ] **Natural polite/casual mix** (~40-60% polite, context-dependent) (→ §1)
 - [ ] **Zero forbidden patterns**: No sentence-ending -てる/-てた/-てます (→ §1)
 - [ ] **Zero paragraph-initial "で、"** patterns (→ §1)
+- [ ] **Zero colons before code blocks** (：to introduce code) (→ §1)
 - [ ] Valid frontmatter with all fields (→ §2)
 - [ ] 6-7 H2 sections maximum (→ §5.4)
 - [ ] Dramatic variation in section lengths (→ §5.4)
@@ -410,10 +418,11 @@ Footnotes keep main text flowing while providing depth for interested readers.
 4. **UNIFORM DEPTH**: Equal detail on all topics (instead: 15 paragraphs on favorite topic, 2 sentences on boring one)
 5. **STRATEGIC IMPERFECTIONS**: Evenly distributed (instead: random clustering, some sections perfect)
 6. **ARTIFICIAL FORMALITY**: 95%+ polite OR 90%+ casual (instead: 40-60% polite, context-dependent)
-7. **FORMULA-FOLLOWING**: Mechanical application of guidelines (instead: think deeply, techniques emerge naturally)
+7. **COLONS BEFORE CODE**: Using "：" to introduce code blocks (instead: end with period, start code block)
+8. **FORMULA-FOLLOWING**: Mechanical application of guidelines (instead: think deeply, techniques emerge naturally)
 
 ---
 
-**Last updated:** Iteration 1
-**Version:** 1.1 (REALITY CHECK: Align with human baseline, mandate authenticity markers)
-**Target:** <350 lines | **Current:** 420 lines (consolidation needed in iteration 2)
+**Last updated:** Iteration 2 (pre-generation)
+**Version:** 1.2 (PATTERN DISCOVERY: Added colon usage rule, exploratory review phase)
+**Target:** <350 lines | **Current:** 428 lines (consolidation needed)

@@ -131,17 +131,19 @@ Task:
     **CRITICAL: Follow the enhanced review methodology in your agent definition**
 
     Your task:
-    1. **First**, randomly sample 3-5 articles from human-bench/articles/ to establish baseline
-    2. Document human linguistic patterns in a "Human Baseline Observations" section
-    3. Read the generated article at iterations/{N}/article.md
-    4. Perform quantitative pattern analysis comparing AI article to human baseline
-    5. Check compliance with ALL rules in style_guide.md (especially CRITICAL REQUIREMENTS)
-    6. Provide comprehensive review with specific line numbers for violations
-    7. Apply scoring rules from style_guide.md based on violation counts
-    8. Save the review to iterations/{N}/review.md
+    1. **STEP 0 - Pattern Discovery**: Read AI article and 3-5 human articles, discover ANY systematic differences
+       - Look for punctuation, formatting, structural patterns not yet in style guide
+       - Quantify new patterns discovered and recommend style guide additions
+    2. **STEP 1 - Baseline**: Document human linguistic patterns from style guide
+    3. **STEP 2 - Analysis**: Perform quantitative pattern analysis with line numbers
+    4. **STEP 3 - Compliance**: Check ALL rules in style_guide.md (especially CRITICAL REQUIREMENTS)
+    5. **STEP 4 - Holistic Review**: Comprehensive review across all dimensions
+    6. **STEP 5 - Score**: Apply scoring rules from style_guide.md based on violations
+    7. Save the review to iterations/{N}/review.md
 
     **IMPORTANT**:
-    - Use the style guide as your reference for what patterns to check
+    - Pattern discovery phase may find 0-5 new patterns - either is valid
+    - Use the style guide as your reference for known patterns
     - Provide quantitative evidence (counts, line numbers, percentages)
     - Overall score must respect caps defined in style_guide.md for violations
     - Do NOT read or reference previous iterations. Each review must be independent.
