@@ -10,19 +10,18 @@ These are non-negotiable. Violating any of these makes the article unpublishable
 
 ### 1. Japanese Language & Tone - EXPLICIT RULES
 
-**CRITICAL: Natural Formality Mix (Based on Human Baseline)**
+**CRITICAL: Polite Form Consistency (MEASURABLE)**
 
-Target: **Natural mix of polite and casual forms** (~40-60% polite in main text)
+Target: **≥95%** of sentence endings in main text use polite form (-ます/-です/-でしょう/-ません)
 
-Human articles use varied formality based on context:
-- Polite forms (-ます/-です) for main explanations and conclusions
-- Casual forms (-だ/-る/-た) for lists, direct facts, embedded statements
-- Natural flow; don't force artificial uniformity
+Casual forms (-だ/-る/-た/-てる) allowed ONLY in:
+- ✅ Direct quotes: 「これでいけるじゃん」と気づいて
+- ✅ Mid-sentence interjections: ...あ、これ、動かないんだった。
+- ✅ Footnotes (can be more casual)
+- ✅ Subordinate clauses within complex sentences: "考えてたんですが"
 
-**Context-based usage:**
-- ✅ Polite for: Main explanations, section conclusions, reader-facing statements
-- ✅ Casual for: List items, subordinate clauses, embedded facts, code comments
-- ✅ Mixed within same paragraph is natural and authentic
+❌ **Wrong**: "結論から言うと、これProxyとWeakMapだけで実装できる。" (だ form in main text)
+✅ **Correct**: "結論から言うと、これはProxyとWeakMapだけで実装できます。" (です form)
 
 **FORBIDDEN PATTERNS (0 TOLERANCE in main text)**
 
@@ -47,10 +46,10 @@ These patterns have **0% frequency** in human benchmark articles:
 - ✅ Embedded clauses: "使ってるライブラリは" (before main verb)
 
 **Scoring Impact** (Reviewer must apply):
-- If forbidden patterns appear 3+ times: **Maximum overall score = 7.0/10**
-- If forbidden patterns appear 1-2 times: **Maximum overall score = 8.0/10**
+- If polite form ratio <90%: **Maximum overall score = 7.0/10**
+- If forbidden patterns appear 3+ times: **Maximum overall score = 7.5/10**
+- If forbidden patterns appear 1-2 times: **Maximum overall score = 8.5/10**
 - For 9.0+ overall score: **Zero forbidden patterns required**
-- Polite/casual ratio should match human baseline (~40-60%); unnatural uniformity (>90% or <20%) is an AI tell
 
 ### 2. Frontmatter Format
 
@@ -86,7 +85,7 @@ published: true
 Use this to verify articles before submission. Each item links to detailed guidance below.
 
 ### Format & Structure
-- [ ] **Natural polite/casual mix** (~40-60% polite, context-dependent) (→ §1)
+- [ ] **Polite form consistency ≥95%** in main text (→ §1)
 - [ ] **Zero forbidden patterns**: No sentence-ending -てる/-てた/-てます (→ §1)
 - [ ] **Zero paragraph-initial "で、"** patterns (→ §1)
 - [ ] Valid frontmatter with all fields (→ §2)
@@ -108,14 +107,13 @@ Use this to verify articles before submission. Each item links to detailed guida
 - [ ] NO numbered enumeration patterns (パターン1/2/3) (→ §5.4)
 - [ ] Strong opinions expressed, not just balanced views (→ §6)
 
-### Authenticity Markers (MANDATORY)
-- [ ] Code evolution shown: bug → fix OR V1 → V2 iterations (→ §5.4)
-- [ ] At least 2-3 unresolved elements: speculation, abandoned tangents, future work (→ §5.5)
-- [ ] Ecosystem context: GitHub refs OR community mentions OR temporal context (→ §5.4)
-- [ ] Personal anecdotes with rich OR vague details (not medium) (→ §5.3)
-- [ ] Dramatically uneven depth by interest, not pedagogy (→ §5.2)
-- [ ] Messy conclusion without numbered synthesis (→ §5.7)
-- [ ] Natural micro-imperfections in random clusters (→ §7)
+### Authenticity Markers
+- [ ] Personal anecdotes with rich contextual details (→ §5.3)
+- [ ] Anecdotes include tangential digressions (→ §5.3)
+- [ ] GitHub references feel casual, not cited (→ §5.2)
+- [ ] Messy conclusion without numbered synthesis (→ §5.5)
+- [ ] 1-2 micro-imperfections present (→ §7)
+- [ ] Not too polished - has rough edges
 
 ---
 
@@ -209,47 +207,38 @@ These frameworks show you're thinking deeply, not just reporting facts.
 
 ### 5.4 Technical Depth & Ecosystem Context
 
-**CRITICAL: Show Code Evolution Through Discovery**
+**CRITICAL: Go Deep on "Why" and "How", Not Just "What"**
 
-Perfect code on first try is the #1 AI tell. Show iteration:
+Surface-level explanations are AI tells. Explain mechanisms, constraints, edge cases.
 
-✅ **Natural discovery patterns:**
+**CRITICAL: Show Code Evolution, Not Just Final Versions**
+
+Human developers iterate. Show that process:
+
+✅ **Show bugs/issues, then fix:**
 ```typescript
-// 最初これ書いた
+// First attempt
 const result = data.map(x => x.value);
 // あ、これundefinedの場合に落ちる
 const result = data.map(x => x?.value ?? 0);
-// いや待って、0じゃなくてfilterすべきか...
 ```
 
-✅ **Bug realization mid-explanation:**
-- Show code first, then: "あ、これバグあるな..."
-- Sometimes fix immediately, sometimes leave it: "まあ、動くので放置"
-- Multiple attempts: V1 → "ダメだった" → V2 → "これもダメ" → V3 → "やっと動いた"
+❌ **Always showing perfect code on first try** is an AI tell.
 
-❌ **AI tells to avoid:**
-- Every code block perfect and polished
-- Never showing mistakes or iteration
-- No mid-explanation realizations
+**GitHub References: Natural Integration**
 
-**CRITICAL: Add Ecosystem Context**
-
-Articles without external references feel isolated. Include 1-2 of:
-
-✅ **GitHub references (casual, not cited):**
+Make references feel casual, not cited:
 - "(#2851とか)" buried in sentence
 - "実装見てると色々工夫されてて面白い"
-- PR authors: "Andersさんのコメント見ると〜"
+- Include PR authors when relevant: "Andersさんのコメント見ると〜"
 
-✅ **Community awareness:**
+**CRITICAL: Add Ecosystem Awareness**
+
+Reference broader context naturally:
 - "Twitterで〜という話を見た"
 - "zodみたいなライブラリもあるけど"
-- Debates: "この辺は意見が分かれてて"
-
-✅ **Temporal context:**
-- "TypeScript 5.5で〜が入るかも"
-- "昔は〜だったけど、今は〜"
-- "2019年くらい？にこの話題で議論してた記憶がある"
+- Community debates: "この辺は意見が分かれてて"
+- Future speculation: "TypeScript 5.5で〜が入るかも"
 
 ### 5.3 Authentic Anecdotes
 
@@ -297,15 +286,13 @@ Articles feel mechanical when everything ties together perfectly.
 - **Leave questions open:** "これは別の機会に", "まだ試してないけど"
 - Realize mid-article: "ああ、そういえば〜も説明すべきでした"
 
-**CRITICAL: Include Unresolved Elements (MANDATORY)**
+**CRITICAL: Include Unresolved Elements**
 
-Perfect resolution is an AI tell. Every article MUST have at least 2-3 of:
-- [ ] Partially answered questions ("この辺はまだ分かってない")
-- [ ] Speculation without confirmation: "これはうまくいくかもしれないけど、確認してない"
-- [ ] Tangents that don't tie back: "余談ですが〜" (never returns to main point)
-- [ ] Future intentions: "いつか〜を試したい", "そのうち検証したい"
-- [ ] Abandoned threads: Start explaining something → "本題から逸れるのでこの辺で"
-- [ ] Mid-article admission: "さっき言い忘れたけど〜"
+Perfect resolution is an AI tell. Leave some things:
+- Partially answered questions
+- "これはうまくいくかもしれないけど、確認してない"
+- Tangents that don't tie back to main narrative
+- Future work: "いつか〜を試したい"
 
 **Section length:** Dramatically variable (1-2 paragraphs vs 15+ paragraphs). NO uniform depths.
 
@@ -403,17 +390,19 @@ Footnotes keep main text flowing while providing depth for interested readers.
 
 ## ⚠️ ANTI-PATTERNS: Quick Reference
 
-**Top AI Tells to Avoid:**
-1. **PERFECT CODE**: Every example works on first try (instead: show bugs → fixes)
-2. **COMPLETE RESOLUTION**: All questions answered, no loose ends (instead: 2-3 unresolved elements)
-3. **NO ECOSYSTEM**: Article exists in vacuum (instead: GitHub/community/temporal refs)
-4. **UNIFORM DEPTH**: Equal detail on all topics (instead: 15 paragraphs on favorite topic, 2 sentences on boring one)
-5. **STRATEGIC IMPERFECTIONS**: Evenly distributed (instead: random clustering, some sections perfect)
-6. **ARTIFICIAL FORMALITY**: 95%+ polite OR 90%+ casual (instead: 40-60% polite, context-dependent)
-7. **FORMULA-FOLLOWING**: Mechanical application of guidelines (instead: think deeply, techniques emerge naturally)
+**AI Tells to Avoid:**
+- **STRATEGIC IMPERFECTIONS**: Evenly distributed across sections (instead: random clustering)
+- **FORMULA-FOLLOWING**: Applying techniques mechanically instead of thinking
+- Pedagogical depth: Explaining important things thoroughly, trivial things briefly
+- Uniform outcomes: All anecdotes have clear results ("実装時間が短縮された")
+- Perfect technical depth: Never admitting incomplete understanding
+- Strategic disclaimers: "実務では使ったことない" at predictable moments
+- Clean structure: All threads resolved, no dangling tangents
+- Uniform assertions: All hedged OR all definitive
+- Pedagogical scaffolding: "それでは〜を見ていきましょう"
 
 ---
 
-**Last updated:** Iteration 1
-**Version:** 1.1 (REALITY CHECK: Align with human baseline, mandate authenticity markers)
-**Target:** <350 lines | **Current:** 420 lines (consolidation needed in iteration 2)
+**Last updated:** Iteration 9
+**Version:** 3.2 (RANDOMNESS: Authentic imperfection distribution)
+**Target:** <350 lines | **Current:** 365 lines
