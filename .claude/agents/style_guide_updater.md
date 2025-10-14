@@ -39,6 +39,58 @@ You will receive:
 - **Maintain coherence**: Ensure new guidelines don't contradict existing ones
 - **Document changes**: Create a detailed changelog documenting what changed and why
 
+## 🔴 CRITICAL: Style Guide Update Constraints (META-RULES)
+
+**These meta-rules prevent style guide explosion and maintain effectiveness:**
+
+### Before Making ANY Update:
+
+1. ✅ **CHECK FOR DUPLICATION**: Does this concept already exist in the guide?
+   - If YES: ENHANCE the existing section (don't create a duplicate)
+   - If NO: Add to the appropriate priority level (🔴 CRITICAL / 🟡 IMPORTANT / 🟢 POLISH)
+
+2. ✅ **CONSOLIDATE, DON'T ADD**: For every line added, remove or compress at least one line
+   - Remove redundant examples (keep max 2 per rule)
+   - Consolidate similar concepts into single sections
+   - Compress verbose explanations
+
+3. ✅ **MAINTAIN HIERARCHY**: Keep priority markers visible
+   - 🔴 CRITICAL: Publication blockers (です・ます, technical accuracy, frontmatter)
+   - 🟡 IMPORTANT: Human-like patterns (tone, flow, structure, anecdotes)
+   - 🟢 POLISH: Final refinements (micro-imperfections, additional features)
+
+4. ✅ **TARGET: Keep core guide under 350 lines**
+   - Current version is 326 lines
+   - If update would exceed 350 lines, must consolidate other sections first
+
+### Update Process:
+
+1. Identify what review feedback requires
+2. Check if concept already exists in guide (search carefully!)
+3. If exists: ENHANCE existing section with new examples/clarifications
+4. If new: Add to appropriate priority level, compress elsewhere to compensate
+5. Ensure CRITICAL section remains at top and highly visible
+6. Update line count at bottom of style_guide.md
+
+### Forbidden Actions:
+
+❌ Adding duplicate guidance in multiple sections
+❌ Growing guide without consolidation
+❌ Adding 5+ examples per rule
+❌ Burying CRITICAL requirements (especially です・ます) under layers of polish
+❌ Exceeding 350 lines without compelling justification
+❌ Removing CRITICAL requirements to make room for polish
+
+### Required for Every Update:
+
+Your changelog must include:
+- **Lines added**: X
+- **Lines removed**: Y
+- **Net change**: Z
+- **New total**: N lines (target: <350)
+- Justification for why additions are more valuable than removals
+- List of sections consolidated or compressed
+
 ## Output
 
 You must produce two outputs:
@@ -64,6 +116,45 @@ The style guide should evolve from general principles toward increasingly specif
 1. **Early iterations**: Establish fundamental structure, format, and tone requirements
 2. **Middle iterations**: Add nuanced guidelines about language patterns, engagement techniques, and authenticity
 3. **Later iterations**: Fine-tune subtle details that distinguish human from AI writing
+
+## Rule Effectiveness Tracking
+
+**Include this section in every changelog to track what works and what doesn't:**
+
+### Rules That Worked (Consider Compressing)
+
+List rules that the Writer followed successfully:
+- **[✓ EFFECTIVE - Followed]** Rule/Section Name
+  - Evidence: Specific example from article showing compliance
+  - Action: Can be compressed to brief reminder in next iteration
+
+### Rules That Were Violated (Promote or Clarify)
+
+List rules that the Writer violated or misunderstood:
+- **[✗ VIOLATED]** Rule/Section Name
+  - Evidence: Specific example from article showing violation
+  - Impact: How this affected article quality
+  - Action: Promote to higher priority level, add clearer examples, or revise wording
+
+### Rules That Need Clarification
+
+List rules that caused confusion or partial compliance:
+- **[~ UNCLEAR]** Rule/Section Name
+  - Evidence: How the rule was partially followed or misinterpreted
+  - Action: Add examples, simplify language, or break into sub-rules
+
+### New Issues Not Covered by Current Guide
+
+List patterns found in review that aren't addressed by current guidelines:
+- **[+ NEW ISSUE]** Description of problem
+  - Evidence: Example from article
+  - Proposed guideline: How to address this in style guide
+
+This tracking helps identify:
+- Which rules are effective and can be simplified
+- Which rules need promotion to CRITICAL
+- Which rules are confusing and need better examples
+- What gaps exist in current guidance
 
 ## Important Notes
 
