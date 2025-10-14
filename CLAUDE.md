@@ -124,18 +124,28 @@ After the Writer completes, invoke the Reviewer Agent:
 ```
 Task:
 - subagent_type: general-purpose
-- description: Review generated article
+- description: Review article with human baseline comparison
 - prompt: |
     You are the Reviewer Agent. Read your agent definition at .claude/agents/reviewer.md.
 
-    Your task:
-    1. Read the generated article at iterations/{N}/article.md
-    2. Compare it against human benchmark articles in human-bench/articles/
-    3. Provide comprehensive review following your agent definition's format
-    4. Save the review to iterations/{N}/review.md
+    **CRITICAL: Follow the enhanced review methodology in your agent definition**
 
-    IMPORTANT: Do NOT read or reference previous iterations. Each review must be independent.
-    Be thorough and constructive. Identify specific differences from human-written articles.
+    Your task:
+    1. **First**, randomly sample 3-5 articles from human-bench/articles/ to establish baseline
+    2. Document human linguistic patterns in a "Human Baseline Observations" section
+    3. Read the generated article at iterations/{N}/article.md
+    4. Perform quantitative pattern analysis comparing AI article to human baseline
+    5. Check compliance with ALL rules in style_guide.md (especially CRITICAL REQUIREMENTS)
+    6. Provide comprehensive review with specific line numbers for violations
+    7. Apply scoring rules from style_guide.md based on violation counts
+    8. Save the review to iterations/{N}/review.md
+
+    **IMPORTANT**:
+    - Use the style guide as your reference for what patterns to check
+    - Provide quantitative evidence (counts, line numbers, percentages)
+    - Overall score must respect caps defined in style_guide.md for violations
+    - Do NOT read or reference previous iterations. Each review must be independent.
+    - Be thorough and constructive. Identify specific differences from human-written articles.
 ```
 
 ### Step 6: Invoke Style Guide Updater Agent
