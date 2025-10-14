@@ -13,6 +13,8 @@ You will receive:
 2. **Review Path**: Path to the latest review from the Reviewer Agent
 3. **Generated Article Path**: Path to the reviewed article for reference
 
+**Note**: Unlike the Reviewer Agent, you CAN access previous iterations (`iterations/*/`) to understand patterns across multiple iterations, track rule effectiveness, and avoid repeating unsuccessful approaches.
+
 ## Process
 
 1. **Read the current style guide** to understand existing guidelines

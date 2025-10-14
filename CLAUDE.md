@@ -21,12 +21,14 @@ Three specialized agents work together in each iteration:
 2. **Reviewer Agent** (`.claude/agents/reviewer.md`)
    - Reviews generated articles by comparing them to human benchmarks
    - The ONLY agent that reads `human-bench/articles/`
+   - **MUST NOT read previous iterations** to maintain review independence
    - Provides detailed feedback and quality scores
    - Outputs: `iterations/{N}/review.md`
 
 3. **Style Guide Updater Agent** (`.claude/agents/style_guide_updater.md`)
    - Refines the style guide based on review feedback
    - Translates reviewer insights into actionable guidelines
+   - **CAN access previous iterations** to track patterns and rule effectiveness
    - Updates: `style_guide.md`
 
 ### Key Resources
@@ -132,6 +134,7 @@ Task:
     3. Provide comprehensive review following your agent definition's format
     4. Save the review to iterations/{N}/review.md
 
+    IMPORTANT: Do NOT read or reference previous iterations. Each review must be independent.
     Be thorough and constructive. Identify specific differences from human-written articles.
 ```
 
