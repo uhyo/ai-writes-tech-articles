@@ -86,25 +86,7 @@ Use this to verify articles before submission. Each item links to detailed guida
 
 These distinguish human writing from AI-generated content.
 
-### 5.1 Write from THINKING, Not from FORMULA
-
-**CRITICAL: The Core Problem**
-
-DON'T follow writing guidelines mechanically. Guidelines describe OUTCOMES of human thinking, not INPUTS to article generation.
-
-❌ **Formula-following (mechanical):**
-- "I need a trial-and-error section, so I'll create V1→V2→V3"
-- "I need reader dialogue, so I'll insert 'お察しの通り'"
-- "I need an anecdote, so I'll write about a project"
-
-✅ **Thinking-driven (organic):**
-- Think about the concept deeply → Realize it evolved through problems → Show that evolution naturally
-- Notice readers might misunderstand → Address their confusion directly in that moment
-- Remember a real discovery → Let it inform how you explain the problem
-
-**Techniques are SYMPTOMS of thinking, not TOOLS to apply.**
-
-### 5.2 Tone & Voice (Conversational Flow)
+### 5.1 Tone & Voice (Conversational Flow)
 
 **Personal Voice Guidelines:**
 - Use "筆者" sparingly: **3-5 times maximum per article**
@@ -118,55 +100,55 @@ DON'T follow writing guidelines mechanically. Guidelines describe OUTCOMES of hu
 
 Write as peer conversation, not teacher-to-student lecture.
 
-❌ **Avoid teaching transitions:**
-- "では、〇〇の場合はどうでしょうか" (textbook)
-- "ここで〇〇について見ていきましょう" (classroom)
-- "理屈はわかった。じゃあ実装してみよう。" (guides reader)
+❌ **Avoid these teaching transitions:**
+- "では、〇〇の場合はどうでしょうか" (textbook-style)
+- "本題に戻ると" (unnecessary announcement)
+- "ここで〇〇について見ていきましょう" (classroom guide language)
+- "理屈はわかった。じゃあ実装してみよう。" (guides reader like student)
+- "使い方はこう：" (instructional setup before code)
+- "次に〇〇を説明します" (explicit structure signaling)
+- "この実装の何が良いかって" (meta-explanation of what you're explaining)
 
-✅ **Natural flow:**
+✅ **Use natural transitions:**
 - "で、〇〇だと話が変わる。"
-- "なぜ〇〇なのか。" (just resume)
+- "なぜ〇〇なのか。" (just resume without announcement)
 - Just start code without preamble
+- "試しに〜してみると" (discovery, not instruction)
 
-**CRITICAL: Vary Explanation Depth Dramatically**
+**CRITICAL: Vary Explanation Depth (Not Everything Deserves Equal Detail)**
 
-Some topics: 1 sentence. Others: 10+ paragraphs. NOT uniform 3-4 paragraphs everywhere.
+Real writers prioritize ruthlessly. Not every point gets full exposition.
 
-Follow genuine interest, not templates. If truly fascinated by implementation details, dive deep. If obvious, move on quickly.
+❌ **Avoid uniform politeness:**
+- Explaining every concept with same care level
+- "〜が重要なポイントです" repeated uniformly
+- Every section getting 3-4 similar-length paragraphs
 
-### 5.3 Introduce Conceptual Frameworks
+✅ **Vary explanation intensity:**
+- Key insights: Deep dive with rich context
+- Obvious points: Single sentence, move on
+- Some topics: Just state the fact, let readers infer why
+- Example: "stateで管理すると無駄。" (why it's wasteful is implicit)
 
-**CRITICAL: Think at Meta-Technical Level**
-
-Don't just explain HOW things work. Introduce higher-level concepts that REFRAME the discussion.
-
-✅ **Examples from human articles:**
-- "Promiseが一級市民ではなかった" (react-use-rfc.md) - Reframes entire Suspense discussion
-- "記憶領域を必要としないフック" - Creates new mental category
-- "レンダリング単位の記憶領域" vs "コンポーネント単位の記憶領域" - Distinguishes implementation approaches
-
-**How to create frameworks:**
-1. Notice a recurring pattern or constraint
-2. Give it a name that's not in official docs
-3. Use it to explain why things work the way they do
-4. Reference it later to create conceptual continuity
-
-These frameworks show you're thinking deeply, not just reporting facts.
-
-### 5.4 Technical Depth (GitHub References)
+### 5.2 Technical Depth (GitHub References)
 
 **CRITICAL: Go Deep on "Why" and "How", Not Just "What"**
 
-Surface-level explanations are AI tells. Explain mechanisms.
+Surface-level explanations are AI tells. Humans explain mechanisms, not just facts.
 
-❌ **Shallow:** "useRefは再レンダリングを引き起こしません"
+❌ **Shallow (just describes what):**
+- "useRefは再レンダリングを引き起こしません"
+- "TypeScript 5.0で新機能が追加されました"
 
-✅ **Deep:** "useRefは`current`プロパティを持つオブジェクトを返すだけ。このオブジェクトはコンポーネントのライフサイクル全体で同一のインスタンスが保持されます。"
+✅ **Deep (explains why/how):**
+- "useRefは`current`プロパティを持つオブジェクトを返すだけ。このオブジェクトはコンポーネントのライフサイクル全体で同一のインスタンスが保持されます。"
+- "`use`も普通のフックと同様に「何番目の呼び出しか」に依存して記憶領域からデータを読みだします。それにも関わらず`use`を条件分岐の中で使用できるのは、**レンダリングの最中に条件分岐の結果が変わることはないという仮定**を設けているからです。"
 
 **Depth indicators:**
-- Internal mechanisms: "実装を見ると〜という仕組みで"
-- Constraints: "〜という仮定を設けているから"
-- Edge cases: "〜の場合は動作が変わる"
+- Explain internal mechanisms: "実装を見ると〜という仕組みで動いている"
+- Mention constraints: "〜という仮定を設けているから"
+- Describe edge cases: "〜の場合は動作が変わる"
+- Reference specific implementation details (line numbers, functions)
 
 **GitHub References: Natural Integration**
 
@@ -204,66 +186,88 @@ Humans naturally weave anecdotes throughout. Don't save it all for one "story se
 
 **Personal experiences need rich contextual details:**
 
-❌ **Generic:** "実務でよく遭遇する" "去年あるプロジェクトで3日消費"
-✅ **Rich context:** "去年、社内の古いExpress API（100個くらいエンドポイント）をTypeScript化するプロジェクトで、『既存の全部に型つけろ』って無茶振りされた。最初は『stringでいいんじゃない？』って思ってたけど、実際にやり始めたらパスパラメータの抽出で詰まって、気づいたら3日溶けてた"
+❌ **Generic** (lacks context):
+- "実務でよく遭遇する問題です"
+- "去年、あるプロジェクトで3日間消費した"
 
-Include: project context, tech stack, what you tried, what failed
+✅ **Rich context** (specific and messy):
+- "去年、社内の古いExpress API（100個くらいエンドポイント）をTypeScript化するプロジェクトで、『既存の全部に型つけろ』って無茶振りされた。最初は『stringでいいんじゃない？』って思ってたけど、実際にやり始めたらパスパラメータの抽出で詰まって、気づいたら3日溶けてた"
+
+**Required contextual elements:**
+- What kind of project? (company context, tech stack)
+- Why were you doing this? (requirements, constraints)
+- What were you trying to achieve? (specific goals)
+- What went wrong? (failed approaches)
 
 **CRITICAL: Real stories digress and meander**
 
-Include 1-2 asides per major anecdote that don't directly advance the point:
-- "（ちなみにこのプロジェクト、最初はReduxで書き直す予定だったのが、途中でみんな飽きて別の方向に...）"
-- Types: Scope changes, team dynamics, failed approaches
+Include 1-2 parenthetical asides per major anecdote that don't directly advance the main point:
 
-### 5.5 Structure: Non-Linear Exploration
+✅ **Example with digression:**
+- "去年、社内の管理画面のリファクタプロジェクトで「状態管理をどうするか」って話になって（ちなみにこのプロジェクト、最初はReduxで書き直す予定だったのが、途中でみんな飽きて別の方向に...）、結局Vueのreactivityを使った"
 
-**CRITICAL: Don't Follow Clean Narrative Arc**
+**Types of digressions:**
+- Original scope changes: "元々は〜が目的だったのが、いつの間にか〜にシフトしてた"
+- Team dynamics: "チームの誰々が〜って言い出して"
+- Failed approaches: "最初〜でやろうとしたんだけど、全然ダメで"
 
-Articles feel mechanical when structured as: Intro → Concept A → Concept B → Concept C → Conclusion.
+### 5.4 Structure & Organization
 
-❌ **Too clean (pedagogical):**
-- Linear progression through topics
-- Each section complete before moving to next
-- No backtracking or digressions
-- Smooth transitions between everything
+**CRITICAL: Limit section count**
+- **Target 6-7 H2 sections maximum** for typical articles (not 10+)
+- Combine related topics rather than splitting everything
+- Use H3 subsections within larger sections when needed
 
-✅ **Messy exploration (authentic):**
-- Jump to related topic mid-explanation: "ここで、〜を離れて〜に移ります"
-- Plant seeds early, pay off later: Mention "記憶領域" in passing, explain deeply later
-- Circle back: "さて、先ほどの〇〇の話に戻ると"
-- Digress naturally: "ちなみに〜" that doesn't directly advance main point
-- Admit structural messiness: "余談だが", "話が逸れるが"
+**CRITICAL: No numbered enumeration**
+- ❌ "パターン1: 〜", "パターン2: 〜", "パターン3: 〜"
+- ❌ "方法1", "方法2", "方法3"
+- ✅ Use descriptive headings: "useMemoで値を安定化させる"
 
-**Section length variation:**
-- Some sections: 1-2 paragraphs (obvious points)
-- Others: 15+ paragraphs (genuine fascination)
-- NO uniform 3-4 paragraph sections
+**CRITICAL: Create Organic Flow Between Sections**
 
-**Limit sections:** 6-7 H2 maximum. NO numbered patterns (パターン1/2/3).
+Sections shouldn't feel like independent encyclopedia entries. Create thread of thought.
 
-**Reader dialogue:** Use "お察しの通り", "皆さんならどうしますか" naturally when addressing potential confusion, not as formula.
+❌ **Independent sections (too isolated):**
+- Each section self-contained with no callbacks to previous content
+- Every section feels like fresh start
+- Reader can't tell why this topic comes after that topic
 
-### 5.6 Vary Assertion Strength Dramatically
+✅ **Connected flow:**
+- Reference previous section: "さて、先ほどの〇〇の話に戻ると"
+- Build on earlier points: "ここまでで〇〇を見たけど、実は〜"
+- Use connectors: "ところで", "そういえば", "ちなみに"
+- Example: "さて、すでに何か勉強した気になったかもしれませんが、これはReact 17と特に関係ない話なのでまだ復習です。"
 
-**CRITICAL: Conviction Level Should Reflect Actual Certainty**
+**Vary section lengths dramatically:**
+- Some sections: 1-2 paragraphs (brief point)
+- Others: 5-8+ paragraphs (deep dive when genuinely interested)
+- Never make all sections roughly equal length
+- Follow your interest, not templates
 
-Uniform confidence (all hedged OR all definitive) is an AI tell.
+### 5.5 Strong Assertions (Not Everything Hedged)
 
-✅ **Full spectrum of certainty:**
-- **Definitive** (proven facts): "useRefは再レンダリングを引き起こさない"
-- **Strong opinion**: "これは間違いです", "〜すべきです"
-- **Reasoned inference**: "〜と考えられます" (with evidence)
-- **Speculation**: "〜かもしれない", "〜だろうか" (honest uncertainty)
-- **Tentative exploration**: "〜という気がする" (thinking aloud)
-- **Admitted ignorance**: "実装を確認していないので推測ですが"
+**CRITICAL: Don't Qualify Every Statement**
 
-❌ **Uniform hedging:**
-- "個人的には〜だと思います" repeated everywhere
-- Every claim qualified with "〜気がします"
+Excessive hedging ("〜だと思います", "〜気がします") is an AI tell.
 
-The VARIETY shows human thinking - confident where you know, tentative where you don't.
+❌ **Over-qualified (weak):**
+- "個人的には〜だと思います" (repeats every section)
+- "〜という気がします"
+- "〜のような気もします"
+- Balanced view on everything: "一方で〜というメリットもありますが、デメリットもあります"
 
-### 5.7 Conclusions (まとめ)
+✅ **Mix assertion strengths:**
+- Strong opinions on some topics: "これは間違いです", "〜すべきです", "〜は無駄"
+- Direct statements without hedging: "useRefの本質は〜です。" (just state it)
+- Save qualifiers for genuinely uncertain claims
+- Example: "なんでもかんでもstateに突っ込むと、無駄なレンダリングが増えるだけ。" (no hedging)
+
+**Humans vary conviction levels:**
+- Strong when confident: "〜です", "〜だ"
+- Hedged when exploring: "〜かもしれない"
+- Don't hedge facts: "useRefは再レンダリングを引き起こさない" (not "引き起こさないと思います")
+
+### 5.6 Conclusions (まとめ)
 
 **CRITICAL: Avoid synthesizing everything neatly**
 
@@ -328,28 +332,32 @@ Footnotes keep main text flowing while providing depth for interested readers.
 - Main text: "この機能は便利です[^1]。"
 - Footnote: "[^1]: ちなみにこの機能は〜で、〜という理由で〜"
 
-**余談 Blocks:** Use `:::details 余談` for historical context, implementation deep dives, future proposals
+**余談 Blocks:** Use `:::details 余談` for:
+- Historical context and version history
+- Deep dives into implementation details
+- Future proposals (like useEvent RFC)
 
 ---
 
 ## ⚠️ ANTI-PATTERNS: Quick Reference
 
 **AI Tells to Avoid:**
-- **FORMULA-FOLLOWING**: Applying techniques mechanically instead of thinking
-- Uniform depth: Every concept explained with same care level (should vary dramatically)
-- Clean structure: Linear progression without digressions or backtracking
-- No conceptual frameworks: Just reporting facts without meta-technical thinking
-- Uniform assertions: All hedged OR all definitive (should vary with certainty)
-- Pedagogical scaffolding: "それでは〜を見ていきましょう"
-- Finished solutions only: No messy V1→problem→V2 exploration
+- Pedagogical scaffolding: "それでは〜を見ていきましょう", "この実装の何が良いかって"
+- Uniform politeness: Every concept explained with same care level
+- Isolated sections: No callbacks to previous content
+- Single anecdote: One story, rest is theory
+- Weak assertions: "〜だと思います" repeated everywhere
+- Shallow depth: Describes "what" but not "why/how"
+- No footnotes: Everything inline, disrupting flow
 - Numbered patterns: パターン1/2/3
 - Neat conclusions: Synthesized bullet lists
+- Formal GitHub citations: PR/issue numbers as subjects
 - Excessive "筆者": >5 times per article
 
 ---
 
 ---
 
-**Last updated:** Iteration 7
-**Version:** 3.0 (META-SHIFT: From formula-following to thinking-driven writing)
-**Target:** <350 lines | **Current:** 355 lines
+**Last updated:** Iteration 5
+**Version:** 2.1 (Added depth, flow, and assertion guidelines)
+**Target:** <350 lines | **Current:** 363 lines
