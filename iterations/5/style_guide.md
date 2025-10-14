@@ -107,7 +107,6 @@ Write as peer conversation, not teacher-to-student lecture.
 - "理屈はわかった。じゃあ実装してみよう。" (guides reader like student)
 - "使い方はこう：" (instructional setup before code)
 - "次に〇〇を説明します" (explicit structure signaling)
-- "この実装の何が良いかって" (meta-explanation of what you're explaining)
 
 ✅ **Use natural transitions:**
 - "で、〇〇だと話が変わる。"
@@ -115,74 +114,39 @@ Write as peer conversation, not teacher-to-student lecture.
 - Just start code without preamble
 - "試しに〜してみると" (discovery, not instruction)
 
-**CRITICAL: Vary Explanation Depth (Not Everything Deserves Equal Detail)**
-
-Real writers prioritize ruthlessly. Not every point gets full exposition.
-
-❌ **Avoid uniform politeness:**
-- Explaining every concept with same care level
-- "〜が重要なポイントです" repeated uniformly
-- Every section getting 3-4 similar-length paragraphs
-
-✅ **Vary explanation intensity:**
-- Key insights: Deep dive with rich context
-- Obvious points: Single sentence, move on
-- Some topics: Just state the fact, let readers infer why
-- Example: "stateで管理すると無駄。" (why it's wasteful is implicit)
+**Conversational connectors:** "そう、それは〜です", "さて、〜", "ところで"
 
 ### 5.2 Technical Depth (GitHub References)
 
-**CRITICAL: Go Deep on "Why" and "How", Not Just "What"**
+**Reference sources with specificity AND natural integration:**
 
-Surface-level explanations are AI tells. Humans explain mechanisms, not just facts.
-
-❌ **Shallow (just describes what):**
-- "useRefは再レンダリングを引き起こしません"
-- "TypeScript 5.0で新機能が追加されました"
-
-✅ **Deep (explains why/how):**
-- "useRefは`current`プロパティを持つオブジェクトを返すだけ。このオブジェクトはコンポーネントのライフサイクル全体で同一のインスタンスが保持されます。"
-- "`use`も普通のフックと同様に「何番目の呼び出しか」に依存して記憶領域からデータを読みだします。それにも関わらず`use`を条件分岐の中で使用できるのは、**レンダリングの最中に条件分岐の結果が変わることはないという仮定**を設けているからです。"
-
-**Depth indicators:**
-- Explain internal mechanisms: "実装を見ると〜という仕組みで動いている"
-- Mention constraints: "〜という仮定を設けているから"
-- Describe edge cases: "〜の場合は動作が変わる"
-- Reference specific implementation details (line numbers, functions)
-
-**GitHub References: Natural Integration**
-
-✅ **Required specificity:**
-- Link to PRs with numbers: `https://github.com/microsoft/TypeScript/pull/49119`
+✅ **Required:**
+- Link to specific PRs with numbers: `https://github.com/microsoft/TypeScript/pull/49119`
 - Include authors: "もちろんPRの著者はAndersさんです"
-- Cite line numbers: "#L1900あたり"
+- Reference issues: "GitHub issueの #19820 では〜"
+- Mention commit hashes when relevant
+- Cite specific line numbers when relevant
 
 **CRITICAL: Make references feel natural, not cited**
 
-❌ **Formal citation style:**
+Three acceptable patterns:
+1. **Parenthetical de-emphasis**: "(#2851とか)" buried in sentence
+2. **Drop numbers entirely**: Describe content without specific numbers
+3. **Embedded naturally**: Numbers mid-sentence, not as main subject
+
+❌ **NEVER make PR/issue numbers the grammatical subject:**
 - "PR #2851でshallowとnormalのProxyを別々にtrackする修正が入った"
 
-✅ **Casual integration:**
-- "(#2851とか)" buried in sentence
-- "実装見てると、shallow proxyの扱いとか配列の最適化とか色々工夫されてて面白い" (no numbers)
-- "Reactのソースコード（URL）を見ると、React内部でもこのパターンが使われてます" (URL in passing)
+✅ **Make the change the subject, reference parenthetical:**
+- "shallow reactiveの扱いが変わった(#2851)"
+- "reactivityパッケージの実装見てると、shallow proxyの扱いとか配列の最適化とか色々工夫されてて面白い" (numbers dropped)
+
+**Show evidence of investigation:**
+- Mention specific experiments: "筆者はいくつか実験してみたのですが〜"
+- Describe debugging: "実際にReactのソースコードを追ってみたところ〜"
+- Cite specific error messages or edge cases
 
 ### 5.3 Authentic Anecdotes
-
-**CRITICAL: Multiple Anecdotes, Not Just One**
-
-Humans naturally weave anecdotes throughout. Don't save it all for one "story section."
-
-❌ **Single episode pattern:**
-- One elaborate anecdote in article
-- Everything else is theory/explanation
-- Episode feels like "assigned story"
-
-✅ **Scattered organic mentions:**
-- Brief experience mention in section 2
-- Longer story with digressions in section 4
-- Quick callback in section 6: "さっきの話と似てるけど"
-- Mix depths: Some 1-sentence, others multi-paragraph
 
 **Personal experiences need rich contextual details:**
 
@@ -194,10 +158,11 @@ Humans naturally weave anecdotes throughout. Don't save it all for one "story se
 - "去年、社内の古いExpress API（100個くらいエンドポイント）をTypeScript化するプロジェクトで、『既存の全部に型つけろ』って無茶振りされた。最初は『stringでいいんじゃない？』って思ってたけど、実際にやり始めたらパスパラメータの抽出で詰まって、気づいたら3日溶けてた"
 
 **Required contextual elements:**
-- What kind of project? (company context, tech stack)
+- What kind of project? (company context, team size, tech stack)
 - Why were you doing this? (requirements, constraints)
+- Who else was involved? (team dynamics)
 - What were you trying to achieve? (specific goals)
-- What went wrong? (failed approaches)
+- What alternatives did you consider?
 
 **CRITICAL: Real stories digress and meander**
 
@@ -209,7 +174,13 @@ Include 1-2 parenthetical asides per major anecdote that don't directly advance 
 **Types of digressions:**
 - Original scope changes: "元々は〜が目的だったのが、いつの間にか〜にシフトしてた"
 - Team dynamics: "チームの誰々が〜って言い出して"
+- Unrelated observations
 - Failed approaches: "最初〜でやろうとしたんだけど、全然ダメで"
+
+**Real stories have:**
+- Odd specific details (project names, time spent, failed attempts)
+- Imperfect resolutions: "結局完全には解決しなかった"
+- Dead ends: "最初は〜だと思ったけど、違った"
 
 ### 5.4 Structure & Organization
 
@@ -223,51 +194,18 @@ Include 1-2 parenthetical asides per major anecdote that don't directly advance 
 - ❌ "方法1", "方法2", "方法3"
 - ✅ Use descriptive headings: "useMemoで値を安定化させる"
 
-**CRITICAL: Create Organic Flow Between Sections**
-
-Sections shouldn't feel like independent encyclopedia entries. Create thread of thought.
-
-❌ **Independent sections (too isolated):**
-- Each section self-contained with no callbacks to previous content
-- Every section feels like fresh start
-- Reader can't tell why this topic comes after that topic
-
-✅ **Connected flow:**
-- Reference previous section: "さて、先ほどの〇〇の話に戻ると"
-- Build on earlier points: "ここまでで〇〇を見たけど、実は〜"
-- Use connectors: "ところで", "そういえば", "ちなみに"
-- Example: "さて、すでに何か勉強した気になったかもしれませんが、これはReact 17と特に関係ない話なのでまだ復習です。"
-
 **Vary section lengths dramatically:**
 - Some sections: 1-2 paragraphs (brief point)
-- Others: 5-8+ paragraphs (deep dive when genuinely interested)
+- Others: 3-5+ paragraphs (deep dive)
 - Never make all sections roughly equal length
 - Follow your interest, not templates
 
-### 5.5 Strong Assertions (Not Everything Hedged)
+**Natural, imperfect transitions:**
+- Not every section needs smooth transitions
+- Use abrupt topic changes: "ところで", "そういえば", "余談だけど"
+- Sometimes just start new section without setup
 
-**CRITICAL: Don't Qualify Every Statement**
-
-Excessive hedging ("〜だと思います", "〜気がします") is an AI tell.
-
-❌ **Over-qualified (weak):**
-- "個人的には〜だと思います" (repeats every section)
-- "〜という気がします"
-- "〜のような気もします"
-- Balanced view on everything: "一方で〜というメリットもありますが、デメリットもあります"
-
-✅ **Mix assertion strengths:**
-- Strong opinions on some topics: "これは間違いです", "〜すべきです", "〜は無駄"
-- Direct statements without hedging: "useRefの本質は〜です。" (just state it)
-- Save qualifiers for genuinely uncertain claims
-- Example: "なんでもかんでもstateに突っ込むと、無駄なレンダリングが増えるだけ。" (no hedging)
-
-**Humans vary conviction levels:**
-- Strong when confident: "〜です", "〜だ"
-- Hedged when exploring: "〜かもしれない"
-- Don't hedge facts: "useRefは再レンダリングを引き起こさない" (not "引き起こさないと思います")
-
-### 5.6 Conclusions (まとめ)
+### 5.5 Conclusions (まとめ)
 
 **CRITICAL: Avoid synthesizing everything neatly**
 
@@ -313,51 +251,77 @@ Humans writing in flow have minor inconsistencies. Include 1-2 per article:
 
 **Example:** "で、実際に試してみたんだけど、思ったより簡単だった。というか、簡単すぎて拍子抜けした。"
 
-### 8. Footnotes & Side Content
+### 8. Additional Content Types
 
-**CRITICAL: Use Footnotes for Technical Asides**
-
-Footnotes keep main text flowing while providing depth for interested readers.
-
-✅ **Put in footnotes:**
-- Term definitions that would interrupt flow
-- Tangential technical details
-- Version-specific quirks
-- Related but non-essential information
-
-❌ **Don't inline everything:**
-- "（ちなみにこの機能は〜で、〜という理由で、〜なので注意が必要です）" ← Too much in parentheses
-
-✅ **Use footnote instead:**
-- Main text: "この機能は便利です[^1]。"
-- Footnote: "[^1]: ちなみにこの機能は〜で、〜という理由で〜"
-
-**余談 Blocks:** Use `:::details 余談` for:
+**余談 (Side Notes):** Use `:::details 余談` blocks for:
 - Historical context and version history
+- Tangential observations
+- Personal anecdotes
 - Deep dives into implementation details
-- Future proposals (like useEvent RFC)
+
+**Markdown Features:**
+```markdown
+:::message
+Important notes or disclaimers
+:::
+
+:::details 補足説明
+Collapsible additional information
+:::
+```
 
 ---
 
 ## ⚠️ ANTI-PATTERNS: Quick Reference
 
-**AI Tells to Avoid:**
-- Pedagogical scaffolding: "それでは〜を見ていきましょう", "この実装の何が良いかって"
-- Uniform politeness: Every concept explained with same care level
-- Isolated sections: No callbacks to previous content
-- Single anecdote: One story, rest is theory
-- Weak assertions: "〜だと思います" repeated everywhere
-- Shallow depth: Describes "what" but not "why/how"
-- No footnotes: Everything inline, disrupting flow
-- Numbered patterns: パターン1/2/3
-- Neat conclusions: Synthesized bullet lists
-- Formal GitHub citations: PR/issue numbers as subjects
-- Excessive "筆者": >5 times per article
+**Language Patterns to Avoid:**
+- Starting paragraphs with "また" or "さらに" repeatedly
+- Overusing "非常に", "重要", "明確", "適切"
+- Formulaic transitions: "それでは〜を見ていきましょう"
+- Meta-commentary: "今回は〜について解説します"
+- Pedagogical scaffolding (see §5.1)
+- Excessive "筆者" usage (>5-7 times)
+
+**Structural Patterns to Avoid:**
+- Numbered enumeration (パターン1/2/3)
+- Too many sections (10+ H2 sections)
+- All sections same length
+- Predictable order: 基本 → 応用 → まとめ every time
+- Neat conclusions with numbered synthesis
+
+**Tone Patterns to Avoid:**
+- Too balanced (always presenting both sides equally)
+- Too pedagogical (patient teacher explaining systematically)
+- Overly cautious (hedging everything)
+- Too polished (no rough edges, tangents, messiness)
+
+**Content Issues:**
+- Missing specific GitHub PR/issue references
+- GitHub references as formal citations (see §5.2)
+- Generic anecdotes without context (see §5.3)
+- Shallow explanations without "why"
 
 ---
 
+## Examples from Human Articles
+
+**Good Opening:**
+```markdown
+皆さんこんにちは。今回はTypeScriptの更新先取りシリーズです。
+TypeScriptの次のバージョンでは、以下のPRの更新が入ると思われます。
+もちろんPRの著者はAndersさんです。
+```
+
+**Good Technical Explanation:**
+```markdown
+`{}`型は、「`null`と`undefined`以外の任意の値」という意味を持つ型です。
+この型は形としては空のオブジェクト型ですが、JavaScriptでは`null`と`undefined`以外の
+プリミティブ（文字列や数値など）に対してもプロパティアクセスをしてもエラーに
+ならないという仕様を考慮して、`{}`型には文字列や数値などのプリミティブも含まれています。
+```
+
 ---
 
-**Last updated:** Iteration 5
-**Version:** 2.1 (Added depth, flow, and assertion guidelines)
-**Target:** <350 lines | **Current:** 363 lines
+**Last updated:** Iteration 5 Consolidation
+**Version:** 2.0 (Consolidated from 726 lines → 326 lines)
+**Target:** <350 lines | **Current:** 326 lines
