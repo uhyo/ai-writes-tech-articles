@@ -58,11 +58,9 @@ Before submitting, scan entire article for:
 
 ### 2. Polite Form Distribution (CRITICAL)
 
-**QUANTITATIVE REQUIREMENTS:**
-- **MINIMUM (Publication blocker)**: 15+ です/ます sentence endings
-- **TARGET (Quality threshold)**: 40-60% polite form distribution
+**QUANTITATIVE REQUIREMENT: Minimum 15+ です/ます sentence endings in the article.**
 
-**Human baseline**: 15-70 です/ます endings. **0-14 endings = unpublishable.**
+Human articles have 15-70 です/ます endings. **0-5 endings = AI tell, unpublishable.**
 
 **The Rule:**
 - **Main declarative sentences**: Use です/ます (polite)
@@ -79,18 +77,16 @@ Before submitting, scan entire article for:
 つまり、ライブラリの設計が変わるレベルの改善です。           ← です/ます (main conclusion)
 ```
 
-**Why 40-60% target?**
+**Why 40-60% overall?**
 - Main sentences: ~50% of text → use です/ます → 50% polite
 - Subordinate elements: ~50% of text → use casual → 0% polite
 - **Result: ~40-60% overall polite**, but main sentences are MOSTLY polite
 
-**Common Mistakes:**
+**Common Mistake:**
 ❌ "40-60% means only half my sentences need です/ます" → NO!
 ✅ "Main explanatory sentences use です/ます, which results in 40-60% overall"
-❌ "15+ minimum is enough" → NO! 15+ prevents failure, but 40-60% creates quality
-❌ Writing everything casual (21% polite) → Creates "blog" tone, not "technical article"
 
-**Key Insight**: 15+ is the safety net. 40-60% is the target for human-quality articles.
+**Don't**: Write everything in casual form (0% polite = chatty blog, not technical article)
 
 ### 3. Frontmatter Format
 
@@ -120,8 +116,7 @@ published: true
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons before code** (scan: ：followed by ```)
 - [ ] Valid frontmatter with all fields
-- [ ] **MINIMUM: 15+ です/ます endings** (publication blocker if <15)
-- [ ] **TARGET: 40-60% です/ます distribution** (count total sentences, aim for 40-60% polite)
+- [ ] **Minimum 15+ です/ます sentence endings** (count: です。ます。- must be 15-70)
 - [ ] Main declarative sentences use です/ます (not all casual)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
@@ -281,7 +276,7 @@ Use `:::details 余談` for historical context, implementation deep dives
 1. **Sentence-ending -てる/-てた/-てます。** (ZERO tolerance)
 2. **Paragraph-initial "で、"** (ZERO tolerance)
 3. **Colons before code (：)** (ZERO tolerance)
-4. **Low です/ます distribution** (<15 = unpublishable; 15-39% = too casual)
+4. **All-casual main text (<10 です/ます endings)** (CRITICAL - minimum 15+ required)
 5. **Perfect code on first try** (show bugs → fixes)
 6. **Complete resolution** (need 2-3 unresolved elements)
 7. **No ecosystem context** (add GitHub/community/temporal refs)
@@ -290,6 +285,17 @@ Use `:::details 余談` for historical context, implementation deep dives
 
 ---
 
-**Last updated:** Iteration 4 (post-review refinement)
-**Version:** 1.6 (TARGET CLARIFICATION: Polite form distribution range)
-**Target:** <350 lines | **Current:** ~305 lines
+**Last updated:** Iteration 3 (post-review EMERGENCY)
+**Version:** 1.5 (EMERGENCY FIX: Polite form distribution crisis)
+**Target:** <350 lines | **Current:** ~290 lines
+
+**CHANGELOG v1.4 → v1.5 (EMERGENCY):**
+- 🚨 **CRITICAL DISCOVERY**: Iteration 3 scored 9.2/10 but had 0 です/ます endings (human: 15-70)
+- 🚨 Article was entirely casual form in main text - massive linguistic authenticity failure
+- ✅ Added quantitative requirement: **Minimum 15+ です/ます sentence endings**
+- ✅ Clarified "main declarative sentences" with concrete sentence-by-sentence examples
+- ✅ Explained why 40-60% overall (mix of sentence types, not "half your sentences")
+- ✅ Added です/ます count to PRE-SUBMISSION CHECKLIST
+- ✅ Added "all-casual main text" as #4 TOP AI TELL
+- **Root cause**: Vague "main explanations" guideline was misinterpreted as "very few sentences"
+- **Impact**: 9.2/10 score was WRONG - should have been ~5.5/10
