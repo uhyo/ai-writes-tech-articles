@@ -56,37 +56,15 @@ Before submitting, scan entire article for:
 
 **Impact**: 3+ violations → max score 7.0/10. For 9.0+: ZERO violations required.
 
-### 2. Polite Form Distribution (CRITICAL)
+### 2. Natural Formality Mix
 
-**QUANTITATIVE REQUIREMENT: Minimum 15+ です/ます sentence endings in the article.**
+Target: **40-60% polite forms** (-ます/-です) in main text
 
-Human articles have 15-70 です/ます endings. **0-5 endings = AI tell, unpublishable.**
+- Use polite for: Main explanations, conclusions
+- Use casual for: Lists, subordinate clauses, embedded statements
+- Mixed within paragraph = natural and authentic
 
-**The Rule:**
-- **Main declarative sentences**: Use です/ます (polite)
-- **Subordinate clauses, embedded statements, lists**: Use casual forms
-
-**Concrete Example (Sentence-by-Sentence):**
-
-```
-皆さんこんにちは。TypeScript 5.0では新機能が追加されました。  ← です/ます (main sentence)
-この機能、最初見たとき「便利じゃん」と思った。                ← casual (personal reaction)
-具体的には、型パラメータに const を付けられる機能。         ← casual noun (definition)
-これにより推論が改善されます。                               ← です/ます (main explanation)
-従来は as const を書く必要があったのが不要になる。          ← casual (subordinate fact)
-つまり、ライブラリの設計が変わるレベルの改善です。           ← です/ます (main conclusion)
-```
-
-**Why 40-60% overall?**
-- Main sentences: ~50% of text → use です/ます → 50% polite
-- Subordinate elements: ~50% of text → use casual → 0% polite
-- **Result: ~40-60% overall polite**, but main sentences are MOSTLY polite
-
-**Common Mistake:**
-❌ "40-60% means only half my sentences need です/ます" → NO!
-✅ "Main explanatory sentences use です/ます, which results in 40-60% overall"
-
-**Don't**: Write everything in casual form (0% polite = chatty blog, not technical article)
+**Don't**: Force 95%+ polite (unnatural) or 90%+ casual (too chatty)
 
 ### 3. Frontmatter Format
 
@@ -116,8 +94,7 @@ published: true
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons before code** (scan: ：followed by ```)
 - [ ] Valid frontmatter with all fields
-- [ ] **Minimum 15+ です/ます sentence endings** (count: です。ます。- must be 15-70)
-- [ ] Main declarative sentences use です/ます (not all casual)
+- [ ] 40-60% polite forms (not 95%+ or 10%+)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: bug → fix OR V1 → V2 iterations
@@ -153,19 +130,9 @@ published: true
 - Incomplete threads: start tangent, never return OR return much later
 - Example: Code → "あ、バグある" → fix → "いや待って、これも違う" → actual fix
 
-### 5.1a Opening Hooks (Optional Enhancement)
-
-**Consider starting with context-setting before jumping into personal anecdotes:**
-
-✅ Temporal markers: "TypeScript 5.0では..." "最近の〜界隈では..."
-✅ Situational context: "皆さんこんにちは。今回は〜"
-✅ Direct anecdote: "最初見たとき..." (current approach, also acceptable)
-
-**Note**: This is a minor stylistic variation. Direct anecdotes work well. Context-setting can add variety across articles.
-
 ### 5.2 Conversational Tone
 
-- "筆者" sparingly: 0-5x per article (1-3x most common, 0x acceptable)
+- "筆者" sparingly: 3-5x max per article
 - NO pedagogical scaffolding: Avoid "では〜見ていきましょう"
 - Peer conversation, not teacher-to-student
 
@@ -276,26 +243,14 @@ Use `:::details 余談` for historical context, implementation deep dives
 1. **Sentence-ending -てる/-てた/-てます。** (ZERO tolerance)
 2. **Paragraph-initial "で、"** (ZERO tolerance)
 3. **Colons before code (：)** (ZERO tolerance)
-4. **All-casual main text (<10 です/ます endings)** (CRITICAL - minimum 15+ required)
-5. **Perfect code on first try** (show bugs → fixes)
-6. **Complete resolution** (need 2-3 unresolved elements)
-7. **No ecosystem context** (add GitHub/community/temporal refs)
-8. **Uniform depth** (vary: 15 para on favorite, 2 sentences on boring)
-9. **Strategic imperfections** (cluster randomly, not evenly)
+4. **Perfect code on first try** (show bugs → fixes)
+5. **Complete resolution** (need 2-3 unresolved elements)
+6. **No ecosystem context** (add GitHub/community/temporal refs)
+7. **Uniform depth** (vary: 15 para on favorite, 2 sentences on boring)
+8. **Strategic imperfections** (cluster randomly, not evenly)
 
 ---
 
-**Last updated:** Iteration 3 (post-review EMERGENCY)
-**Version:** 1.5 (EMERGENCY FIX: Polite form distribution crisis)
-**Target:** <350 lines | **Current:** ~290 lines
-
-**CHANGELOG v1.4 → v1.5 (EMERGENCY):**
-- 🚨 **CRITICAL DISCOVERY**: Iteration 3 scored 9.2/10 but had 0 です/ます endings (human: 15-70)
-- 🚨 Article was entirely casual form in main text - massive linguistic authenticity failure
-- ✅ Added quantitative requirement: **Minimum 15+ です/ます sentence endings**
-- ✅ Clarified "main declarative sentences" with concrete sentence-by-sentence examples
-- ✅ Explained why 40-60% overall (mix of sentence types, not "half your sentences")
-- ✅ Added です/ます count to PRE-SUBMISSION CHECKLIST
-- ✅ Added "all-casual main text" as #4 TOP AI TELL
-- **Root cause**: Vague "main explanations" guideline was misinterpreted as "very few sentences"
-- **Impact**: 9.2/10 score was WRONG - should have been ~5.5/10
+**Last updated:** Iteration 2 (post-generation)
+**Version:** 1.3 (EMERGENCY SIMPLIFICATION: Moved forbidden patterns to top, compressed to <250 lines)
+**Target:** <350 lines | **Current:** ~240 lines

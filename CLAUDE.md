@@ -135,7 +135,9 @@ Task:
        - Look for punctuation, formatting, structural patterns not yet in style guide
        - Quantify new patterns discovered and recommend style guide additions
     2. **STEP 1 - Baseline**: Document human linguistic patterns from style guide
+       - **MANDATORY**: Count です/ます sentence endings in each sampled article (baseline: 15-70)
     3. **STEP 2 - Analysis**: Perform quantitative pattern analysis with line numbers
+       - **MANDATORY FIRST CHECK**: Count です。and ます。in AI article (<10 = publication blocker)
     4. **STEP 3 - Compliance**: Check ALL rules in style_guide.md (especially CRITICAL REQUIREMENTS)
     5. **STEP 4 - Holistic Review**: Comprehensive review across all dimensions
     6. **STEP 5 - Score**: Apply scoring rules from style_guide.md based on violations

@@ -56,12 +56,16 @@ Before checking known requirements, perform open-ended exploratory analysis:
 Using the same 3-5 human articles from STEP 0:
 
 1. **Extract Known Linguistic Patterns**: Document patterns from style guide:
+   - **です/ます sentence endings**: Count "です。" and "ます。" in each sampled article
+     * Typical range: 15-70 per article
+     * Document counts for each article sampled
    - Sentence ending forms (polite vs casual ratio and contexts)
    - Common sentence starters and their frequencies
    - Verb form usage (-ています vs -てる vs -てます and contexts)
    - Any other patterns mentioned in the style guide's CRITICAL REQUIREMENTS
 
-3. **Create Baseline Summary**: Write a "Human Baseline Observations" section noting:
+2. **Create Baseline Summary**: Write a "Human Baseline Observations" section noting:
+   - です/ます sentence ending counts across sampled articles
    - What patterns are consistent across human articles (with approximate percentages)
    - What patterns have 0 or near-0 frequency
    - Contextual usage (where casual forms appear, if at all)
@@ -70,17 +74,26 @@ Using the same 3-5 human articles from STEP 0:
 
 When reviewing the AI article:
 
-1. **Count and Compare**: For each pattern type in the style guide's CRITICAL REQUIREMENTS:
+1. **MANDATORY: Count です/ます Sentence Endings**:
+   - Use grep or manual count to find all instances of "です。" and "ます。"
+   - Human baseline: 15-70 です/ます sentence endings per article
+   - **CRITICAL THRESHOLD**: <10 endings = PUBLICATION BLOCKER
+   - If count is 0-9: Flag as "all-casual main text" violation
+   - If count is 10-14: Flag as "insufficient polite forms" warning
+   - If count is 15+: PASS this check
+   - Document exact count and compare to human baseline
+
+2. **Count and Compare**: For each pattern type in the style guide's CRITICAL REQUIREMENTS:
    - Count occurrences in AI article
    - Compare to human baseline observations
    - Note specific line numbers for violations
 
-2. **Systematic Search**: Use grep/search to find:
+3. **Systematic Search**: Use grep/search to find:
    - Patterns the style guide marks as forbidden
    - Patterns the style guide marks as restricted to specific contexts
    - Document ALL instances with line numbers
 
-3. **Context Verification**: For casual forms found:
+4. **Context Verification**: For casual forms found:
    - Are they in quotes/asides/footnotes (acceptable)?
    - Or in main text (likely violation)?
 
@@ -136,6 +149,12 @@ For each discovered pattern:
 
 ## Human Baseline Observations
 
+**です/ます Sentence Ending Counts** (sampled articles):
+- Article 1: [N] です/ます endings
+- Article 2: [N] です/ます endings
+- Article 3: [N] です/ます endings
+- **Baseline Range**: 15-70 です/ます sentence endings per article
+
 **Known Linguistic Patterns** (from style guide):
 - Sentence endings: [X%] polite form (-ます/-です), [Y%] casual (-だ/-る), contexts for casual usage
 - Sentence starters: "で、" [frequency], other common starters and frequencies
@@ -150,11 +169,15 @@ For each discovered pattern:
 ## Linguistic Compliance Analysis
 
 **AI Article Metrics**:
+- **です/ます sentence endings**: [COUNT] (です。+ ます。)
+  * Human baseline: 15-70
+  * Status: [✅ PASS (15+) / ⚠️ WARNING (10-14) / ❌ CRITICAL VIOLATION (0-9)]
 - Sentence endings: [X%] polite, [Y%] casual (line numbers: ...)
 - Forbidden patterns found: [list with line numbers]
 - Style guide compliance: [metric calculations]
 
 **Style Guide Checklist** (from CRITICAL REQUIREMENTS):
+- [✅/❌] です/ます count: [actual count] vs [minimum 15+]
 - [✅/❌] Polite form consistency: [actual %] vs [target %]
 - [✅/❌] Forbidden pattern X: [count] instances (lines: ...)
 - [✅/❌] Forbidden pattern Y: [count] instances (lines: ...)
