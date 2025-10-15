@@ -35,19 +35,13 @@ This guide defines standards for generating Japanese technical articles indistin
 
 **Use instead**: "そこで、" "さて、" "ところで、" "また、" "ちなみに、" or no connector
 
-### ❌ FORBIDDEN PATTERN #3: Colons (：) in prose flow
+### ❌ FORBIDDEN PATTERN #3: Colons (：) before code blocks
 
-**NEVER use full-width colon to introduce code or lists in flowing prose:**
+**NEVER use full-width colon to introduce code in prose:**
 
 ❌ "こんなコード書いてた：" → ✅ "こんなコード書いてた。"
-❌ "使いどころとしては：" → ✅ "使いどころとしては以下の通りです。"
 
-**Human pattern**: Use "すなわち、" or direct statements, never colons before lists
-
-**Colons OK only in**:
-- Section headers: "## 使い方：基本編"
-- Blockquote labels: "訳注："
-- NOT in flowing prose before code/lists
+**Colons OK only in**: Section headers, "訳注：" style notes, blockquotes
 
 ---
 
@@ -60,7 +54,7 @@ This guide defines standards for generating Japanese technical articles indistin
 Before submitting, scan entire article for:
 - [ ] Sentence-ending -てる/-てた/-てます (search: てる。てた。てます。)
 - [ ] Paragraph-initial "で、" (search: line starts with "で、")
-- [ ] Colons in prose before code/lists (search: ：\n```, ：\n-)
+- [ ] Colons before code (search: ：\n```)
 
 **Impact**: 3+ violations → max score 7.0/10. For 9.0+: ZERO violations required.
 
@@ -68,8 +62,7 @@ Before submitting, scan entire article for:
 
 **QUANTITATIVE REQUIREMENTS:**
 - **MINIMUM (Publication blocker)**: 15+ です/ます sentence endings
-- **ACCEPTABLE RANGE**: 40-60% polite form distribution
-- **OPTIMAL TARGET (9.0+ tier)**: 45-60% polite form distribution
+- **TARGET (Quality threshold)**: 40-60% polite form distribution
 
 **Human baseline**: 15-70 です/ます endings. **0-14 endings = unpublishable.**
 
@@ -96,13 +89,10 @@ Before submitting, scan entire article for:
 **Common Mistakes:**
 ❌ "40-60% means only half my sentences need です/ます" → NO!
 ✅ "Main explanatory sentences use です/ます, which results in 40-60% overall"
-❌ "15+ minimum is enough" → NO! 15+ prevents failure, but 45-60% creates top-tier quality
+❌ "15+ minimum is enough" → NO! 15+ prevents failure, but 40-60% creates quality
 ❌ Writing everything casual (21% polite) → Creates "blog" tone, not "technical article"
 
-**Key Insights**:
-- 15+ is the safety net (publication blocker)
-- 40-45% is acceptable quality (7.5-8.5/10 range)
-- 45-60% is optimal for top-tier articles (9.0+/10)
+**Key Insight**: 15+ is the safety net. 40-60% is the target for human-quality articles.
 
 ### 3. Frontmatter Format
 
@@ -130,11 +120,10 @@ published: true
 ### 🚨 CRITICAL (Publication Blockers)
 - [ ] **ZERO sentence-ending contracted forms** (scan: てる。てた。てます。てない。てなかった。)
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
-- [ ] **ZERO colons in prose before code/lists** (scan: ：followed by ``` or -)
+- [ ] **ZERO colons before code** (scan: ：followed by ```)
 - [ ] Valid frontmatter with all fields
 - [ ] **MINIMUM: 15+ です/ます endings** (publication blocker if <15)
-- [ ] **ACCEPTABLE: 40-60% です/ます distribution** (count total sentences)
-- [ ] **OPTIMAL: 45-60% です/ます distribution** (for 9.0+ tier)
+- [ ] **TARGET: 40-60% です/ます distribution** (count total sentences, aim for 40-60% polite)
 - [ ] Main declarative sentences use です/ます (not all casual)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
@@ -334,8 +323,8 @@ Use `:::details 余談` for historical context, implementation deep dives
 
 1. **Sentence-ending contracted forms (-てる/-てた/-てます/-てない。)** (ZERO tolerance)
 2. **Paragraph-initial "で、"** (ZERO tolerance)
-3. **Colons in prose before code/lists (：)** (ZERO tolerance - expand scan to include lists)
-4. **Low です/ます distribution** (<15 = unpublishable; 15-39% = too casual; 40-44% = acceptable; TARGET: 45-60% optimal)
+3. **Colons before code (：)** (ZERO tolerance)
+4. **Low です/ます distribution** (<15 = unpublishable; 15-39% = too casual; TARGET: 40-60%)
 5. **No conceptual frameworks** (need 1-2 meta-insights that reframe understanding)
 6. **Too many sections** (8+ sections = encyclopedic; TARGET: 6-7 max)
 7. **Perfect code on first try** (show bugs → fixes)
@@ -346,6 +335,6 @@ Use `:::details 余談` for historical context, implementation deep dives
 
 ---
 
-**Last updated:** Iteration 6 (post-review refinement)
-**Version:** 1.8 (Colon expansion + Polite form tier refinement)
-**Target:** <350 lines | **Current:** ~350 lines
+**Last updated:** Iteration 5 (post-review refinement)
+**Version:** 1.7 (CONCEPTUAL FRAMEWORKS + Expanded forbidden patterns)
+**Target:** <350 lines | **Current:** ~325 lines

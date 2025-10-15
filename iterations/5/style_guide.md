@@ -8,7 +8,7 @@ This guide defines standards for generating Japanese technical articles indistin
 
 **Read this FIRST. These patterns appear in 100% of AI articles and 0% of human articles.**
 
-### ❌ FORBIDDEN PATTERN #1: Sentence-ending contracted forms
+### ❌ FORBIDDEN PATTERN #1: Sentence-ending -てる/-てた/-てます
 
 **NEVER end a sentence (marked with 。) with these contracted forms:**
 
@@ -16,15 +16,13 @@ This guide defines standards for generating Japanese technical articles indistin
 ❌ "使ってる。" → ✅ "使っています。" or "使います。"
 ❌ "構成されてる。" → ✅ "構成されています。"
 ❌ "思ってる。" → ✅ "思っています。" or "思います。"
-❌ "使ってない。" → ✅ "使っていません。" or "使いません。" ⚠️ **NEW**
-❌ "書いてなかった。" → ✅ "書いていませんでした。"
 
 **These are OK (not sentence-ending):**
 ✅ "使ってる場合は注意が必要です" (embedded before main verb)
 ✅ "書いてたコードはこちら" (relative clause)
 ✅ 「あ、これ使えるじゃん」 (quoted thought)
 
-**Rule**: If -てる/-てた/-てます/-てない/-てなかった comes RIGHT BEFORE 。or 、at sentence end → FORBIDDEN
+**Rule**: If -てる/-てた/-てます comes RIGHT BEFORE 。or 、at sentence end → FORBIDDEN
 
 ### ❌ FORBIDDEN PATTERN #2: Paragraph-initial "で、"
 
@@ -35,19 +33,13 @@ This guide defines standards for generating Japanese technical articles indistin
 
 **Use instead**: "そこで、" "さて、" "ところで、" "また、" "ちなみに、" or no connector
 
-### ❌ FORBIDDEN PATTERN #3: Colons (：) in prose flow
+### ❌ FORBIDDEN PATTERN #3: Colons (：) before code blocks
 
-**NEVER use full-width colon to introduce code or lists in flowing prose:**
+**NEVER use full-width colon to introduce code in prose:**
 
 ❌ "こんなコード書いてた：" → ✅ "こんなコード書いてた。"
-❌ "使いどころとしては：" → ✅ "使いどころとしては以下の通りです。"
 
-**Human pattern**: Use "すなわち、" or direct statements, never colons before lists
-
-**Colons OK only in**:
-- Section headers: "## 使い方：基本編"
-- Blockquote labels: "訳注："
-- NOT in flowing prose before code/lists
+**Colons OK only in**: Section headers, "訳注：" style notes, blockquotes
 
 ---
 
@@ -60,7 +52,7 @@ This guide defines standards for generating Japanese technical articles indistin
 Before submitting, scan entire article for:
 - [ ] Sentence-ending -てる/-てた/-てます (search: てる。てた。てます。)
 - [ ] Paragraph-initial "で、" (search: line starts with "で、")
-- [ ] Colons in prose before code/lists (search: ：\n```, ：\n-)
+- [ ] Colons before code (search: ：\n```)
 
 **Impact**: 3+ violations → max score 7.0/10. For 9.0+: ZERO violations required.
 
@@ -68,8 +60,7 @@ Before submitting, scan entire article for:
 
 **QUANTITATIVE REQUIREMENTS:**
 - **MINIMUM (Publication blocker)**: 15+ です/ます sentence endings
-- **ACCEPTABLE RANGE**: 40-60% polite form distribution
-- **OPTIMAL TARGET (9.0+ tier)**: 45-60% polite form distribution
+- **TARGET (Quality threshold)**: 40-60% polite form distribution
 
 **Human baseline**: 15-70 です/ます endings. **0-14 endings = unpublishable.**
 
@@ -96,13 +87,10 @@ Before submitting, scan entire article for:
 **Common Mistakes:**
 ❌ "40-60% means only half my sentences need です/ます" → NO!
 ✅ "Main explanatory sentences use です/ます, which results in 40-60% overall"
-❌ "15+ minimum is enough" → NO! 15+ prevents failure, but 45-60% creates top-tier quality
+❌ "15+ minimum is enough" → NO! 15+ prevents failure, but 40-60% creates quality
 ❌ Writing everything casual (21% polite) → Creates "blog" tone, not "technical article"
 
-**Key Insights**:
-- 15+ is the safety net (publication blocker)
-- 40-45% is acceptable quality (7.5-8.5/10 range)
-- 45-60% is optimal for top-tier articles (9.0+/10)
+**Key Insight**: 15+ is the safety net. 40-60% is the target for human-quality articles.
 
 ### 3. Frontmatter Format
 
@@ -128,13 +116,12 @@ published: true
 ## 📋 PRE-SUBMISSION CHECKLIST
 
 ### 🚨 CRITICAL (Publication Blockers)
-- [ ] **ZERO sentence-ending contracted forms** (scan: てる。てた。てます。てない。てなかった。)
+- [ ] **ZERO sentence-ending -てる/-てた/-てます** (scan: てる。てた。てます。)
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
-- [ ] **ZERO colons in prose before code/lists** (scan: ：followed by ``` or -)
+- [ ] **ZERO colons before code** (scan: ：followed by ```)
 - [ ] Valid frontmatter with all fields
 - [ ] **MINIMUM: 15+ です/ます endings** (publication blocker if <15)
-- [ ] **ACCEPTABLE: 40-60% です/ます distribution** (count total sentences)
-- [ ] **OPTIMAL: 45-60% です/ます distribution** (for 9.0+ tier)
+- [ ] **TARGET: 40-60% です/ます distribution** (count total sentences, aim for 40-60% polite)
 - [ ] Main declarative sentences use です/ます (not all casual)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
@@ -146,9 +133,7 @@ published: true
 - [ ] Messy conclusion (no numbered synthesis)
 
 ### ✅ BASIC QUALITY
-- [ ] **Maximum 6-7 H2 sections** (8+ = too granular/encyclopedic)
-- [ ] No subsection hierarchies (H3 pattern lists = textbook structure)
-- [ ] 1-2 conceptual frameworks (meta-insights that reframe understanding)
+- [ ] 6-7 H2 sections max
 - [ ] Technical accuracy verified
 - [ ] GitHub PR/issue references with links
 - [ ] Version information
@@ -196,32 +181,13 @@ published: true
 
 **Vary explanatory phrases:** Don't repeat "これで〜解決" "〜です。〜ます。" patterns
 
-### 5.3 Conceptual Frameworks ⭐ HIGH-VALUE AUTHENTICITY MARKER
+### 5.3 Conceptual Frameworks
 
-**Human articles (100% of samples) introduce 1-2 higher-level concepts that REFRAME understanding, not just explain mechanics.**
+Introduce higher-level concepts that REFRAME the discussion, not just explain HOW:
 
-✅ **Examples from human articles:**
-- "Promiseが一級市民ではなかった" (react-use-rfc.md)
-- "記憶領域を必要としないフック" (react-use-rfc.md)
-- "バンドルという工程それ自体が遅い" (native-esm-era.md)
+✅ Examples: "Promiseが一級市民ではなかった" "記憶領域を必要としないフック"
 
-**How to create conceptual frameworks:**
-1. Notice a pattern or constraint in the technology
-2. Name it using terms NOT in official documentation
-3. Use it to explain WHY things work the way they do (not just HOW)
-4. Reference it later as conceptual shorthand
-
-**What this is NOT:**
-❌ Explaining step-by-step how something works
-❌ Describing official API behavior
-❌ Teaching patterns from documentation
-
-**What this IS:**
-✅ Creating meta-insights that reframe understanding
-✅ Naming implicit constraints or design philosophies
-✅ Revealing "why" through higher-level concepts
-
-**Target:** 1-2 conceptual frameworks per article (0 = major AI tell)
+Create by: Notice pattern → name it (not in docs) → use it to explain why → reference later
 
 ### 5.4 Code Evolution & Ecosystem Context
 
@@ -248,22 +214,12 @@ Or: Show code → "あ、これバグあるな..." → fix (or "まあ、動く�
 ❌ Always resolved: "3日短縮" "2倍速くなった"
 ✅ Mixed: "やったことがある" (no result) "途中で別の方法に変えた" "まだ試してない"
 
-**Rich details OR vague, NOT medium:**
+**Rich details OR vague, not medium:**
+- ❌ Medium: "去年あるプロジェクトで3日消費"
+- ✅ Rich: "社内の古いExpress API（100個エンドポイント）をTS化する無茶振りで詰まって3日溶けた"
+- ✅ Vague: "前に似たことやった気がする" "たぶん2019年くらい？"
 
-**The spectrum:**
-- ❌ **Medium (AI tendency)**: "去年あるプロジェクトで3日消費" "3時間くらい悩んだ記憶がある"
-- ✅ **Rich (vivid)**: "社内の古いExpress API（100個エンドポイント）をTS化する無茶振りで詰まって3日溶けた"
-- ✅ **Vague (casual)**: "前に似たことやった気がする" "たぶん2019年くらい？"
-
-**Key insight:** Avoid "safe middle ground" where details are specific enough to be factual but not specific enough to be vivid. Go to extremes:
-- Rich: Name the project, count the files, describe the pain
-- Vague: Fuzzy memory, uncertain timeframe, no details
-
-❌ "最近のプロジェクトで使った" → medium, forgettable
-✅ "先月の配送管理システムリプレイスで50画面をTS化した" → rich, memorable
-✅ "前どこかで見た気がする" → vague, authentic uncertainty
-
-### 5.6 Non-Linear Structure & Section Count
+### 5.6 Non-Linear Structure
 
 **Don't tie everything together neatly:**
 - Jump topics: "そういえば〜" (no setup)
@@ -276,17 +232,7 @@ Or: Show code → "あ、これバグあるな..." → fix (or "まあ、動く�
 - Future intentions: "そのうち試したい"
 - Abandoned threads: Start → "本題から逸れるのでこの辺で"
 
-**CRITICAL: Section Structure**
-- **Maximum 6-7 H2 sections** (8+ = encyclopedic/textbook feel)
-- **Avoid subsection hierarchies** (H3s listing patterns = pedagogical structure)
-- **Dramatically variable length:**
-  - Favorite topic: 10-15 paragraphs (deep dive on interesting simple thing)
-  - Boring but necessary: 2-3 sentences + "この辺は省略"
-  - Medium topics: 4-6 paragraphs
-- **Let interest dictate depth, not completeness**
-
-❌ AI tell: 10+ sections with even treatment (3-7 para each)
-✅ Human: 6 sections with wild variation (15 para, 2 para, 8 para, 3 para, 12 para, 5 para)
+**Sections:** 6-7 H2 max, dramatically variable length (1-2 para vs 15+ para)
 
 ### 5.7 Vary Assertion Strength
 
@@ -332,20 +278,18 @@ Use `:::details 余談` for historical context, implementation deep dives
 
 ## ⚠️ TOP AI TELLS TO AVOID
 
-1. **Sentence-ending contracted forms (-てる/-てた/-てます/-てない。)** (ZERO tolerance)
+1. **Sentence-ending -てる/-てた/-てます。** (ZERO tolerance)
 2. **Paragraph-initial "で、"** (ZERO tolerance)
-3. **Colons in prose before code/lists (：)** (ZERO tolerance - expand scan to include lists)
-4. **Low です/ます distribution** (<15 = unpublishable; 15-39% = too casual; 40-44% = acceptable; TARGET: 45-60% optimal)
-5. **No conceptual frameworks** (need 1-2 meta-insights that reframe understanding)
-6. **Too many sections** (8+ sections = encyclopedic; TARGET: 6-7 max)
-7. **Perfect code on first try** (show bugs → fixes)
-8. **Complete resolution** (need 2-3 unresolved elements)
-9. **No ecosystem context** (add GitHub/community/temporal refs)
-10. **Uniform depth** (vary: 15 para on favorite, 2 sentences on boring)
-11. **Strategic imperfections** (cluster randomly, not evenly)
+3. **Colons before code (：)** (ZERO tolerance)
+4. **Low です/ます distribution** (<15 = unpublishable; 15-39% = too casual)
+5. **Perfect code on first try** (show bugs → fixes)
+6. **Complete resolution** (need 2-3 unresolved elements)
+7. **No ecosystem context** (add GitHub/community/temporal refs)
+8. **Uniform depth** (vary: 15 para on favorite, 2 sentences on boring)
+9. **Strategic imperfections** (cluster randomly, not evenly)
 
 ---
 
-**Last updated:** Iteration 6 (post-review refinement)
-**Version:** 1.8 (Colon expansion + Polite form tier refinement)
-**Target:** <350 lines | **Current:** ~350 lines
+**Last updated:** Iteration 4 (post-review refinement)
+**Version:** 1.6 (TARGET CLARIFICATION: Polite form distribution range)
+**Target:** <350 lines | **Current:** ~305 lines
