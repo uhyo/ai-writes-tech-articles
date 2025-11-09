@@ -97,6 +97,114 @@ When reviewing the AI article:
    - Are they in quotes/asides/footnotes (acceptable)?
    - Or in main text (likely violation)?
 
+### STEP 2.5: Author Voice Analysis (uhyo-specific patterns) - NEW SEASON 3
+
+**PURPOSE**: Verify that the article matches uhyo's distinctive writing voice, not just generic human quality.
+
+**PROCESS**:
+
+#### 1. Opening Formula Check
+- [ ] Does the article start with "皆さんこんにちは。"?
+- [ ] Is there temporal/situational context after the greeting?
+- [ ] Is the main technical term introduced with **bold**?
+- **Evidence**: Quote the opening paragraph
+- **Score**: Present (✓) / Partial (△) / Absent (✗)
+
+#### 2. Systematic Investigation Structure
+- [ ] Does the article progress from simple to complex examples?
+- [ ] Are there section headings that reflect progressive complexity?
+  - Examples: "## 簡単な例", "## 難しい型を使ってみる"
+- [ ] Does it use result documentation rhythm?
+  - Pattern: "...を実行すると、[結果]でした。"
+- **Evidence**: List section headings, quote 2-3 result documentation sentences
+- **Score**: Present (✓) / Partial (△) / Absent (✗)
+
+#### 3. Personal Project Integration
+- [ ] Are there references to "筆者's" own projects or experiences?
+- [ ] Is self-promotion present (e.g., "（宣伝）")?
+- **Evidence**: Quote any personal project references
+- **Score**: Present (✓) / Partial (△) / Absent (✗)
+- **Note**: Can be fictional projects; assess naturalness of integration
+
+#### 4. Meta-Commentary Presence
+- [ ] Are there personal reactions to findings?
+  - Examples: "個人的にはちょっとびっくりしました" "残念ながら"
+- [ ] Does the author comment on the investigation process?
+  - Examples: "ここから、だんだん難しくしていきます"
+- **Evidence**: Quote 2-3 instances of meta-commentary
+- **Count**: [N] instances found
+- **Score**: Frequent (3+) (✓) / Occasional (1-2) (△) / Absent (✗)
+
+#### 5. "筆者" Usage Contexts
+- [ ] Is "筆者" used 3-8 times?
+- [ ] Is it used in appropriate contexts?
+  - ✓ Personal project experiences
+  - ✓ Subjective reactions ("筆者はここの結果が...")
+  - ✓ Forward-looking statements ("筆者としては...")
+  - ✗ Generic statements ("筆者は、TypeScriptは便利だと思います")
+- **Evidence**: List all uses of "筆者" with context
+- **Count**: [N] uses
+- **Score**: Appropriate (3-8x) (✓) / Under-used (<3x) or Over-used (>8x) (△) / Absent or misused (✗)
+
+#### 6. Zenn Formatting Blocks
+- [ ] Are :::details or :::message blocks used where appropriate?
+- [ ] :::details for digressions/tangents?
+- [ ] :::message for caveats/warnings?
+- **Evidence**: Quote any formatting blocks used
+- **Score**: Present (✓) / Absent but acceptable (△) / Absent where needed (✗)
+- **Note**: Not all articles need these; assess appropriateness
+
+#### 7. Reflective Forward-Looking Conclusion
+- [ ] Does the conclusion have personal reflection?
+- [ ] Is there forward-looking uncertainty or open questions?
+- [ ] Does it avoid definitive closure?
+- **Evidence**: Quote the conclusion's final 2-3 sentences
+- **Score**: Present (✓) / Partial (△) / Absent (✗)
+
+#### 8. Strategic Bold Usage
+- [ ] Is bold used for key technical terms on first mention (3-5 instances)?
+- [ ] Is bold NOT over-used (check for >8 bold terms)?
+- **Evidence**: List all bold terms in the article
+- **Count**: [N] bold terms
+- **Score**: Strategic (3-5) (✓) / Under-used or slightly over (△) / Over-used (>8) (✗)
+
+#### 9. Code-Driven Narrative
+- [ ] Does the article present code → explain → test → document result?
+- [ ] Is there a good balance of code and prose (~40% code)?
+- [ ] Are there systematic variations of code examples?
+- **Evidence**: Describe the code-narrative rhythm
+- **Score**: Present (✓) / Partial (△) / Absent (✗)
+
+#### 10. Article Title Style
+- [ ] Does the title include specific versions or qualifiers?
+- [ ] Does it focus on exploration/process rather than tutorial?
+- **Evidence**: Quote the article title
+- **Score**: uhyo-style (✓) / Generic (△) / Tutorial-style (✗)
+
+---
+
+### Author Voice Score Calculation
+
+**Count the patterns**:
+- ✓ (Present): 1 point
+- △ (Partial): 0.5 points
+- ✗ (Absent): 0 points
+
+**Total Author Voice Score**: [X] / 10 points
+
+**Author Voice Cap**:
+- 9-10 points: No cap (can achieve 9.0+/10)
+- 7-8 points: Cap at 8.5/10
+- 5-6 points: Cap at 8.0/10
+- 3-4 points: Cap at 7.5/10
+- 0-2 points: Cap at 7.0/10
+
+**Critical missing patterns** (if absent, note impact):
+- Opening formula missing: Significant impact on author voice
+- Systematic investigation structure missing: Major authenticity gap
+- "筆者" usage inappropriate: Voice mismatch
+- Conclusion not reflective: Generic ending (not uhyo-like)
+
 ### STEP 3: Style Guide Compliance Check
 
 - Review each rule in the style guide's "CRITICAL REQUIREMENTS" section
@@ -121,7 +229,34 @@ Conduct your comprehensive review covering:
 1. **Identify specific issues** with concrete examples from the article
 2. **Compare with human articles** - what do human articles do well that this one doesn't?
 3. **Provide actionable recommendations** for improvement
-4. **Apply scoring**: Overall score MUST respect caps defined in style guide for violations
+4. **Apply scoring** (Season 3 two-layer system):
+
+**Scoring Process**:
+
+1. **Calculate Base Score** (from Season 2 criteria):
+   - Start at 10.0
+   - Apply deductions for violations
+   - Apply caps based on forbidden patterns, です/ます distribution, etc.
+   - Base Score = [X.X] / 10
+
+2. **Calculate Author Voice Cap** (NEW for Season 3):
+   - Based on STEP 2.5 author voice score (0-10 points)
+   - 9-10 points: No cap
+   - 7-8 points: Cap at 8.5/10
+   - 5-6 points: Cap at 8.0/10
+   - 3-4 points: Cap at 7.5/10
+   - 0-2 points: Cap at 7.0/10
+   - Author Voice Cap = [X.X] / 10
+
+3. **Apply Final Score**:
+   - Final Score = min(Base Score, Author Voice Cap)
+   - Example: Base 8.5, Author Voice 6 pts → Cap at 8.0 → Final 8.0
+   - Example: Base 9.0, Author Voice 9 pts → No cap → Final 9.0
+
+**Path to 9.0+**:
+- Requires: Base Score ≥ 9.0 AND Author Voice ≥ 7 points (no cap)
+- If limited by base score: Focus on Season 2 requirements
+- If limited by author voice: Focus on uhyo-specific patterns
 
 ## Output Format
 
@@ -186,6 +321,70 @@ For each discovered pattern:
 - Violations trigger maximum score cap: [if applicable]
 - Linguistic Authenticity: [X/10]
 
+---
+
+## Author Voice Analysis (Season 3)
+
+### Pattern Verification
+
+1. **Opening Formula**: ✓ / △ / ✗
+   - Evidence: [quote opening paragraph]
+   - Assessment: [Does it follow uhyo's "皆さんこんにちは。" + context pattern?]
+
+2. **Systematic Investigation**: ✓ / △ / ✗
+   - Evidence: [list section headings showing progression]
+   - Result documentation: [quote 2-3 examples of result documentation rhythm]
+   - Assessment: [Does it progress simple → complex with systematic testing?]
+
+3. **Personal Project Integration**: ✓ / △ / ✗
+   - Evidence: [quote references to "筆者's" projects]
+   - Assessment: [Natural integration? Self-promotion style?]
+
+4. **Meta-Commentary**: ✓ / △ / ✗
+   - Evidence: [quote instances of personal reactions/commentary]
+   - Count: [N] instances
+   - Assessment: [Are reactions natural and uhyo-like?]
+
+5. **"筆者" Usage**: ✓ / △ / ✗
+   - Evidence: [list all uses with context]
+   - Count: [N] uses
+   - Assessment: [Appropriate contexts? 3-8 times?]
+
+6. **Zenn Formatting**: ✓ / △ / ✗
+   - Evidence: [quote :::details or :::message blocks if present]
+   - Assessment: [Appropriate usage?]
+
+7. **Reflective Conclusion**: ✓ / △ / ✗
+   - Evidence: [quote final 2-3 sentences]
+   - Assessment: [Forward-looking? Avoids definitive closure?]
+
+8. **Strategic Bold**: ✓ / △ / ✗
+   - Evidence: [list all bold terms]
+   - Count: [N] bold terms
+   - Assessment: [3-5 strategic uses? Not over-used?]
+
+9. **Code-Driven Narrative**: ✓ / △ / ✗
+   - Evidence: [describe code → test → result rhythm]
+   - Assessment: [Good code-prose balance?]
+
+10. **Title Style**: ✓ / △ / ✗
+    - Evidence: "[article title]"
+    - Assessment: [Specific versions/qualifiers? Exploration-focused?]
+
+### Author Voice Score: [X] / 10 points
+
+**Calculation**: [N full points (✓) + N half points (△) = Total]
+
+**Author Voice Cap**: [X.X]/10 based on points:
+- [State which tier: No cap / 8.5 cap / 8.0 cap / 7.5 cap / 7.0 cap]
+
+**Missing Critical Patterns**: [List any critical patterns (opening, investigation, "筆者", conclusion) that are absent]
+
+**Overall Author Voice Assessment**:
+[Does this read like uhyo? What patterns are strongest? What needs improvement for author voice?]
+
+---
+
 ## Overall Assessment
 [Summary of the article's quality and main strengths/weaknesses]
 
@@ -227,12 +426,34 @@ For each discovered pattern:
 ## Quality Score
 
 Rate the article on how close it is to human-written quality:
+
+### Component Scores:
 - Technical Accuracy: [X/10]
 - Writing Style: [X/10]
 - Structure: [X/10]
 - Linguistic Authenticity: [X/10] (based on compliance analysis)
 - Authenticity: [X/10]
-- Overall: [X/10] (must respect style guide scoring caps)
+
+### Season 3 Two-Layer Scoring:
+
+**Base Score** (Season 2 criteria): [X.X]/10
+- Calculated from: Forbidden patterns compliance, です/ます distribution, human-quality markers
+- Deductions applied: [list any deductions]
+- Caps applied: [list any caps from Season 2 violations]
+
+**Author Voice Score**: [X]/10 points (from Author Voice Analysis section)
+
+**Author Voice Cap**: [X.X]/10
+- Based on author voice score tier
+
+**Final Overall Score**: [X.X]/10
+- Calculation: min(Base Score, Author Voice Cap) = min([base], [cap]) = [final]
+
+**Limiting Factor**: [Base Score / Author Voice Cap]
+- If Base Score: Focus improvements on Season 2 requirements
+- If Author Voice: Focus improvements on uhyo-specific patterns
+
+**Path to 9.0+**: [What needs to improve to reach 9.0+?]
 ```
 
 Save the review to the path specified by the orchestrator (typically `iterations/{N}/review.md`).

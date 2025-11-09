@@ -1,10 +1,17 @@
-# AI-Driven Technical Article Generation - Orchestrator Guide
+# AI-Driven Technical Article Generation - Orchestrator Guide (Season 3)
 
 This document guides Claude Code instances to orchestrate the iterative process of generating human-quality technical articles through continuous refinement.
 
 ## Project Goal
 
-Generate Japanese technical articles about TypeScript, JavaScript, React, and frontend technologies that are **indistinguishable from human-written articles**. The project uses an iterative feedback loop with three specialized sub-agents to progressively improve article quality.
+**Season 3 Goal**: Generate Japanese technical articles about TypeScript, JavaScript, React, and frontend technologies that match **uhyo's specific writing voice** (9.0+/10).
+
+The project uses an iterative feedback loop with three specialized sub-agents to progressively improve article quality. Season 3 builds on Season 2's human-quality foundation by adding author-specific voice patterns.
+
+**Evolution**:
+- Season 1: Basic technical articles
+- Season 2: Human-quality articles (8.0-8.2/10) - indistinguishable from humans
+- **Season 3**: uhyo-specific voice (9.0+/10 target) - indistinguishable from uhyo's articles
 
 ## Architecture
 
@@ -109,12 +116,23 @@ Task:
     You are the Writer Agent. Read your agent definition at .claude/agents/writer.md.
 
     Your task:
-    1. Read the style guide at style_guide.md
+    1. Read the style guide at style_guide.md (now includes uhyo-specific voice patterns)
     2. Generate a technical article on the following topic: "{TOPIC}"
     3. Save the article to iterations/{N}/article.md
 
+    **SEASON 3 FOCUS**: Replicate uhyo's distinctive voice and article structure patterns.
+    The article should not only be human-quality, but specifically match uhyo's writing style.
+
+    Key uhyo patterns to incorporate:
+    - Opening: "皆さんこんにちは。" + recent context + topic with bold
+    - Structure: Systematic investigation (simple → complex examples)
+    - Voice: Personal project references, meta-commentary on findings
+    - "筆者" usage: 3-8 times in appropriate contexts
+    - Formatting: Use :::details and :::message blocks for asides
+    - Conclusion: Reflective + forward-looking uncertainty
+
     Follow all guidelines in your agent definition and the style guide.
-    The article should be in Zenn format, written in Japanese, and indistinguishable from human-written articles.
+    The article should be in Zenn format, written in Japanese, and match uhyo's specific voice.
 ```
 
 ### Step 5: Invoke Reviewer Agent
@@ -128,28 +146,42 @@ Task:
 - prompt: |
     You are the Reviewer Agent. Read your agent definition at .claude/agents/reviewer.md.
 
-    **CRITICAL: Follow the enhanced review methodology in your agent definition**
+    **SEASON 3 FOCUS**: Verify author-specific voice patterns in addition to human quality.
 
     Your task:
-    1. **STEP 0 - Pattern Discovery**: Read AI article and 3-5 human articles, discover ANY systematic differences
-       - Look for punctuation, formatting, structural patterns not yet in style guide
-       - Quantify new patterns discovered and recommend style guide additions
-    2. **STEP 1 - Baseline**: Document human linguistic patterns from style guide
-       - **MANDATORY**: Count です/ます sentence endings in each sampled article (baseline: 15-70)
-    3. **STEP 2 - Analysis**: Perform quantitative pattern analysis with line numbers
-       - **MANDATORY FIRST CHECK**: Count です。and ます。in AI article (<10 = publication blocker)
-    4. **STEP 3 - Compliance**: Check ALL rules in style_guide.md (especially CRITICAL REQUIREMENTS)
-    5. **STEP 4 - Holistic Review**: Comprehensive review across all dimensions
-    6. **STEP 5 - Score**: Apply scoring rules from style_guide.md based on violations
-    7. Save the review to iterations/{N}/review.md
+    1. **STEP 0 - Pattern Discovery**: Look for any new uhyo-specific patterns not yet documented
+    2. **STEP 1 - Human Baseline**: Sample 3-5 human articles, document linguistic patterns
+       - MANDATORY: Count です/ます sentence endings (baseline: 15-70)
+    3. **STEP 2 - Quantitative Analysis**: Pattern analysis with line numbers
+       - MANDATORY FIRST CHECK: Count です。and ます。(<10 = blocker)
+    4. **STEP 2.5 - Author Voice Analysis (NEW)**: Verify uhyo-specific patterns
+       - Opening formula check ("皆さんこんにちは。" + context)
+       - Systematic investigation structure (simple → complex)
+       - Personal project integration
+       - Meta-commentary presence
+       - "筆者" usage contexts (3-8 times)
+       - Zenn formatting blocks (:::details, :::message)
+       - Reflective conclusion style
+       - Strategic bold usage (3-5 terms)
+       - Code-driven narrative
+       - Title style
+       - **Calculate author voice score (0-10 points)**
+       - **Apply author voice cap** (9-10 pts: no cap, 7-8: 8.5 cap, 5-6: 8.0 cap, etc.)
+    5. **STEP 3 - Compliance**: Check ALL rules in style_guide.md
+    6. **STEP 4 - Holistic Review**: Comprehensive review
+    7. **STEP 5 - Score**: Apply Season 3 two-layer scoring
+       - Base Score (Season 2 criteria)
+       - Author Voice Cap (from STEP 2.5)
+       - Final Score = min(Base Score, Author Voice Cap)
+    8. Save review to iterations/{N}/review.md
+
+    **CRITICAL**: The article must be both human-quality (Season 2) AND match uhyo's specific voice (Season 3).
 
     **IMPORTANT**:
-    - Pattern discovery phase may find 0-5 new patterns - either is valid
-    - Use the style guide as your reference for known patterns
-    - Provide quantitative evidence (counts, line numbers, percentages)
-    - Overall score must respect caps defined in style_guide.md for violations
     - Do NOT read or reference previous iterations. Each review must be independent.
-    - Be thorough and constructive. Identify specific differences from human-written articles.
+    - Provide quantitative evidence for all patterns
+    - Author voice score determines maximum achievable score
+    - Path to 9.0+ requires: Base ≥9.0 AND Author Voice ≥7 points
 ```
 
 ### Step 6: Invoke Style Guide Updater Agent
@@ -184,17 +216,26 @@ After the iteration completes:
 
 ### Step 8: Decide Whether to Continue
 
+**Season 3 Target**: Articles that match uhyo's specific voice (9.0+/10)
+
 **Continue iterating if:**
-- Overall quality score < 8.5/10
-- Significant gaps remain between AI and human articles
-- Reviews identify systematic issues
-- Fewer than 10 iterations have been completed
+- Overall quality score < 9.0/10
+- Author voice score < 7 points (less than 70% of uhyo patterns present)
+- Significant gaps remain between AI articles and uhyo's specific voice
+- Reviews identify missing uhyo-specific patterns
+- Fewer than 12 iterations have been completed
 
 **Stop iterating if:**
-- Overall quality score ≥ 8.5/10 for 2+ consecutive iterations
-- Reviews indicate articles are indistinguishable from human work
+- Overall quality score ≥ 9.0/10 for 2+ consecutive iterations
+- Author voice score ≥ 8 points (80%+ of uhyo patterns present)
+- Reviews indicate articles match uhyo's distinctive writing style
 - No meaningful improvements in recent iterations
-- 10+ iterations completed with diminishing returns
+- 12+ iterations completed with diminishing returns
+
+**Season 3 Requirements for Success**:
+- Base Score (Season 2): ≥ 9.0/10 (human-quality foundation)
+- Author Voice: ≥ 7 points (no cap applied)
+- Final Score: ≥ 9.0/10 (both layers passing)
 
 ### Step 9: Iterate or Report
 
@@ -288,19 +329,33 @@ Iteration 9:
 
 ## Success Criteria
 
-The iterative process has succeeded when generated articles:
+**Season 3 Success**: The iterative process has succeeded when generated articles:
 
-1. Score ≥ 8.5/10 overall for multiple consecutive iterations
-2. Receive reviewer feedback indicating human-like quality
-3. Show mastery of:
-   - Natural Japanese technical writing
+1. **Score ≥ 9.0/10 overall** for 2+ consecutive iterations
+2. **Author Voice Score ≥ 8 points** (80%+ of uhyo-specific patterns present)
+3. **Receive reviewer feedback** indicating articles match uhyo's distinctive writing style
+4. **Show mastery of**:
+   - Natural Japanese technical writing (Season 2 baseline)
    - Engaging, conversational tone
    - Accurate technical content
    - Appropriate structure and flow
    - Authentic voice without AI tells
+   - **uhyo-specific patterns**:
+     - Opening formula ("皆さんこんにちは。" + context)
+     - Systematic investigation structure
+     - Personal project integration
+     - Meta-commentary on findings
+     - Appropriate "筆者" usage (3-8x)
+     - Reflective forward-looking conclusions
+     - Zenn formatting blocks where appropriate
+     - Strategic bold usage
+     - Code-driven narrative
+     - uhyo-style titles
 
 ## Getting Started
 
-To begin the iterative process, simply start with Step 1. The orchestrator (you) will manage all coordination between agents and track progress toward human-quality article generation.
+To begin Season 3, start with Step 1. The orchestrator (you) will manage all coordination between agents and track progress toward **uhyo-voice article generation**.
 
-Good luck! The goal is ambitious but achievable through systematic iteration and refinement.
+**Season 3 Focus**: Each article should not only be human-quality (Season 2 baseline maintained), but should specifically match uhyo's distinctive writing patterns and voice.
+
+Good luck! The goal is ambitious but achievable through systematic iteration and refinement. Season 2 achieved 8.0-8.2/10. Season 3 aims for 9.0+/10 by adding author-specific voice.
