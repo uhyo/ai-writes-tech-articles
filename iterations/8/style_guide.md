@@ -39,23 +39,15 @@ This guide defines standards for generating Japanese technical articles indistin
 
 **NEVER use full-width colon to introduce code or lists in flowing prose:**
 
-**MOST COMMON VIOLATION - Standalone list labels:**
-❌ "動いたもの：\n- パッケージA" → ✅ "## 動いたもの\n- パッケージA" (section header)
-❌ "動いたもの：\n- パッケージA" → ✅ "動いたものは以下の通りです。\n- パッケージA" (full sentence)
-❌ "注意点：\n- ポイント1" → ✅ "注意点は以下の通りです。\n- ポイント1"
-❌ "結果：\n```typescript" → ✅ "結果は以下の通りです。\n```typescript"
-
-**Other violations:**
 ❌ "こんなコード書いてた：" → ✅ "こんなコード書いてた。"
 ❌ "使いどころとしては：" → ✅ "使いどころとしては以下の通りです。"
 
-**Human pattern**: Use section headers (##), full sentences, or direct statements. NEVER standalone labels with colons.
+**Human pattern**: Use "すなわち、" or direct statements, never colons before lists
 
 **Colons OK only in**:
 - Section headers: "## 使い方：基本編"
 - Blockquote labels: "訳注："
 - NOT in flowing prose before code/lists
-- NOT as standalone labels introducing content
 
 ---
 
@@ -143,9 +135,7 @@ published: true
 - [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; <180 risks です/ます insufficiency)
 - [ ] **ZERO sentence-ending contracted forms** (scan: てる。てた。てます。てない。てなかった。)
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
-- [ ] **ZERO colons in prose before code/lists** (scan entire article for ：at line end; check next line is - or ```)
-  * ESPECIALLY check for standalone labels: "動いたもの：" "注意点：" "結果："
-  * These must be section headers (## Label) or full sentences (Labelは以下の通りです。)
+- [ ] **ZERO colons in prose before code/lists** (scan: ：followed by ``` or -)
 - [ ] Valid frontmatter with all fields
 - [ ] **40+ です/ます endings ABSOLUTE** (count です。+ ます。manually; verify twice; <40 = max 8.0/10 regardless of %)
 - [ ] **Target: 50-70 endings for 9.0+** (long articles >250 lines need proportionally more)
@@ -416,6 +406,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 8 (Enhanced colon violation detection)
-**Version:** 2.8 (Season 3: Colon pattern clarification)
-**Line count:** ~420 lines (enhanced forbidden pattern #3)
+**Last updated:** Iteration 7 (Validated optimal formula with 9.5/10 achievement)
+**Version:** 2.7 (Season 3: Gold standard documented)
+**Line count:** ~410 lines (added Iteration 7 gold standard)
