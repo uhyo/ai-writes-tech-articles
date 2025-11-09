@@ -66,43 +66,30 @@ Before submitting, scan entire article for:
 
 ### 2. Polite Form Distribution (CRITICAL)
 
-**QUANTITATIVE REQUIREMENTS:**
-- **MINIMUM (Publication blocker)**: 15+ です/ます sentence endings
-- **ACCEPTABLE RANGE**: 40-60% polite form distribution
-- **OPTIMAL TARGET (9.0+ tier)**: 45-60% polite form distribution
+**TIERED REQUIREMENTS:**
+- **0-14 です/ます endings**: ❌ UNPUBLISHABLE (publication blocker)
+- **15-39%**: ❌ Too casual, "blog" tone not "technical article"
+- **40-44%**: ⚠️ Acceptable minimum (caps at 8.0-8.5/10)
+- **45-60%**: ✅ OPTIMAL TARGET (required for 9.0+/10)
 
-**Human baseline**: 15-70 です/ます endings. **0-14 endings = unpublishable.**
+**Human baseline**: 15-70 です/ます endings per article.
 
 **The Rule:**
 - **Main declarative sentences**: Use です/ます (polite)
 - **Subordinate clauses, embedded statements, lists**: Use casual forms
+- **Result**: Main sentences are MOSTLY polite, creating 45-60% overall distribution
 
-**Concrete Example (Sentence-by-Sentence):**
+**Example:**
 
 ```
-皆さんこんにちは。TypeScript 5.0では新機能が追加されました。  ← です/ます (main sentence)
-この機能、最初見たとき「便利じゃん」と思った。                ← casual (personal reaction)
-具体的には、型パラメータに const を付けられる機能。         ← casual noun (definition)
-これにより推論が改善されます。                               ← です/ます (main explanation)
-従来は as const を書く必要があったのが不要になる。          ← casual (subordinate fact)
-つまり、ライブラリの設計が変わるレベルの改善です。           ← です/ます (main conclusion)
+TypeScript 5.0では新機能が追加されました。  ← です/ます (main)
+この機能、最初見たとき「便利じゃん」と思った。  ← casual (reaction)
+これにより推論が改善されます。              ← です/ます (main)
+従来は書く必要があったのが不要になる。      ← casual (subordinate)
 ```
 
-**Why 40-60% target?**
-- Main sentences: ~50% of text → use です/ます → 50% polite
-- Subordinate elements: ~50% of text → use casual → 0% polite
-- **Result: ~40-60% overall polite**, but main sentences are MOSTLY polite
-
-**Common Mistakes:**
-❌ "40-60% means only half my sentences need です/ます" → NO!
-✅ "Main explanatory sentences use です/ます, which results in 40-60% overall"
-❌ "15+ minimum is enough" → NO! 15+ prevents failure, but 45-60% creates top-tier quality
-❌ Writing everything casual (21% polite) → Creates "blog" tone, not "technical article"
-
-**Key Insights**:
-- 15+ is the safety net (publication blocker)
-- 40-45% is acceptable quality (7.5-8.5/10 range)
-- 45-60% is optimal for top-tier articles (9.0+/10)
+**Common Mistake:**
+❌ "40% is enough" → NO! 40-44% caps score at 8.5. For 9.0+, aim 45-60%.
 
 ### 3. Frontmatter Format
 
@@ -132,28 +119,26 @@ published: true
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons in prose before code/lists** (scan: ：followed by ``` or -)
 - [ ] Valid frontmatter with all fields
-- [ ] **MINIMUM: 15+ です/ます endings** (publication blocker if <15)
-- [ ] **ACCEPTABLE: 40-60% です/ます distribution** (count total sentences)
-- [ ] **OPTIMAL: 45-60% です/ます distribution** (for 9.0+ tier)
-- [ ] Main declarative sentences use です/ます (not all casual)
+- [ ] **15+ です/ます endings minimum** (publication blocker if <15)
+- [ ] **45-60% です/ます distribution** (required for 9.0+; 40-44% caps at 8.5)
+- [ ] Main declarative sentences use です/ます
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: bug → fix OR V1 → V2 iterations
 - [ ] 2-3 unresolved elements: speculation, "まだ試してない", abandoned tangents
-- [ ] Ecosystem context: GitHub refs OR community mentions OR temporal context
+- [ ] **Ecosystem context: 1-2 GitHub refs OR community mentions** (required for 9.0+)
 - [ ] Personal anecdotes (rich OR vague, not medium detail)
 - [ ] Dramatically uneven depth (15 para on favorite topic, 2 sentences on boring one)
 - [ ] Messy conclusion (no numbered synthesis)
 
 ### ✅ BASIC QUALITY
-- [ ] **Maximum 6-7 H2 sections** (8+ = too granular/encyclopedic)
-- [ ] No subsection hierarchies (H3 pattern lists = textbook structure)
+- [ ] **Maximum 6-7 H2 sections** (8+ = encyclopedic, caps at 8.5)
+- [ ] **3-5 strategic bold terms** (key concepts on first mention; <3 = caps at 8.5)
 - [ ] 1-2 conceptual frameworks (meta-insights that reframe understanding)
 - [ ] Technical accuracy verified
-- [ ] GitHub PR/issue references with links
 - [ ] Version information
 - [ ] Conversational, not textbook
-- [ ] "筆者" used appropriately (see Author Voice section for uhyo-specific usage: 3-8x)
+- [ ] "筆者" used appropriately (3-8x for uhyo voice)
 - [ ] NO pedagogical scaffolding ("では〜見ていきましょう")
 
 ---
@@ -178,14 +163,9 @@ published: true
 
 **Structure**: Progressive complexity (simple → complex examples) + Result documentation
 
-**Flow**: "## 簡単な例" → "## [Variation]" → "## 難しい型を使ってみる" → "### [Sub-cases]"
+**Flow**: "## 簡単な例" → "## [Variation]" → "## 難しい型を使ってみる"
 
-**Result documentation rhythm**:
-- "このコードに対して...を実行すると、[結果]でした。"
-- "なんとBiomeはこの例に対してlintエラーを検知しました。"
-- "答えは、残念ながら...は検知されませんでした。"
-
-**Transitions**: "では、ここからは..." "次は..." "ちなみに..."
+**Result rhythm**: "...を実行すると、[結果]でした。" "なんと...を検知しました。" "残念ながら...は検知されませんでした。"
 
 ### Pattern 3: "筆者" Usage (3-8 times) ⭐ CRITICAL
 
@@ -199,91 +179,48 @@ published: true
 
 **Updated from Season 2**: 3-8x (not 3-5x) — uhyo uses it more frequently
 
-### Pattern 4: Meta-Commentary on Findings
+### Pattern 4: Meta-Commentary & Personal Projects
 
-**Embed personal reactions throughout**:
-- Surprise: "個人的にはちょっとびっくりしました"
-- Disappointment: "残念ながら、この場合は..."
-- Uncertainty: "実装は詳しく知らないのですが" "推測ですが"
-- Process: "ここからが本題です" "だんだん難しくしていきます"
+**Reactions**: "個人的にはちょっとびっくりしました" "残念ながら..." "推測ですが" "ここからが本題です" (2-4 per article)
 
-**Frequency**: 2-4 instances per article, naturally integrated
+**Projects**: "筆者は[project]の開発中に..." "（宣伝）" after promoting own work (1-2 per article)
 
-### Pattern 5: Personal Project Integration
-
-**Reference own work** (can be fictional for AI):
-- "筆者は[project]の開発中にこの問題に直面しました。"
-- "最終的に筆者が開発した`library`を宣伝します。"
-- "（宣伝）" after promoting own work
-
-**Frequency**: 1-2 references per article
-
-### Pattern 6: Reflective Forward-Looking Conclusion ⭐ CRITICAL
+### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
 **Structure**: Summary + Personal reflection + Uncertainty/open questions
 
-**Examples**:
-✅ "筆者としては、これからどうなるかまた見守っていきたいと思います。"
-✅ "まだ全部のプロジェクトで試したわけじゃないけど、個人的には気に入っています。そのうち、もっと複雑なケースでも試してみたいですね。"
+Example: "筆者としては、これからどうなるかまた見守っていきたいと思います。"
 
-**NOT**: Definitive closure ("以上、解説しました。ぜひ活用してください。" ← too tutorial-like)
+**NOT**: Definitive closure ("以上、解説しました。" ← tutorial-like)
 
-### Pattern 7: Zenn Formatting Blocks
+### Pattern 6: Zenn Formatting (0-2 blocks)
 
-**Use :::details for digressions**:
-```
-:::details 補足的な話
-[Tangential content]
-:::
-```
+`:::details 補足的な話` for digressions, `:::message` for version caveats
 
-**Use :::message for caveats**:
-```
-:::message
-この記事では、バージョン X.X を対象としています。
-:::
-```
+### Pattern 7: Code-Driven Narrative
 
-**Frequency**: 0-2 blocks per article (not every article needs them)
+**Rhythm**: Code → Explain → Test → Result → Reaction
 
-### Pattern 8: Code-Driven Narrative
+### Pattern 8: Strategic Bold (3-5 terms) ⚠️ ESSENTIAL
 
-**Rhythm**: Code → Explain → Test → Document result → Why → Reaction
+**Bold key technical terms on first introduction ONLY.** 3-5 per article.
 
-**Example**:
-```typescript
-// Code
-```
-"このコードでは、...しています。" [Explain]
-"これに対して...を実行すると..." [Test]
-"...という結果になりました。" [Result]
-"個人的にはちょっとびっくりしました。" [Reaction]
+**<3 terms = caps score at 8.5/10** (weak uhyo voice marker)
 
-### Pattern 9: Strategic Bold (3-5 terms)
+### Pattern 9: Title Style
 
-**Bold for**:
-- Key technical terms on first introduction
-- Important concepts being defined
+Include specific versions: "Biome v2の型推論を**試して限界を知る**"
 
-**NOT over-used**: Only 3-5 bold terms per article
-
-### Pattern 10: Title Style
-
-**Include specific versions or qualifiers**:
-✅ "Biome v2の型推論を**試して限界を知る**"
-✅ "AsyncLocalStorageとusingで**快適に**構造化ロギングしたい**話**"
-
-**Avoid**: Generic ("〜について") or tutorial-style ("〜の完全ガイド")
+Avoid: Generic ("〜について") or tutorial ("〜の完全ガイド")
 
 ---
 
-**Author Voice Scoring** (NEW Season 3):
-- 9-10 patterns: No cap (can achieve 9.0+/10)
-- 7-8 patterns: Cap at 8.5/10
-- 5-6 patterns: Cap at 8.0/10
-- 3-4 patterns: Cap at 7.5/10
+**Author Voice Scoring**:
+- 8-9 patterns: No cap (can achieve 9.0+/10)
+- 6-7 patterns: Cap at 8.5/10
+- 4-5 patterns: Cap at 8.0/10
 
-**Integration**: These patterns layer ON TOP of Season 2 human-quality requirements. Both must pass for 9.0+ scores.
+**Integration**: These patterns layer ON TOP of base human-quality requirements. Both must pass for 9.0+ scores.
 
 ---
 
@@ -291,190 +228,98 @@ published: true
 
 ### 5.1 Write from THINKING, Not FORMULA
 
-**DON'T mechanically apply guidelines.** Guidelines describe human writing outcomes, not inputs.
+**DON'T mechanically apply guidelines.** Think deeply → natural imperfections emerge.
 
-❌ Mechanical: "I need a bug → fix section" → insert one
-✅ Organic: Think deeply about concept → realize it evolved through problems → show that evolution
+**Imperfections cluster randomly**: Some sections perfect, others have 3-4 messy moments. Example: Code → "あ、バグある" → fix → "いや待って、これも違う" → actual fix
 
-**Imperfections must cluster randomly:**
-- NOT one per section evenly spaced
-- Some sections perfect, others have 3-4 messy moments
-- Incomplete threads: start tangent, never return OR return much later
-- Example: Code → "あ、バグある" → fix → "いや待って、これも違う" → actual fix
+### 5.2 Conversational Tone & Depth Variation
 
-### 5.1a Opening Hooks (Optional Enhancement)
-
-**Consider starting with context-setting before jumping into personal anecdotes:**
-
-✅ Temporal markers: "TypeScript 5.0では..." "最近の〜界隈では..."
-✅ Situational context: "皆さんこんにちは。今回は〜"
-✅ Direct anecdote: "最初見たとき..." (current approach, also acceptable)
-
-**Note**: This is a minor stylistic variation. Direct anecdotes work well. Context-setting can add variety across articles.
-
-### 5.2 Conversational Tone
-
-- "筆者" sparingly: 0-5x per article (1-3x most common, 0x acceptable)
-- NO pedagogical scaffolding: Avoid "では〜見ていきましょう"
+- NO pedagogical scaffolding ("では〜見ていきましょう")
 - Peer conversation, not teacher-to-student
+- **Vary depth by INTEREST**: Interesting simple concept = 8 para; Boring complex = 2 sentences
 
-**Vary depth by INTEREST, not pedagogy:**
-- Interesting simple concept: 8 paragraphs
-- Boring complex concept: 2 sentences, "この辺は省略"
-- Fun tangent: 5 paragraphs even if irrelevant
+### 5.3 Conceptual Frameworks ⭐ HIGH-VALUE
 
-**Vary explanatory phrases:** Don't repeat "これで〜解決" "〜です。〜ます。" patterns
+**1-2 higher-level concepts that REFRAME understanding** (not just explain mechanics)
 
-### 5.3 Conceptual Frameworks ⭐ HIGH-VALUE AUTHENTICITY MARKER
+Examples: "Promiseが一級市民ではなかった" "バンドルという工程それ自体が遅い"
 
-**Human articles (100% of samples) introduce 1-2 higher-level concepts that REFRAME understanding, not just explain mechanics.**
+**How**: Name implicit constraints using terms NOT in official docs. Explain WHY, not just HOW.
 
-✅ **Examples from human articles:**
-- "Promiseが一級市民ではなかった" (react-use-rfc.md)
-- "記憶領域を必要としないフック" (react-use-rfc.md)
-- "バンドルという工程それ自体が遅い" (native-esm-era.md)
+**0 frameworks = major AI tell**
 
-**How to create conceptual frameworks:**
-1. Notice a pattern or constraint in the technology
-2. Name it using terms NOT in official documentation
-3. Use it to explain WHY things work the way they do (not just HOW)
-4. Reference it later as conceptual shorthand
+### 5.4 Code Evolution & Ecosystem Context ⚠️ ESSENTIAL
 
-**What this is NOT:**
-❌ Explaining step-by-step how something works
-❌ Describing official API behavior
-❌ Teaching patterns from documentation
+**Show iteration**: Code → "あ、これundefinedで落ちる" → fix (or "まあ、動くので放置")
 
-**What this IS:**
-✅ Creating meta-insights that reframe understanding
-✅ Naming implicit constraints or design philosophies
-✅ Revealing "why" through higher-level concepts
-
-**Target:** 1-2 conceptual frameworks per article (0 = major AI tell)
-
-### 5.4 Code Evolution & Ecosystem Context
-
-**Show iteration (perfect code = #1 AI tell):**
-
-```typescript
-// 最初これ書いた
-const result = data.map(x => x.value);
-// あ、これundefinedで落ちる
-const result = data.map(x => x?.value ?? 0);
-```
-
-Or: Show code → "あ、これバグあるな..." → fix (or "まあ、動くので放置")
-
-**Add ecosystem context (1-2 of):**
+**Ecosystem context (1-2 required for 9.0+)**:
 - GitHub: "(#2851とか)" buried casually
-- Community: "Twitterで〜を見た" "zodみたいなライブラリ"
-- Temporal: "TypeScript 5.5で入るかも" "昔は〜だったけど"
+- Community: "Twitterで見た" "zodみたいなライブラリ"
+- Temporal: "TypeScript 5.5で入るかも"
 
 ### 5.5 Authentic Anecdotes
 
-**Not all stories need happy endings:**
+**Not all stories need happy endings**: "やったことがある" (no result) "まだ試してない"
 
-❌ Always resolved: "3日短縮" "2倍速くなった"
-✅ Mixed: "やったことがある" (no result) "途中で別の方法に変えた" "まだ試してない"
+**Rich OR vague, NOT medium**:
+- ❌ Medium: "去年あるプロジェクトで3日消費" (safe middle ground)
+- ✅ Rich: "社内の古いExpress API（100個エンドポイント）をTS化する無茶振りで詰まって3日溶けた"
+- ✅ Vague: "前に似たことやった気がする" "たぶん2019年くらい？"
 
-**Rich details OR vague, NOT medium:**
+### 5.6 Non-Linear Structure & Section Count ⚠️ ESSENTIAL
 
-**The spectrum:**
-- ❌ **Medium (AI tendency)**: "去年あるプロジェクトで3日消費" "3時間くらい悩んだ記憶がある"
-- ✅ **Rich (vivid)**: "社内の古いExpress API（100個エンドポイント）をTS化する無茶振りで詰まって3日溶けた"
-- ✅ **Vague (casual)**: "前に似たことやった気がする" "たぶん2019年くらい？"
+**Don't tie everything neatly**: "そういえば〜" (no setup), "余談だが〜" (never return), "まだ試してないけど"
 
-**Key insight:** Avoid "safe middle ground" where details are specific enough to be factual but not specific enough to be vivid. Go to extremes:
-- Rich: Name the project, count the files, describe the pain
-- Vague: Fuzzy memory, uncertain timeframe, no details
+**MANDATORY: 2-3 unresolved elements** (speculation, abandoned threads, future intentions)
 
-❌ "最近のプロジェクトで使った" → medium, forgettable
-✅ "先月の配送管理システムリプレイスで50画面をTS化した" → rich, memorable
-✅ "前どこかで見た気がする" → vague, authentic uncertainty
+**CRITICAL: Maximum 6-7 H2 sections** (8+ caps at 8.5, encyclopedic feel)
+- Avoid subsection hierarchies (H3 lists = textbook)
+- **Wild depth variation**: Favorite = 15 para, Boring = 2 sentences
 
-### 5.6 Non-Linear Structure & Section Count
-
-**Don't tie everything together neatly:**
-- Jump topics: "そういえば〜" (no setup)
-- Digress: "余談だが〜" (sometimes never return)
-- Leave questions open: "これは別の機会に" "まだ試してないけど"
-- Mid-article: "ああ、さっき言い忘れたけど〜"
-
-**MANDATORY: 2-3 unresolved elements:**
-- Speculation without confirmation: "うまくいくかも、確認してない"
-- Future intentions: "そのうち試したい"
-- Abandoned threads: Start → "本題から逸れるのでこの辺で"
-
-**CRITICAL: Section Structure**
-- **Maximum 6-7 H2 sections** (8+ = encyclopedic/textbook feel)
-- **Avoid subsection hierarchies** (H3s listing patterns = pedagogical structure)
-- **Dramatically variable length:**
-  - Favorite topic: 10-15 paragraphs (deep dive on interesting simple thing)
-  - Boring but necessary: 2-3 sentences + "この辺は省略"
-  - Medium topics: 4-6 paragraphs
-- **Let interest dictate depth, not completeness**
-
-❌ AI tell: 10+ sections with even treatment (3-7 para each)
-✅ Human: 6 sections with wild variation (15 para, 2 para, 8 para, 3 para, 12 para, 5 para)
+❌ AI tell: 10+ sections, even treatment
+✅ Human: 6 sections, wild variation (15 para, 2 para, 8 para, 3 para, 12 para, 5 para)
 
 ### 5.7 Vary Assertion Strength
 
-Uniform confidence = AI tell. Use full spectrum:
-- Definitive: "useRefは再レンダリングを引き起こさない"
-- Strong: "これは間違いです"
-- Speculation: "〜かもしれない"
-- Ignorance: "実装見てないので推測ですが"
+Definitive: "useRefは再レンダリングを引き起こさない" / Speculation: "〜かもしれない" / Ignorance: "実装見てないので推測ですが"
 
-❌ Don't: "個人的には〜と思います" everywhere
+### 5.8 Conclusions
 
-### 5.8 Conclusions (まとめ)
-
-**Avoid neat synthesis:**
-
-❌ Don't: "結局、核心は3つ：1. 〜" "今回は〜を見てきました"
-✅ Do: End abruptly, raise questions, admit limitations, forward speculation
-
-Real conclusions are messy and incomplete.
+❌ Neat synthesis: "結局、核心は3つ：1. 〜"
+✅ Messy: End abruptly, raise questions, admit limitations
 
 ---
 
 ## 🟢 POLISH: Final Refinements
 
-### 7. Micro-Imperfections
+### Micro-Imperfections
 
-**Random distribution, not strategic:**
-- Some sections have 3-4 imperfections, others zero
-- Contractions cluster: "んだけど", "んで" in bursts
-- Self-corrections: "〜というか、正確には〜あ、待って、〜"
+**Random distribution**: Some sections have 3-4 imperfections, others zero. Contractions cluster in bursts.
 
 ❌ AI tell: One imperfection per section, evenly spaced
 
-### 8. Footnotes & Side Content
+### Footnotes & Side Content
 
-Use footnotes for technical asides that would interrupt flow:
-- Main: "この機能は便利です[^1]。"
-- Footnote: "[^1]: ちなみにこの機能は〜"
-
-Use `:::details 余談` for historical context, implementation deep dives
+Footnotes for technical asides: "この機能は便利です[^1]。" / `:::details 余談` for digressions
 
 ---
 
 ## ⚠️ TOP AI TELLS TO AVOID
 
-1. **Sentence-ending contracted forms (-てる/-てた/-てます/-てない。)** (ZERO tolerance)
-2. **Paragraph-initial "で、"** (ZERO tolerance)
-3. **Colons in prose before code/lists (：)** (ZERO tolerance - expand scan to include lists)
-4. **Low です/ます distribution** (<15 = unpublishable; 15-39% = too casual; 40-44% = acceptable; TARGET: 45-60% optimal)
-5. **No conceptual frameworks** (need 1-2 meta-insights that reframe understanding)
-6. **Too many sections** (8+ sections = encyclopedic; TARGET: 6-7 max)
-7. **Perfect code on first try** (show bugs → fixes)
-8. **Complete resolution** (need 2-3 unresolved elements)
-9. **No ecosystem context** (add GitHub/community/temporal refs)
-10. **Uniform depth** (vary: 15 para on favorite, 2 sentences on boring)
-11. **Strategic imperfections** (cluster randomly, not evenly)
+**CRITICAL (0 tolerance)**: Forbidden patterns (てる。、で、、colons in prose)
+
+**BASE SCORE CAPS**:
+- Low です/ます (40-44% caps at 8.5; <40% unpublishable)
+- 8+ sections (caps at 8.5)
+- <3 bold terms (caps at 8.5)
+- No ecosystem context (caps below 9.0)
+- No conceptual frameworks (major AI tell)
+- Perfect code (show bugs → fixes)
+- Complete resolution (need 2-3 unresolved elements)
+- Uniform depth (vary wildly by interest)
 
 ---
 
-**Last updated:** Season 3 Start (Author voice patterns added)
-**Version:** 2.0 (Season 3: uhyo-specific voice patterns)
-**Target:** <400 lines (Season 3) | **Current:** ~480 lines
+**Last updated:** Iteration 1 (Consolidated and clarified scoring caps)
+**Version:** 2.1 (Season 3: Consolidated from 481→~310 lines)
+**Line count:** ~310 lines (target: <350)
