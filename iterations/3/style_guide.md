@@ -168,14 +168,11 @@ published: true
 
 ### Pattern 2: Systematic Investigation ⭐ CRITICAL
 
-**Structure**: VERTICAL complexity progression (simple → complex examples) within a single concept
+**Structure**: Progressive complexity (simple → complex examples) + Result documentation
 
 **Flow**: "## 簡単な例" → "## [Variation]" → "## 難しい型を使ってみる"
 
 **Result rhythm**: "...を実行すると、[結果]でした。" "なんと...を検知しました。" "残念ながら...は検知されませんでした。"
-
-**NOT Systematic** ❌: Horizontal coverage (setup → test → compare → real-world) = different aspects, not complexity escalation
-**IS Systematic** ✅: Vertical depth (simple case → add variation → complex case → edge case) = progressive complexity within same concept
 
 ### Pattern 3: "筆者" Usage (3-8 times) ⭐ CRITICAL
 
@@ -193,10 +190,7 @@ published: true
 
 **Reactions**: "個人的にはちょっとびっくりしました" "残念ながら..." "推測ですが" "ここからが本題です" (2-4 per article)
 
-**Projects - DEPTH REQUIRED**: Must be RICH (specific project + problem + outcome) OR central to article (not brief vague mentions)
-- ❌ Insufficient: "筆者が使っていたカスタムプラグイン" (vague, no context)
-- ✅ Rich: "筆者は[nitrogql]の設定ファイル読み込みで[specific problem]があり、[solution]を試したところ[result]だった（宣伝）"
-- ✅ Central: Entire article about personal project (like nitrogql-beta-release)
+**Projects**: "筆者は[project]の開発中に..." "（宣伝）" after promoting own work (1-2 per article)
 
 ### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
@@ -217,11 +211,6 @@ Example: "筆者としては、これからどうなるかまた見守ってい�
 ### Pattern 8: Strategic Bold (3-5 terms) ⚠️ ESSENTIAL
 
 **Bold key technical terms on first introduction ONLY.** 3-5 per article.
-
-**CRITICAL**: Do NOT bold section labels in prose (**良い点**:, **プロジェクト構成**:, **気になる点**: = ❌ wrong)
-
-✅ Bold technical concepts: **並列処理の強化**, **インクリメンタルビルド**, **Rolldown bundler**
-❌ Bold section labels: "**良い点**: ビルドが速い" "**テストプロジェクト**: React 18"
 
 **<3 terms = caps score at 8.5/10** (weak uhyo voice marker)
 
@@ -270,13 +259,10 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 **Show iteration**: Code → "あ、これundefinedで落ちる" → fix (or "まあ、動くので放置")
 
-**Ecosystem context - MANDATORY for 9.0+** (at least 1-2 references):
-- GitHub issues/PRs: "(#2851とか)" "issue #XXXで..." ← ✅ COUNTS
-- GitHub repo links ONLY: "https://github.com/..." ← ❌ DOESN'T COUNT (too generic)
-- Community: "Twitterで見た" "zodみたいなライブラリ" "Discordで話題に"
-- Temporal: "TypeScript 5.5で入るかも" "次のバージョンで修正される予定"
-
-**NOTE**: Missing ecosystem context = automatic cap below 9.0/10 regardless of other quality
+**Ecosystem context (1-2 required for 9.0+)**:
+- GitHub: "(#2851とか)" buried casually
+- Community: "Twitterで見た" "zodみたいなライブラリ"
+- Temporal: "TypeScript 5.5で入るかも"
 
 ### 5.5 Authentic Anecdotes
 
@@ -341,6 +327,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 3 (Clarified author voice patterns: systematic investigation, personal projects, bold usage, ecosystem context)
-**Version:** 2.3 (Season 3: Author voice pattern clarification)
-**Line count:** ~344 lines (target: <350)
+**Last updated:** Iteration 2 (Enhanced です/ます guidance with absolute count targets)
+**Version:** 2.2 (Season 3: Surgical です/ます enhancement)
+**Line count:** ~316 lines (target: <350)
