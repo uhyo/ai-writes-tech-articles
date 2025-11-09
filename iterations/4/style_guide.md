@@ -80,17 +80,13 @@ Before submitting, scan entire article for:
 - **Minimum**: 15+ endings (publication threshold)
 
 **Quick Self-Check Before Submitting:**
-1. Search your article for です。and ます。using your editor's find function
-2. **CRITICAL**: Manually count EXACT total occurrences (do NOT estimate)
-3. Verify your count by searching again and counting carefully
-4. For ~200-line article:
+1. Search your article for です。and ます。
+2. Count total occurrences
+3. For ~200-line article:
    - <30 endings = ❌ Too casual (likely <40%, unpublishable or low score)
    - 30-39 endings = ⚠️ Acceptable minimum (40-44%, caps at 8.5)
    - **40-50 endings = ✅ OPTIMAL TARGET** (45-60%, required for 9.0+)
    - >60 endings = Possibly too formal (rare issue)
-5. **For articles >250 lines**: Scale proportionally (~50-60 endings for 270-line article)
-
-**⚠️ ACCURACY WARNING**: Do NOT claim "47 endings" without manually verifying. Estimation errors trigger publication blockers.
 
 **The Rule:**
 - **Main declarative sentences**: Use です/ます (polite)
@@ -131,8 +127,7 @@ published: true
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons in prose before code/lists** (scan: ：followed by ``` or -)
 - [ ] Valid frontmatter with all fields
-- [ ] **40-50 です/ます endings for ~200-line articles** (MANUALLY COUNTED and VERIFIED; 30-39 caps at 8.5; <15 unpublishable)
-- [ ] **Scale です/ます for article length** (270-line article needs ~50-60 endings)
+- [ ] **40-50 です/ます endings for ~200-line articles** (optimal target; 30-39 caps at 8.5; <15 unpublishable)
 - [ ] Main declarative sentences use です/ます
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
@@ -145,13 +140,12 @@ published: true
 
 ### ✅ BASIC QUALITY
 - [ ] **Maximum 6-7 H2 sections** (8+ = encyclopedic, caps at 8.5)
-- [ ] **3-5 strategic bold TERMS** (1-4 words max; no full clauses; <3 = caps at 8.5)
+- [ ] **3-5 strategic bold terms** (key concepts on first mention; <3 = caps at 8.5)
 - [ ] 1-2 conceptual frameworks (meta-insights that reframe understanding)
 - [ ] Technical accuracy verified
 - [ ] Version information
 - [ ] Conversational, not textbook
-- [ ] **"筆者" used 5-6 times (optimal)** or 3-4 times (borderline) for uhyo voice
-- [ ] **Zenn formatting when applicable** (:::message for version caveats if discussing specific versions)
+- [ ] "筆者" used appropriately (3-8x for uhyo voice)
 - [ ] NO pedagogical scaffolding ("では〜見ていきましょう")
 
 ---
@@ -183,12 +177,7 @@ published: true
 **NOT Systematic** ❌: Horizontal coverage (setup → test → compare → real-world) = different aspects, not complexity escalation
 **IS Systematic** ✅: Vertical depth (simple case → add variation → complex case → edge case) = progressive complexity within same concept
 
-### Pattern 3: "筆者" Usage (5-6 typical, 3-8 acceptable) ⭐ CRITICAL
-
-**FREQUENCY GUIDANCE**:
-- **Optimal**: 5-6 uses (most characteristic of uhyo voice)
-- **Borderline**: 3-4 uses (technically passing but weak author presence)
-- **Maximum**: 8 uses (upper acceptable limit)
+### Pattern 3: "筆者" Usage (3-8 times) ⭐ CRITICAL
 
 **Use "筆者" for**:
 - Personal project experiences: "筆者は[nitrogql]の開発中に..."
@@ -198,7 +187,7 @@ published: true
 
 **NOT for**: Generic statements ("筆者は、TypeScriptは便利だと思います" ← too generic)
 
-**⚠️ INTENSITY MATTERS**: 3 uses meets minimum but reduces author voice score. Target 5-6 for authentic uhyo intensity.
+**Updated from Season 2**: 3-8x (not 3-5x) — uhyo uses it more frequently
 
 ### Pattern 4: Meta-Commentary & Personal Projects
 
@@ -219,26 +208,7 @@ Example: "筆者としては、これからどうなるかまた見守ってい�
 
 ### Pattern 6: Zenn Formatting (0-2 blocks)
 
-**WHEN TO USE**:
-- `:::message` for version-specific caveats or important warnings (use when article discusses specific versions)
-- `:::details 補足的な話` for tangential explorations that would disrupt main flow
-- **If article has version-specific information**: :::message is expected (not optional)
-- **If no natural use case**: Absence is acceptable
-
-**EXAMPLES**:
-```
-:::message
-この記事はNext.js 14.0時点の挙動です。Next.js 15では挙動が変わる可能性があります。
-:::
-```
-
-```
-:::details カスタムエラーのシリアライゼーションについて
-Server Actionsのエラーは...
-:::
-```
-
-**FREQUENCY**: 0-2 blocks per article (1 is most natural when applicable)
+`:::details 補足的な話` for digressions, `:::message` for version caveats
 
 ### Pattern 7: Code-Driven Narrative
 
@@ -246,19 +216,12 @@ Server Actionsのエラーは...
 
 ### Pattern 8: Strategic Bold (3-5 terms) ⚠️ ESSENTIAL
 
-**Bold key technical TERMS on first introduction ONLY.** 3-5 per article.
+**Bold key technical terms on first introduction ONLY.** 3-5 per article.
 
-**WHAT TO BOLD**:
-✅ Technical terms/concepts (1-4 words max): **Server Actions**, **型推論**, **並列処理の強化**, **インクリメンタルビルド**
-✅ Single terms or short phrases representing concrete technical concepts
+**CRITICAL**: Do NOT bold section labels in prose (**良い点**:, **プロジェクト構成**:, **気になる点**: = ❌ wrong)
 
-**WHAT NOT TO BOLD**:
-❌ Section labels in prose: "**良い点**: ビルドが速い" "**テストプロジェクト**: React 18"
-❌ Full clauses/sentences: "**クライアント側でcatchしていないのに、アプリケーション全体がクラッシュしない**"
-❌ Concepts or ideas longer than 4 words
-❌ Generic descriptive phrases
-
-**PRECISION RULE**: If bold is longer than 4 words, it's probably wrong. Bold should be technical TERMS, not explanatory CLAUSES.
+✅ Bold technical concepts: **並列処理の強化**, **インクリメンタルビルド**, **Rolldown bundler**
+❌ Bold section labels: "**良い点**: ビルドが速い" "**テストプロジェクト**: React 18"
 
 **<3 terms = caps score at 8.5/10** (weak uhyo voice marker)
 
@@ -378,6 +341,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 4 (Enhanced self-checking guidance: です/ます count verification, "筆者" frequency intensity, Zenn formatting appropriateness, bold precision)
-**Version:** 2.4 (Season 3: Self-checking and intensity guidance)
-**Line count:** ~370 lines (target: <400)
+**Last updated:** Iteration 3 (Clarified author voice patterns: systematic investigation, personal projects, bold usage, ecosystem context)
+**Version:** 2.3 (Season 3: Author voice pattern clarification)
+**Line count:** ~344 lines (target: <350)
