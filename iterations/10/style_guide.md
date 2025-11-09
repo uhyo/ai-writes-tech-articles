@@ -221,13 +221,13 @@ published: true
 
 **Reactions**: "個人的にはちょっとびっくりしました" "残念ながら..." "推測ですが" "ここからが本題です" (2-4 per article)
 
-**Projects - DEPTH REQUIRED**: Four levels:
+**Projects - DEPTH REQUIRED**: Three acceptable levels:
 - ❌ Insufficient: "筆者が使っていたカスタムプラグイン" (vague, no context)
-- △ Vague: "筆者も最近、自分のプロジェクトでこの機能を試す機会があった" (present but lacks depth)
 - ✓ Acceptable: "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ、ネイティブモジュールで問題に遭遇した" (tech stack + specific problem + outcome)
 - ✅ Rich (ideal): "筆者は[nitrogql]の設定ファイル読み込みで[specific problem]があり、[solution]を試したところ[result]だった（宣伝）"
+- ✅ Central: Entire article about personal project (like nitrogql-beta-release)
 
-**Note**: △ Vague level can achieve 9.0+ when other patterns are exceptionally strong (9+ points). ✓ Acceptable is the reliable path.
+**Note**: Acceptable-level project references (tech stack + problem + outcome) can achieve 9.0+ scores when other patterns are strong
 
 ### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
@@ -403,7 +403,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 **Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
 **Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
 **Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD**
-**Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY**
 
 **Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 endings).
 
@@ -414,10 +413,10 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 4. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
 5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
 
-**Iteration 7 & 10 Achievement**: Both achieved 9.5/10, proving the formula works consistently. Iteration 10 demonstrated **internalized mastery** by recovering from Iterations 8-9 regressions.
+**Iteration 7 Achievement**: Highest Season 3 score (9.5/10) by combining optimal です/ます count (55 in 50-70 range), appropriate length (218 lines), and perfect author voice (10/10 points). This iteration proves the formula works consistently when applied correctly.
 
 ---
 
-**Last updated:** Iteration 10 (Documentation refinement)
-**Version:** 2.10 (Season 3: Proven mastery achieved)
-**Line count:** ~420 lines (stable - style guide proven effective)
+**Last updated:** Iteration 8 (Enhanced colon violation detection)
+**Version:** 2.8 (Season 3: Colon pattern clarification)
+**Line count:** ~420 lines (enhanced forbidden pattern #3)
