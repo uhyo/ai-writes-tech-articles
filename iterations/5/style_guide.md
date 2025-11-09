@@ -204,13 +204,10 @@ published: true
 
 **Reactions**: "個人的にはちょっとびっくりしました" "残念ながら..." "推測ですが" "ここからが本題です" (2-4 per article)
 
-**Projects - DEPTH REQUIRED**: Three acceptable levels:
+**Projects - DEPTH REQUIRED**: Must be RICH (specific project + problem + outcome) OR central to article (not brief vague mentions)
 - ❌ Insufficient: "筆者が使っていたカスタムプラグイン" (vague, no context)
-- ✓ Acceptable: "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ、ネイティブモジュールで問題に遭遇した" (tech stack + specific problem + outcome)
-- ✅ Rich (ideal): "筆者は[nitrogql]の設定ファイル読み込みで[specific problem]があり、[solution]を試したところ[result]だった（宣伝）"
+- ✅ Rich: "筆者は[nitrogql]の設定ファイル読み込みで[specific problem]があり、[solution]を試したところ[result]だった（宣伝）"
 - ✅ Central: Entire article about personal project (like nitrogql-beta-release)
-
-**Note**: Acceptable-level project references (tech stack + problem + outcome) can achieve 9.0+ scores when other patterns are strong
 
 ### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
@@ -381,38 +378,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-## 📊 ITERATION 5 SUCCESS PATTERNS (9.3/10 - First 9.0+ Score)
-
-**What worked in Iteration 5** (maintain these patterns for consistent 9.0+):
-
-1. **Optimal です/ます distribution**: 51 endings in 231-line article (22.1% ratio)
-   - Target: 40-50 endings for ~200-230 line articles
-   - Avoids both "too casual" (<40%) and "too formal" (>70%) zones
-
-2. **Perfect author voice (10/10 points)**: All 10 uhyo patterns present
-   - Opening: "皆さんこんにちは。2023年9月に**Bun 1.0**がリリースされ..." ✓
-   - Systematic: Simple APIs → Complex APIs → Edge cases ✓
-   - "筆者" intensity: 8 uses (optimal range) ✓
-   - Reflective conclusion: "筆者としても、これからどこまで進化していくのか見守っていきたい" ✓
-   - Strategic bold: 5 technical terms ✓
-
-3. **Zero forbidden patterns**: Complete elimination of AI tells
-   - No sentence-ending contracted forms
-   - No paragraph-initial "で、"
-   - No prose colons before code
-
-4. **Strong ecosystem context**: GitHub issue #901, version mentions (Bun 1.0, 1.1.25)
-   - Specific issue references count as ecosystem context
-   - Version-specific information triggers :::message block
-
-5. **Acceptable project integration**: Tech stack + problem + outcome
-   - "TypeScript + Express + PostgreSQL構成でBunを試したところ、ネイティブモジュールで問題に遭遇"
-   - While not "rich detail," this level achieves 9.0+ when other patterns are strong
-
-**Key insight**: 9.0+ requires excellence across ALL dimensions (base + author voice), not perfection in one area
-
----
-
-**Last updated:** Iteration 5 (First 9.0+ score; documented success patterns, refined project integration levels)
-**Version:** 2.5 (Season 3: Success pattern documentation)
-**Line count:** ~420 lines (expanded with success documentation)
+**Last updated:** Iteration 4 (Enhanced self-checking guidance: です/ます count verification, "筆者" frequency intensity, Zenn formatting appropriateness, bold precision)
+**Version:** 2.4 (Season 3: Self-checking and intensity guidance)
+**Line count:** ~370 lines (target: <400)
