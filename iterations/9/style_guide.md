@@ -141,7 +141,6 @@ published: true
 
 ### 🚨 CRITICAL (Publication Blockers)
 - [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; <180 risks です/ます insufficiency)
-- [ ] **Section count: 6-7 H2 sections MAXIMUM** (count with `grep '^## ' article.md | wc -l`; 8-9+ = encyclopedic, CAPS AT 8.5)
 - [ ] **ZERO sentence-ending contracted forms** (scan: てる。てた。てます。てない。てなかった。)
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons in prose before code/lists** (scan entire article for ：at line end; check next line is - or ```)
