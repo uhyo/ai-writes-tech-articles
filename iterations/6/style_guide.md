@@ -66,46 +66,41 @@ Before submitting, scan entire article for:
 
 ### 2. Polite Form Distribution (CRITICAL)
 
-🚨 **ABSOLUTE THRESHOLD RULE**: 40-50 です/ます endings is MANDATORY for 9.0+ scores, regardless of article length.
+**TIERED REQUIREMENTS:**
+- **0-14 です/ます endings**: ❌ UNPUBLISHABLE (publication blocker)
+- **15-39%**: ❌ Too casual, "blog" tone not "technical article"
+- **40-44%**: ⚠️ Acceptable minimum (caps at 8.0-8.5/10)
+- **45-60%**: ✅ OPTIMAL TARGET (required for 9.0+/10)
 
-**Scoring Tiers (by ABSOLUTE COUNT)**:
-- **0-14 endings**: ❌ UNPUBLISHABLE (publication blocker)
-- **15-31 endings**: ⚠️ Caps at 7.0-7.5/10 (blog tone)
-- **32-39 endings**: ⚠️ Caps at 8.0/10 (too casual for technical article)
-- **40-49 endings**: ✅ Required for 9.0+ eligibility (target zone)
-- **50-70 endings**: ✅ OPTIMAL for 9.0+ (preferred range)
-- **70+ endings**: Possibly too formal (rare issue)
+**Human baseline**: 15-70 です/ます endings per article.
 
-**⚠️ CRITICAL INSIGHT (from Iteration 6 failure)**:
-- Iteration 5: 51 endings (231 lines, 22.1%) = 9.3/10 ✅
-- Iteration 6: 32 endings (151 lines, 21.2%) = 8.0/10 ❌ (CAPPED)
-- **Why similar percentages scored differently**: 40-50 is an ABSOLUTE minimum, NOT a percentage that scales down for short articles.
+**Absolute Count Targets** (for typical ~200-line articles):
+- **Optimal**: 40-50 です/ます sentence endings → achieves 45-60% distribution ✅
+- **Borderline**: 30-39 endings → ~40-44% distribution (caps score at 8.5/10) ⚠️
+- **Minimum**: 15+ endings (publication threshold)
 
-**Article Length Requirements**:
-- **Target length**: 180-230 lines (proven sweet spot)
-- **Short articles (<180 lines)**: High risk - hard to reach 40 endings naturally
-  * Options: (1) Expand article to 180+ lines, OR (2) Accept 8.0/10 cap
-- **Long articles (>250 lines)**: Scale up to 50-60 endings proportionally
+**Quick Self-Check Before Submitting:**
+1. Search your article for です。and ます。using your editor's find function
+2. **CRITICAL**: Manually count EXACT total occurrences (do NOT estimate)
+3. Verify your count by searching again and counting carefully
+4. For ~200-line article:
+   - <30 endings = ❌ Too casual (likely <40%, unpublishable or low score)
+   - 30-39 endings = ⚠️ Acceptable minimum (40-44%, caps at 8.5)
+   - **40-50 endings = ✅ OPTIMAL TARGET** (45-60%, required for 9.0+)
+   - >60 endings = Possibly too formal (rare issue)
+5. **For articles >250 lines**: Scale proportionally (~50-60 endings for 270-line article)
 
-**Pre-Submission Verification** (MANDATORY):
-1. Count article length: `wc -l article.md` → Target 180-230 lines
-2. Search for です。: Count manually, record exact number
-3. Search for ます。: Count manually, record exact number
-4. **Total must be ≥40 for 9.0+ eligibility** (NOT negotiable)
-5. Verify count accuracy: Re-count to confirm (±1 tolerance only)
-6. If <40 endings: Expand article OR convert casual sentences to です/ます
+**⚠️ ACCURACY WARNING**: Do NOT claim "47 endings" without manually verifying. Estimation errors trigger publication blockers.
 
-**⚠️ ACCURACY WARNING**: Writer claiming "47 endings" when actual is 32 (32% error) = PUBLICATION BLOCKER. Must manually verify.
+**The Rule:**
+- **Main declarative sentences**: Use です/ます (polite)
+- **Subordinate clauses, embedded statements, reactions**: Use casual forms
+- **Result**: MOST main sentences polite = 40-50 endings in typical article
 
-**The Writing Rule**:
-- **Main declarative sentences**: です/ます (polite)
-- **Subordinate clauses, reactions, embedded statements**: Casual forms
-- **Result**: ~70-80% of main sentences polite = 40-50 endings in 200-line article
-
-**Examples**:
-- です/ます: "TypeScript 5.0では新機能が追加されました。"
+**Examples:**
+- です/ます (main): "TypeScript 5.0では新機能が追加されました。"
 - Casual (reaction): "この機能、最初見たとき「便利じゃん」と思った。"
-- です/ます: "これにより推論が改善されます。"
+- です/ます (main): "これにより推論が改善されます。"
 - Casual (subordinate): "従来は書く必要があったのが不要になる。"
 
 ### 3. Frontmatter Format
@@ -132,14 +127,13 @@ published: true
 ## 📋 PRE-SUBMISSION CHECKLIST
 
 ### 🚨 CRITICAL (Publication Blockers)
-- [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; <180 risks です/ます insufficiency)
 - [ ] **ZERO sentence-ending contracted forms** (scan: てる。てた。てます。てない。てなかった。)
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons in prose before code/lists** (scan: ：followed by ``` or -)
 - [ ] Valid frontmatter with all fields
-- [ ] **40+ です/ます endings ABSOLUTE** (count です。+ ます。manually; verify twice; <40 = max 8.0/10 regardless of %)
-- [ ] **Target: 50-70 endings for 9.0+** (long articles >250 lines need proportionally more)
-- [ ] Main declarative sentences use です/ます (70-80% of main sentences)
+- [ ] **40-50 です/ます endings for ~200-line articles** (MANUALLY COUNTED and VERIFIED; 30-39 caps at 8.5; <15 unpublishable)
+- [ ] **Scale です/ます for article length** (270-line article needs ~50-60 endings)
+- [ ] Main declarative sentences use です/ます
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: bug → fix OR V1 → V2 iterations
@@ -387,22 +381,38 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-## 📊 SUCCESS PATTERNS (Iterations 5-6 Learning)
+## 📊 ITERATION 5 SUCCESS PATTERNS (9.3/10 - First 9.0+ Score)
 
-**Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
-**Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
+**What worked in Iteration 5** (maintain these patterns for consistent 9.0+):
 
-**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 endings).
+1. **Optimal です/ます distribution**: 51 endings in 231-line article (22.1% ratio)
+   - Target: 40-50 endings for ~200-230 line articles
+   - Avoids both "too casual" (<40%) and "too formal" (>70%) zones
 
-**Proven 9.0+ Formula**:
-1. Article length: 180-230 lines (sweet spot)
-2. です/ます: 40-70 absolute count (NON-NEGOTIABLE)
-3. Author voice: 8+ uhyo patterns (see Section 👤)
-4. Zero forbidden patterns (see Section ⚠️)
-5. Ecosystem context: 1-2 GitHub issues/PRs or community refs
+2. **Perfect author voice (10/10 points)**: All 10 uhyo patterns present
+   - Opening: "皆さんこんにちは。2023年9月に**Bun 1.0**がリリースされ..." ✓
+   - Systematic: Simple APIs → Complex APIs → Edge cases ✓
+   - "筆者" intensity: 8 uses (optimal range) ✓
+   - Reflective conclusion: "筆者としても、これからどこまで進化していくのか見守っていきたい" ✓
+   - Strategic bold: 5 technical terms ✓
+
+3. **Zero forbidden patterns**: Complete elimination of AI tells
+   - No sentence-ending contracted forms
+   - No paragraph-initial "で、"
+   - No prose colons before code
+
+4. **Strong ecosystem context**: GitHub issue #901, version mentions (Bun 1.0, 1.1.25)
+   - Specific issue references count as ecosystem context
+   - Version-specific information triggers :::message block
+
+5. **Acceptable project integration**: Tech stack + problem + outcome
+   - "TypeScript + Express + PostgreSQL構成でBunを試したところ、ネイティブモジュールで問題に遭遇"
+   - While not "rich detail," this level achieves 9.0+ when other patterns are strong
+
+**Key insight**: 9.0+ requires excellence across ALL dimensions (base + author voice), not perfection in one area
 
 ---
 
-**Last updated:** Iteration 6 (Clarified absolute です/ます threshold after regression)
-**Version:** 2.6 (Season 3: Absolute count requirement)
-**Line count:** ~400 lines (consolidated success patterns)
+**Last updated:** Iteration 5 (First 9.0+ score; documented success patterns, refined project integration levels)
+**Version:** 2.5 (Season 3: Success pattern documentation)
+**Line count:** ~420 lines (expanded with success documentation)
