@@ -387,25 +387,22 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-## 📊 SUCCESS PATTERNS (Iterations 5-7 Learning)
+## 📊 SUCCESS PATTERNS (Iterations 5-6 Learning)
 
 **Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
 **Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
-**Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD**
 
 **Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 endings).
 
-**Proven 9.0+ Formula** (validated by Iteration 7's 9.5/10):
-1. Article length: 180-230 lines (sweet spot) - Iteration 7: 218 lines
-2. です/ます: 50-70 absolute count optimal (40+ minimum) - Iteration 7: 55 endings
-3. Author voice: 8+ uhyo patterns (see Section 👤) - Iteration 7: 10/10 patterns
-4. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
-5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
-
-**Iteration 7 Achievement**: Highest Season 3 score (9.5/10) by combining optimal です/ます count (55 in 50-70 range), appropriate length (218 lines), and perfect author voice (10/10 points). This iteration proves the formula works consistently when applied correctly.
+**Proven 9.0+ Formula**:
+1. Article length: 180-230 lines (sweet spot)
+2. です/ます: 40-70 absolute count (NON-NEGOTIABLE)
+3. Author voice: 8+ uhyo patterns (see Section 👤)
+4. Zero forbidden patterns (see Section ⚠️)
+5. Ecosystem context: 1-2 GitHub issues/PRs or community refs
 
 ---
 
-**Last updated:** Iteration 7 (Validated optimal formula with 9.5/10 achievement)
-**Version:** 2.7 (Season 3: Gold standard documented)
-**Line count:** ~410 lines (added Iteration 7 gold standard)
+**Last updated:** Iteration 6 (Clarified absolute です/ます threshold after regression)
+**Version:** 2.6 (Season 3: Absolute count requirement)
+**Line count:** ~400 lines (consolidated success patterns)
