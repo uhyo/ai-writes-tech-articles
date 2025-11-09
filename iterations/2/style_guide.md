@@ -74,30 +74,22 @@ Before submitting, scan entire article for:
 
 **Human baseline**: 15-70 です/ます endings per article.
 
-**Absolute Count Targets** (for typical ~200-line articles):
-- **Optimal**: 40-50 です/ます sentence endings → achieves 45-60% distribution ✅
-- **Borderline**: 30-39 endings → ~40-44% distribution (caps score at 8.5/10) ⚠️
-- **Minimum**: 15+ endings (publication threshold)
-
-**Quick Self-Check Before Submitting:**
-1. Search your article for です。and ます。
-2. Count total occurrences
-3. For ~200-line article:
-   - <30 endings = ❌ Too casual (likely <40%, unpublishable or low score)
-   - 30-39 endings = ⚠️ Acceptable minimum (40-44%, caps at 8.5)
-   - **40-50 endings = ✅ OPTIMAL TARGET** (45-60%, required for 9.0+)
-   - >60 endings = Possibly too formal (rare issue)
-
 **The Rule:**
 - **Main declarative sentences**: Use です/ます (polite)
-- **Subordinate clauses, embedded statements, reactions**: Use casual forms
-- **Result**: MOST main sentences polite = 40-50 endings in typical article
+- **Subordinate clauses, embedded statements, lists**: Use casual forms
+- **Result**: Main sentences are MOSTLY polite, creating 45-60% overall distribution
 
-**Examples:**
-- です/ます (main): "TypeScript 5.0では新機能が追加されました。"
-- Casual (reaction): "この機能、最初見たとき「便利じゃん」と思った。"
-- です/ます (main): "これにより推論が改善されます。"
-- Casual (subordinate): "従来は書く必要があったのが不要になる。"
+**Example:**
+
+```
+TypeScript 5.0では新機能が追加されました。  ← です/ます (main)
+この機能、最初見たとき「便利じゃん」と思った。  ← casual (reaction)
+これにより推論が改善されます。              ← です/ます (main)
+従来は書く必要があったのが不要になる。      ← casual (subordinate)
+```
+
+**Common Mistake:**
+❌ "40% is enough" → NO! 40-44% caps score at 8.5. For 9.0+, aim 45-60%.
 
 ### 3. Frontmatter Format
 
@@ -127,7 +119,8 @@ published: true
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons in prose before code/lists** (scan: ：followed by ``` or -)
 - [ ] Valid frontmatter with all fields
-- [ ] **40-50 です/ます endings for ~200-line articles** (optimal target; 30-39 caps at 8.5; <15 unpublishable)
+- [ ] **15+ です/ます endings minimum** (publication blocker if <15)
+- [ ] **45-60% です/ます distribution** (required for 9.0+; 40-44% caps at 8.5)
 - [ ] Main declarative sentences use です/ます
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
@@ -327,6 +320,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 2 (Enhanced です/ます guidance with absolute count targets)
-**Version:** 2.2 (Season 3: Surgical です/ます enhancement)
-**Line count:** ~316 lines (target: <350)
+**Last updated:** Iteration 1 (Consolidated and clarified scoring caps)
+**Version:** 2.1 (Season 3: Consolidated from 481→~310 lines)
+**Line count:** ~310 lines (target: <350)
