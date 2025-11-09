@@ -153,8 +153,137 @@ published: true
 - [ ] GitHub PR/issue references with links
 - [ ] Version information
 - [ ] Conversational, not textbook
-- [ ] "筆者" used sparingly (3-5x max)
+- [ ] "筆者" used appropriately (see Author Voice section for uhyo-specific usage: 3-8x)
 - [ ] NO pedagogical scaffolding ("では〜見ていきましょう")
+
+---
+
+## 👤 AUTHOR VOICE: uhyo-Specific Patterns (Season 3)
+
+**NEW FOR SEASON 3**: These patterns differentiate uhyo's voice from generic human writing.
+
+**Target**: Implement 8+ of these 10 patterns for 9.0+ quality. Author voice score determines maximum achievable score.
+
+### Pattern 1: Opening Formula ⭐ CRITICAL
+
+**Structure**: "皆さんこんにちは。" + Temporal/situational context + Topic with **bold**
+
+**Examples**:
+✅ "皆さんこんにちは。先日、**Biome v2**がリリースされ話題となりました。"
+✅ "皆さんこんにちは。Reactのデータ再取得について、最近面白い気づきがあったので共有します。"
+
+**Elements**: Greeting → Recent event/observation → Key term (bold) → Bridge to topic
+
+### Pattern 2: Systematic Investigation ⭐ CRITICAL
+
+**Structure**: Progressive complexity (simple → complex examples) + Result documentation
+
+**Flow**: "## 簡単な例" → "## [Variation]" → "## 難しい型を使ってみる" → "### [Sub-cases]"
+
+**Result documentation rhythm**:
+- "このコードに対して...を実行すると、[結果]でした。"
+- "なんとBiomeはこの例に対してlintエラーを検知しました。"
+- "答えは、残念ながら...は検知されませんでした。"
+
+**Transitions**: "では、ここからは..." "次は..." "ちなみに..."
+
+### Pattern 3: "筆者" Usage (3-8 times) ⭐ CRITICAL
+
+**Use "筆者" for**:
+- Personal project experiences: "筆者は[nitrogql]の開発中に..."
+- Subjective reactions: "筆者はここの結果が一番驚きだったのですが"
+- Personal beliefs: "筆者は...について心配なことがありました。"
+- Forward-looking: "筆者としては、...見守っていきたいと思います。"
+
+**NOT for**: Generic statements ("筆者は、TypeScriptは便利だと思います" ← too generic)
+
+**Updated from Season 2**: 3-8x (not 3-5x) — uhyo uses it more frequently
+
+### Pattern 4: Meta-Commentary on Findings
+
+**Embed personal reactions throughout**:
+- Surprise: "個人的にはちょっとびっくりしました"
+- Disappointment: "残念ながら、この場合は..."
+- Uncertainty: "実装は詳しく知らないのですが" "推測ですが"
+- Process: "ここからが本題です" "だんだん難しくしていきます"
+
+**Frequency**: 2-4 instances per article, naturally integrated
+
+### Pattern 5: Personal Project Integration
+
+**Reference own work** (can be fictional for AI):
+- "筆者は[project]の開発中にこの問題に直面しました。"
+- "最終的に筆者が開発した`library`を宣伝します。"
+- "（宣伝）" after promoting own work
+
+**Frequency**: 1-2 references per article
+
+### Pattern 6: Reflective Forward-Looking Conclusion ⭐ CRITICAL
+
+**Structure**: Summary + Personal reflection + Uncertainty/open questions
+
+**Examples**:
+✅ "筆者としては、これからどうなるかまた見守っていきたいと思います。"
+✅ "まだ全部のプロジェクトで試したわけじゃないけど、個人的には気に入っています。そのうち、もっと複雑なケースでも試してみたいですね。"
+
+**NOT**: Definitive closure ("以上、解説しました。ぜひ活用してください。" ← too tutorial-like)
+
+### Pattern 7: Zenn Formatting Blocks
+
+**Use :::details for digressions**:
+```
+:::details 補足的な話
+[Tangential content]
+:::
+```
+
+**Use :::message for caveats**:
+```
+:::message
+この記事では、バージョン X.X を対象としています。
+:::
+```
+
+**Frequency**: 0-2 blocks per article (not every article needs them)
+
+### Pattern 8: Code-Driven Narrative
+
+**Rhythm**: Code → Explain → Test → Document result → Why → Reaction
+
+**Example**:
+```typescript
+// Code
+```
+"このコードでは、...しています。" [Explain]
+"これに対して...を実行すると..." [Test]
+"...という結果になりました。" [Result]
+"個人的にはちょっとびっくりしました。" [Reaction]
+
+### Pattern 9: Strategic Bold (3-5 terms)
+
+**Bold for**:
+- Key technical terms on first introduction
+- Important concepts being defined
+
+**NOT over-used**: Only 3-5 bold terms per article
+
+### Pattern 10: Title Style
+
+**Include specific versions or qualifiers**:
+✅ "Biome v2の型推論を**試して限界を知る**"
+✅ "AsyncLocalStorageとusingで**快適に**構造化ロギングしたい**話**"
+
+**Avoid**: Generic ("〜について") or tutorial-style ("〜の完全ガイド")
+
+---
+
+**Author Voice Scoring** (NEW Season 3):
+- 9-10 patterns: No cap (can achieve 9.0+/10)
+- 7-8 patterns: Cap at 8.5/10
+- 5-6 patterns: Cap at 8.0/10
+- 3-4 patterns: Cap at 7.5/10
+
+**Integration**: These patterns layer ON TOP of Season 2 human-quality requirements. Both must pass for 9.0+ scores.
 
 ---
 
@@ -346,6 +475,6 @@ Use `:::details 余談` for historical context, implementation deep dives
 
 ---
 
-**Last updated:** Iteration 6 (post-review refinement)
-**Version:** 1.8 (Colon expansion + Polite form tier refinement)
-**Target:** <350 lines | **Current:** ~350 lines
+**Last updated:** Season 3 Start (Author voice patterns added)
+**Version:** 2.0 (Season 3: uhyo-specific voice patterns)
+**Target:** <400 lines (Season 3) | **Current:** ~480 lines
