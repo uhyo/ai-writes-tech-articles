@@ -57,13 +57,64 @@ You will receive:
    - Compress verbose explanations
 
 3. ✅ **MAINTAIN HIERARCHY**: Keep priority markers visible
-   - 🔴 CRITICAL: Publication blockers (です・ます, technical accuracy, frontmatter)
-   - 🟡 IMPORTANT: Human-like patterns (tone, flow, structure, anecdotes)
+   - 🔴 CRITICAL: Publication blockers (です・ます, technical accuracy, frontmatter, **fabricated experiences**)
+   - 🟡 IMPORTANT: Human-like patterns (tone, flow, structure)
    - 🟢 POLISH: Final refinements (micro-imperfections, additional features)
 
-4. ✅ **TARGET: Keep core guide under 350 lines**
-   - Current version is 326 lines
-   - If update would exceed 350 lines, must consolidate other sections first
+4. ✅ **TARGET: Keep core guide under 500 lines**
+   - Season 4 version starts at ~475 lines (expanded from Season 3's 423 due to fabrication constraints)
+   - If update would exceed 500 lines, must consolidate other sections first
+
+## 🆕 SEASON 4: Authenticity Constraint (META-RULE)
+
+**CRITICAL ADDITION**: The style guide must NEVER encourage fabrication of personal experiences.
+
+### Season 4 Forbidden Updates:
+
+❌ **DO NOT ADD** guidelines that encourage:
+- Fabricating past projects or implementations
+- Creating fake personal anecdotes with rich details
+- Claiming specific metrics from non-existent implementations
+- Inventing testing or verification experiences
+- Adding timeline specificity to fake experiences
+
+❌ **DO NOT SUGGEST** patterns like:
+- "Include rich project details like '100 endpoints' or '70% improvement'"
+- "Reference past work experiences to increase authenticity"
+- "Mention specific timeframes like 'last year' or '3 days debugging'"
+
+### Season 4 Required Updates:
+
+✅ **IF REVIEW IDENTIFIES FABRICATED PATTERNS**, you MUST:
+1. Add the specific fabrication to Pattern 3's FORBIDDEN list
+2. Provide the exact example from the article as a ❌ anti-pattern
+3. Add corresponding authentic alternative patterns if possible
+
+✅ **EMPHASIZE** authentic "筆者" usage patterns:
+- Reactions to findings shown in the article itself
+- Subjective opinions/interpretations (not factual claims about past)
+- Concerns/speculation about future technology directions
+- Honest admissions of limitations
+- Personal terminology/naming conventions
+- Vague preferences without fake backstory
+
+✅ **MONITOR** for guidelines that might be misinterpreted as encouraging fabrication:
+- "Personal anecdotes" → Clarify: ONLY if vague/general, NOT detailed scenarios
+- "Project references" → Clarify: AI has no real projects, use authentic patterns only
+- "Past experiences" → Remove or reframe as "reactions to current findings"
+
+### Season 4 Update Priority:
+
+**Fabrication elimination > Quality improvement**
+
+If a review shows both:
+- Quality score: 8.5/10 (needs improvement)
+- Fabrication Score: BLOCKER (has fake experiences)
+
+→ **Priority 1**: Add fabrication patterns to forbidden list
+→ **Priority 2**: Address quality issues
+
+Reason: Fabricated experiences are a reliability/ethics issue, while quality is a performance metric.
 
 ### Update Process:
 
@@ -79,9 +130,10 @@ You will receive:
 ❌ Adding duplicate guidance in multiple sections
 ❌ Growing guide without consolidation
 ❌ Adding 5+ examples per rule
-❌ Burying CRITICAL requirements (especially です・ます) under layers of polish
-❌ Exceeding 350 lines without compelling justification
+❌ Burying CRITICAL requirements (especially です・ます and fabrication constraints) under layers of polish
+❌ Exceeding 500 lines without compelling justification
 ❌ Removing CRITICAL requirements to make room for polish
+❌ **Adding guidelines that encourage fabrication of experiences** (Season 4)
 
 ### Required for Every Update:
 

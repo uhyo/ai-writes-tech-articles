@@ -151,12 +151,12 @@ published: true
 - [ ] **40+ です/ます endings ABSOLUTE** (count です。+ ます。manually; verify twice; <40 = max 8.0/10 regardless of %)
 - [ ] **Target: 50-70 endings for 9.0+** (long articles >250 lines need proportionally more)
 - [ ] Main declarative sentences use です/ます (70-80% of main sentences)
-- [ ] **SEASON 4: ZERO fabricated personal experiences** (see Pattern 3 for verification procedure)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: bug → fix OR V1 → V2 iterations
 - [ ] 2-3 unresolved elements: speculation, "まだ試してない", abandoned tangents
 - [ ] **Ecosystem context: 1-2 GitHub refs OR community mentions** (required for 9.0+)
+- [ ] Personal anecdotes (rich OR vague, not medium detail)
 - [ ] Dramatically uneven depth (15 para on favorite topic, 2 sentences on boring one)
 - [ ] Messy conclusion (no numbered synthesis)
 
@@ -167,16 +167,15 @@ published: true
 - [ ] Technical accuracy verified
 - [ ] Version information
 - [ ] Conversational, not textbook
-- [ ] **"筆者" used 3-6 times (Season 4 target)** with ONLY allowed patterns (see Pattern 3)
+- [ ] **"筆者" used 5-6 times (optimal)** or 3-4 times (borderline) for uhyo voice
 - [ ] **Zenn formatting when applicable** (:::message for version caveats if discussing specific versions)
 - [ ] NO pedagogical scaffolding ("では〜見ていきましょう")
 
 ---
 
-## 👤 AUTHOR VOICE: uhyo-Specific Patterns (Season 3/4)
+## 👤 AUTHOR VOICE: uhyo-Specific Patterns (Season 3)
 
-**Season 3**: These patterns differentiate uhyo's voice from generic human writing.
-**Season 4**: Authenticity constraint added - patterns must not require fabricating experiences.
+**NEW FOR SEASON 3**: These patterns differentiate uhyo's voice from generic human writing.
 
 **Target**: Implement 8+ of these 10 patterns for 9.0+ quality. Author voice score determines maximum achievable score.
 
@@ -201,87 +200,34 @@ published: true
 **NOT Systematic** ❌: Horizontal coverage (setup → test → compare → real-world) = different aspects, not complexity escalation
 **IS Systematic** ✅: Vertical depth (simple case → add variation → complex case → edge case) = progressive complexity within same concept
 
-### Pattern 3: "筆者" Usage - Authentic Patterns Only ⭐ CRITICAL (Season 4)
+### Pattern 3: "筆者" Usage (5-6 typical, 3-8 acceptable) ⭐ CRITICAL
 
-**SEASON 4 CONSTRAINT**: All "筆者" usage must match authentic uhyo patterns that don't require fabricating experiences.
+**FREQUENCY GUIDANCE**:
+- **Optimal**: 5-6 uses (most characteristic of uhyo voice)
+- **Borderline**: 3-4 uses (technically passing but weak author presence)
+- **Maximum**: 8 uses (upper acceptable limit)
 
-**FREQUENCY**: 3-6 uses per article (reduced from Season 3's 5-8 due to pattern constraints)
+**Use "筆者" for**:
+- Personal project experiences: "筆者は[nitrogql]の開発中に..."
+- Subjective reactions: "筆者はここの結果が一番驚きだったのですが"
+- Personal beliefs: "筆者は...について心配なことがありました。"
+- Forward-looking: "筆者としては、...見守っていきたいと思います。"
 
-#### ✅ ALLOWED Patterns
+**NOT for**: Generic statements ("筆者は、TypeScriptは便利だと思います" ← too generic)
 
-1. **Reactions to findings shown in the article**
-   - "筆者はここの結果が一番驚きだったのですが"
-   - "個人的にはちょっとびっくりしました"
-   - **Constraint**: Must react to code/tests actually shown in the article
+**⚠️ INTENSITY MATTERS**: 3 uses meets minimum but reduces author voice score. Target 5-6 for authentic uhyo intensity.
 
-2. **Opinions & interpretations**
-   - "筆者の考えでは", "筆者の意見では", "筆者の解釈では"
-   - "筆者としては、これからどうなるかまた見守っていきたいと思います"
-   - **Constraint**: Must be subjective views, not factual claims
-
-3. **Concerns & speculation**
-   - "筆者は...について心配なことがありました"
-   - "筆者としてはまだ答えを出せていません"
-   - **Constraint**: Future uncertainties, not past experiences
-
-4. **Admitting limitations**
-   - "筆者はまだ試していないのですが"
-   - "筆者の力が足りないので説明できません"
-   - **Constraint**: Honest admission of not having done something
-
-5. **Personal terminology/naming**
-   - "筆者は個人的にこの書き方を〜と呼んでいます"
-   - "筆者が今考えた訳語"
-   - **Constraint**: Naming only, not implementation stories
-
-6. **Vague preferences (no details)**
-   - "筆者はこちらの方が好みです"
-   - "筆者としては...を好んでいます"
-   - **Constraint**: Preference only, no fake history explaining why
-
-#### ❌ FORBIDDEN Patterns (ZERO TOLERANCE)
-
-1. **Specific past project references** ❌ BLOCKER
-   - ❌ "筆者は以前、社内の〜プロジェクトで"
-   - ❌ "筆者が開発した〜アプリケーションでは"
-   - **Why**: AI has no real past projects
-
-2. **Implementation claims with metrics** ❌ BLOCKER
-   - ❌ "筆者が実装したところ、パフォーマンスが50%向上しました"
-   - ❌ "監視ログを確認したところ、〜が70%削減されていて"
-   - **Why**: Verifiable numbers from fake implementations
-
-3. **Testing/verification claims** ❌ BLOCKER
-   - ❌ "筆者が確認した限り、古いブラウザでは〜"
-   - ❌ "筆者が試したところ、〜でした"
-   - **Why**: False verification (unless referring to tests shown in the article)
-   - **Exception**: "この記事で試したところ" referring to article's own code ✅
-
-4. **Detailed scenario fabrication** ❌ BLOCKER
-   - ❌ "去年のプロジェクトで3日かかった"
-   - ❌ "100個のエンドポイントをTS化する無茶振りで"
-   - **Why**: Rich fictional scenarios presented as fact
-
-5. **Specific timeline claims** ❌ BLOCKER
-   - ❌ "筆者は2年前に同じ問題に遭遇した"
-   - ❌ "先月、この機能を使う機会があった"
-   - **Why**: Fake temporal specificity
-
-**Pre-Submission Verification**:
-- [ ] Count "筆者" usage (target: 3-6)
-- [ ] Verify each instance matches allowed patterns
-- [ ] Scan for forbidden patterns: "以前", "〜で試した", "プロジェクトで", specific metrics
-- [ ] ONE forbidden pattern instance = PUBLICATION BLOCKER
-
-### Pattern 4: Meta-Commentary (Season 4: Project References Removed)
+### Pattern 4: Meta-Commentary & Personal Projects
 
 **Reactions**: "個人的にはちょっとびっくりしました" "残念ながら..." "推測ですが" "ここからが本題です" (2-4 per article)
 
-**SEASON 4**: Personal project references removed due to fabrication concerns. Focus on:
-- Reactions to article findings (safe, authentic)
-- Meta-commentary on the investigation process
-- Speculation about technology direction
-- Admissions of uncertainty
+**Projects - DEPTH REQUIRED**: Four levels:
+- ❌ Insufficient: "筆者が使っていたカスタムプラグイン" (vague, no context)
+- △ Vague: "筆者も最近、自分のプロジェクトでこの機能を試す機会があった" (present but lacks depth)
+- ✓ Acceptable: "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ、ネイティブモジュールで問題に遭遇した" (tech stack + specific problem + outcome)
+- ✅ Rich (ideal): "筆者は[nitrogql]の設定ファイル読み込みで[specific problem]があり、[solution]を試したところ[result]だった（宣伝）"
+
+**Note**: △ Vague level can achieve 9.0+ when other patterns are exceptionally strong (9+ points). ✓ Acceptable is the reliable path.
 
 ### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
@@ -379,21 +325,26 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 ### 5.4 Code Evolution & Ecosystem Context ⚠️ ESSENTIAL
 
-**Code evolution** (showing iteration):
-- Code → "あ、これundefinedで落ちる" → fix
-- Code → test → "なんと、エラーが出ました" → investigation
-- **SEASON 4 CONSTRAINT**: Evolution must be shown in the article itself, not from fake past experience
+**Show iteration**: Code → "あ、これundefinedで落ちる" → fix (or "まあ、動くので放置")
 
 **Ecosystem context - MANDATORY for 9.0+** (at least 1-2 references):
 - GitHub issues/PRs: "(#2851とか)" "issue #XXXで..." ← ✅ COUNTS
 - GitHub repo links ONLY: "https://github.com/..." ← ❌ DOESN'T COUNT (too generic)
 - Community: "Twitterで見た" "zodみたいなライブラリ" "Discordで話題に"
 - Temporal: "TypeScript 5.5で入るかも" "次のバージョンで修正される予定"
-- **SEASON 4 NOTE**: Links must be real or general, not fabricated specific references
 
 **NOTE**: Missing ecosystem context = automatic cap below 9.0/10 regardless of other quality
 
-### 5.5 Non-Linear Structure & Section Count ⚠️ ESSENTIAL
+### 5.5 Authentic Anecdotes
+
+**Not all stories need happy endings**: "やったことがある" (no result) "まだ試してない"
+
+**Rich OR vague, NOT medium**:
+- ❌ Medium: "去年あるプロジェクトで3日消費" (safe middle ground)
+- ✅ Rich: "社内の古いExpress API（100個エンドポイント）をTS化する無茶振りで詰まって3日溶けた"
+- ✅ Vague: "前に似たことやった気がする" "たぶん2019年くらい？"
+
+### 5.6 Non-Linear Structure & Section Count ⚠️ ESSENTIAL
 
 **Don't tie everything neatly**: "そういえば〜" (no setup), "余談だが〜" (never return), "まだ試してないけど"
 
@@ -406,11 +357,11 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 ❌ AI tell: 10+ sections, even treatment
 ✅ Human: 6 sections, wild variation (15 para, 2 para, 8 para, 3 para, 12 para, 5 para)
 
-### 5.6 Vary Assertion Strength
+### 5.7 Vary Assertion Strength
 
 Definitive: "useRefは再レンダリングを引き起こさない" / Speculation: "〜かもしれない" / Ignorance: "実装見てないので推測ですが"
 
-### 5.7 Conclusions
+### 5.8 Conclusions
 
 ❌ Neat synthesis: "結局、核心は3つ：1. 〜"
 ✅ Messy: End abruptly, raise questions, admit limitations
@@ -433,9 +384,7 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ## ⚠️ TOP AI TELLS TO AVOID
 
-**CRITICAL (0 tolerance)**:
-- Forbidden patterns (てる。、で、、colons in prose)
-- **SEASON 4**: Fabricated personal experiences (see Pattern 3 forbidden list)
+**CRITICAL (0 tolerance)**: Forbidden patterns (てる。、で、、colons in prose)
 
 **BASE SCORE CAPS**:
 - Low です/ます (40-44% caps at 8.5; <40% unpublishable)
@@ -446,11 +395,10 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 - Perfect code (show bugs → fixes)
 - Complete resolution (need 2-3 unresolved elements)
 - Uniform depth (vary wildly by interest)
-- **SEASON 4**: Specific fake project references with metrics (BLOCKER)
 
 ---
 
-## 📊 SUCCESS PATTERNS (Iterations 5-7 & 10 Learning)
+## 📊 SUCCESS PATTERNS (Iterations 5-7 Learning)
 
 **Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
 **Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
@@ -465,18 +413,11 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 3. Author voice: 8+ uhyo patterns (see Section 👤) - Iteration 7: 10/10 patterns
 4. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
 5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
-6. **SEASON 4**: Zero fabricated personal experiences - NEW requirement
 
 **Iteration 7 & 10 Achievement**: Both achieved 9.5/10, proving the formula works consistently. Iteration 10 demonstrated **internalized mastery** by recovering from Iterations 8-9 regressions.
 
 ---
 
-**Last updated:** Season 4 (Authenticity Constraint)
-**Version:** 3.0 (Season 4: Removing Fabricated Experiences)
-**Changes from v2.10**:
-- Pattern 3: Replaced with comprehensive allowed/forbidden "筆者" patterns
-- Pattern 4: Removed project depth levels (kept meta-commentary)
-- Section 5.4: Added Season 4 constraint (no fabricated anecdotes)
-- Section 5.5: Removed entirely (encouraged fabrication)
-- Pre-submission checklist: Added fabrication verification
-**Line count:** ~475 lines
+**Last updated:** Iteration 10 (Documentation refinement)
+**Version:** 2.10 (Season 3: Proven mastery achieved)
+**Line count:** ~420 lines (stable - style guide proven effective)
