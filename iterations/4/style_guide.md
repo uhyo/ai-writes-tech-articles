@@ -189,24 +189,13 @@ published: true
 
 ### Pattern 1: Opening Formula ⭐ CRITICAL
 
-**Structure**: "皆さんこんにちは。" + RICH contextual framing + Topic with **bold**
-
-**Context must be RICH and SITUATIONAL, not just factual announcements:**
-
-✅ **Connect to reader experience**: "React、使っていますか？" "TypeScriptで型パズルに悩んだことはありませんか？"
-✅ **Reference community discussion**: "最近のReact界隈で話題になっているのは" "Twitterで見かけた〜の議論"
-✅ **Express curiosity/motivation**: "筆者が気になっていたのは" "ふと疑問に思ったのですが"
-✅ **Temporal context + personal angle**: "先日、**Biome v2**がリリースされましたが、筆者は早速試してみました"
-
-❌ **Bare announcements**: "先日、React 19がリリースされました。これは〜" (too news-report style)
-❌ **Direct factual**: "Next.js 15には新機能があります。" (lacks personal/situational connection)
-
-**Goal**: Make readers feel PERSONALLY CONNECTED to the topic, not just informed about it. The opening should bridge from reader's experience/concerns to the technical topic.
+**Structure**: "皆さんこんにちは。" + Temporal/situational context + Topic with **bold**
 
 **Examples**:
-✅ "皆さんこんにちは。React、使っていますか？最近気になっているのは**useフック**の挙動です。"
-✅ "皆さんこんにちは。最近のReact界隈で話題になっているのは、**Server Components**の設計判断です。"
-✅ "皆さんこんにちは。先日、**Biome v2**がリリースされ話題となりました。筆者も早速試してみたところ、気になる点がいくつか見つかりました。"
+✅ "皆さんこんにちは。先日、**Biome v2**がリリースされ話題となりました。"
+✅ "皆さんこんにちは。Reactのデータ再取得について、最近面白い気づきがあったので共有します。"
+
+**Elements**: Greeting → Recent event/observation → Key term (bold) → Bridge to topic
 
 ### Pattern 2: Systematic Investigation ⭐ CRITICAL
 
@@ -313,27 +302,13 @@ Example: "筆者としては、これからどうなるかまた見守ってい�
 
 **NOT**: Definitive closure ("以上、解説しました。" ← tutorial-like)
 
-### Pattern 6: Zenn Formatting (1-3 blocks recommended) OR Footnotes
+### Pattern 6: Zenn Formatting (0-2 blocks) OR Footnotes
 
-**WHEN TO USE** (be more liberal with :::details):
-
-`:::message` - Use for (1 per article if applicable):
-- Version-specific caveats: "この記事はNext.js 14.0時点の挙動です。"
-- Important warnings/gotchas: "この機能には重大な制約があります。"
-- Scope limitations: "この記事では基本的な使い方のみ扱います。"
-- **If article has version-specific information**: :::message is expected
-
-`:::details` - **Use MORE LIBERALLY** (1-2+ per article):
-- Tangential deeper technical explanations that would disrupt main flow
-- Advanced examples for experienced readers: ":::details 上級者向け：カスタム実装"
-- Historical context or background: ":::details この機能が生まれた経緯"
-- Alternative approaches: ":::details 別のアプローチ"
-- Corrections/updates: ":::details 補足：2024年12月追記"
-- Related tool/library deep dives
-
-**TARGET**: 2-3 formatting blocks per article (1 :::message + 1-2 :::details is ideal)
-
-**⚠️ ITERATION 4 INSIGHT**: Only 1 :::message block is conservative. More liberal :::details usage (for tangents, advanced topics, alternative approaches) strengthens author voice without disrupting main narrative.
+**WHEN TO USE**:
+- `:::message` for version-specific caveats or important warnings (use when article discusses specific versions)
+- `:::details 補足的な話` for tangential explorations that would disrupt main flow
+- **If article has version-specific information**: :::message is expected (not optional)
+- **If no natural use case**: Absence is acceptable
 
 **EXAMPLES**:
 ```
@@ -344,24 +319,18 @@ Example: "筆者としては、これからどうなるかまた見守ってい�
 
 ```
 :::details カスタムエラーのシリアライゼーションについて
-Server Actionsのエラーは自動的にシリアライゼーションされますが、カスタムエラークラスを使っている場合は注意が必要です。エラーの`message`プロパティのみがシリアライゼーションされ、他のプロパティは失われます。
+Server Actionsのエラーは...
 :::
 ```
 
-```
-:::details 上級者向け：コンパイラの内部実装
-興味がある方向けに補足ですが、React Compilerの静的解析は...
-:::
-```
+**FREQUENCY**: 0-2 blocks per article (1 is most natural when applicable)
 
-**⭐ FOOTNOTES AS ALTERNATIVE**:
-Footnotes [^note] can substitute or complement Zenn blocks:
+**⭐ ITERATION 2 INSIGHT - FOOTNOTES AS ALTERNATIVE**:
+Footnotes [^note] can effectively substitute for Zenn blocks when adding asides or context:
 - **Version/RFC references**: `ReactのRFC[^rfc]でも議論されていました` + `[^rfc]: React Working Groupでは、useフックの仕様について長い議論が行われていました。`
 - **Technical clarifications**: `useは例外的にこのルールが緩和されています[^1]` + `[^1]: 従来のフックルールでは条件分岐の中でフックを呼ぶことは禁止されていました。`
-- **Target**: 1-2 footnotes per article (all human benchmarks use them)
-- **Iteration 2 pattern**: 2 footnotes compensated for 0 Zenn blocks → 9.0/10 achieved
-
-**STRATEGY**: Use :::details for longer tangents (3+ sentences), footnotes for brief asides (1-2 sentences). Both add authenticity and depth.
+- Footnotes maintain flow while providing depth (all human benchmark articles use them)
+- **Iteration 2 pattern**: 2 footnotes compensated for missing :::message/:::details blocks → 9.0/10 achieved
 
 ### Pattern 7: Code-Driven Narrative
 
@@ -590,11 +559,13 @@ Definitive: "useRefは再レンダリングを引き起こさない" / Speculati
 
 ---
 
-**Last updated:** Season 4, Iteration 4
-**Version:** 3.4 (Season 4: Refining Opening Formula & Zenn Block Usage)
-**Changes from v3.3**:
-- Pattern 1 (Opening Formula): Enhanced with richer contextual framing guidance - connect to reader experience, reference community, express curiosity (addresses Iter 4 gap: 0.5→1.0 potential)
-- Pattern 6 (Zenn Formatting): Expanded :::details usage guidelines - more liberal application for tangents, advanced topics, alternatives; target increased to 2-3 blocks (addresses Iter 4 gap: 0.5→1.0 potential)
-- Both changes target the two specific gaps identified in Iteration 4 review (8.5/10 limited by author voice)
-- Focus: Path to 9.0+ requires gaining 1 more author voice point through these improvements
-**Line count:** ~590 lines
+**Last updated:** Season 4, Iteration 3
+**Version:** 3.3 (Season 4: First 9.5+ Achievement - Formula Validated)
+**Changes from v3.2**:
+- Pattern 8: Clarified bold usage preference (4-5 preferred over minimum of 3) based on Iter 3 reviewer feedback
+- Pattern 9: Added pitfall title pattern ("〜の罠") and investigation framing as exemplars (Iters 2 & 3)
+- Pattern 3: Consolidated exemplars from Iterations 2 & 3, added "筆者の考えでは" / "筆者としては" as proven phrases
+- SUCCESS PATTERNS: Added Iteration 3 (9.5/10) - FIRST 9.5+ in Season 4, validates authentic uhyo voice formula
+- Pre-submission checklist: Added typo proofread step (Iter 3 had character input error)
+- Proven Formula: Updated with learnings from both 9.0 and 9.5 achievements (article length range, です/ます scaling, ecosystem refs)
+**Line count:** ~560 lines
