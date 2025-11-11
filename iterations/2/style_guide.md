@@ -80,12 +80,9 @@ Before submitting, scan entire article for:
 - **0-14 endings**: ❌ UNPUBLISHABLE (publication blocker)
 - **15-31 endings**: ⚠️ Caps at 7.0-7.5/10 (blog tone)
 - **32-39 endings**: ⚠️ Caps at 8.0/10 (too casual for technical article)
-- **40-49 endings**: ✅ Required for 9.0+ eligibility (minimum threshold)
-- **50-60 endings**: ✅✅ OPTIMAL for 9.0+ (target for 9.2-9.5 scores)
-- **61-70 endings**: ✅ Excellent for longer articles
+- **40-49 endings**: ✅ Required for 9.0+ eligibility (target zone)
+- **50-70 endings**: ✅ OPTIMAL for 9.0+ (preferred range)
 - **70+ endings**: Possibly too formal (rare issue)
-
-**⚠️ ITERATION 2 INSIGHT**: 49 endings achieved 9.0/10, but reviewer noted it's at lower boundary. For consistent 9.0+ and potential 9.2-9.5 scores, target **50-60 endings** to provide buffer above minimum threshold.
 
 **⚠️ CRITICAL INSIGHT (from Iteration 6 failure)**:
 - Iteration 5: 51 endings (231 lines, 22.1%) = 9.3/10 ✅
@@ -103,10 +100,8 @@ Before submitting, scan entire article for:
 2. Search for です。: Count manually, record exact number
 3. Search for ます。: Count manually, record exact number
 4. **Total must be ≥40 for 9.0+ eligibility** (NOT negotiable)
-5. **Target 50-60 for consistent 9.0+ and potential 9.2-9.5 scores** (buffer above minimum)
-6. Verify count accuracy: Re-count to confirm (±1 tolerance only)
-7. If <40 endings: Expand article OR convert casual sentences to です/ます
-8. If 40-49 endings: Consider adding 5-10 more polite sentences for stronger foundation
+5. Verify count accuracy: Re-count to confirm (±1 tolerance only)
+6. If <40 endings: Expand article OR convert casual sentences to です/ます
 
 **⚠️ ACCURACY WARNING**: Writer claiming "47 endings" when actual is 32 (32% error) = PUBLICATION BLOCKER. Must manually verify.
 
@@ -215,20 +210,14 @@ published: true
 
 #### ✅ ALLOWED Patterns
 
-**⭐ ITERATION 2 EXEMPLARS** (5 uses, all authentic, 9.0/10 achieved):
-
 1. **Reactions to findings shown in the article**
    - "筆者はここの結果が一番驚きだったのですが"
    - "個人的にはちょっとびっくりしました"
-   - ✅ **Iter 2 example**: "筆者はここの挙動が一番興味深かったのですが、Reactはどうやってコンポーネントを「再開」しているのでしょうか。" (reacting to suspension behavior shown in article)
-   - ✅ **Iter 2 example**: "この挙動は筆者にとって予想外でした。エラーケースでもSuspenseが関与するとは思っていませんでした。" (surprise at error boundary behavior)
    - **Constraint**: Must react to code/tests actually shown in the article
 
 2. **Opinions & interpretations**
    - "筆者の考えでは", "筆者の意見では", "筆者の解釈では"
    - "筆者としては、これからどうなるかまた見守っていきたいと思います"
-   - ✅ **Iter 2 example**: "筆者の考えでは、この挙動がuseフックの最大の利点だと思います。" (opinion on technology value)
-   - ✅ **Iter 2 example**: "筆者としては、Promiseの共有によるリクエスト重複の回避が最も実用的な利点だと感じました。" (subjective value judgment)
    - **Constraint**: Must be subjective views, not factual claims
 
 3. **Concerns & speculation**
@@ -239,7 +228,6 @@ published: true
 4. **Admitting limitations**
    - "筆者はまだ試していないのですが"
    - "筆者の力が足りないので説明できません"
-   - ✅ **Iter 2 example**: "筆者はまだ試していないのですが、useTransitionと組み合わせた場合の挙動も気になっています。" (honest admission of untested scenario)
    - **Constraint**: Honest admission of not having done something
 
 5. **Personal terminology/naming**
@@ -304,7 +292,7 @@ Example: "筆者としては、これからどうなるかまた見守ってい�
 
 **NOT**: Definitive closure ("以上、解説しました。" ← tutorial-like)
 
-### Pattern 6: Zenn Formatting (0-2 blocks) OR Footnotes
+### Pattern 6: Zenn Formatting (0-2 blocks)
 
 **WHEN TO USE**:
 - `:::message` for version-specific caveats or important warnings (use when article discusses specific versions)
@@ -327,25 +315,9 @@ Server Actionsのエラーは...
 
 **FREQUENCY**: 0-2 blocks per article (1 is most natural when applicable)
 
-**⭐ ITERATION 2 INSIGHT - FOOTNOTES AS ALTERNATIVE**:
-Footnotes [^note] can effectively substitute for Zenn blocks when adding asides or context:
-- **Version/RFC references**: `ReactのRFC[^rfc]でも議論されていました` + `[^rfc]: React Working Groupでは、useフックの仕様について長い議論が行われていました。`
-- **Technical clarifications**: `useは例外的にこのルールが緩和されています[^1]` + `[^1]: 従来のフックルールでは条件分岐の中でフックを呼ぶことは禁止されていました。`
-- Footnotes maintain flow while providing depth (all human benchmark articles use them)
-- **Iteration 2 pattern**: 2 footnotes compensated for missing :::message/:::details blocks → 9.0/10 achieved
-
 ### Pattern 7: Code-Driven Narrative
 
 **Rhythm**: Code → Explain → Test → Result → Reaction
-
-**⭐ ITERATION 2 INSIGHT - INVESTIGATION PACING**:
-Use "question → test → result → reflection" rhythm for deep dives:
-1. **Pose question**: "では、同じPromiseインスタンスを複数のコンポーネントでuseしたらどうなるでしょうか。"
-2. **Show test code**: Present experiment that explores the question
-3. **Document result**: "このパターンを試してみたところ、なんと両方のコンポーネントが同じPromiseを共有できました。"
-4. **Reflect on finding**: "筆者の考えでは、この挙動がuseフックの最大の利点だと思います。"
-
-This creates a natural investigative flow that engages readers and justifies authentic "筆者" reactions.
 
 ### Pattern 8: Strategic Bold (3-5 terms) ⚠️ ESSENTIAL
 
@@ -512,44 +484,32 @@ Definitive: "useRefは再レンダリングを引き起こさない" / Speculati
 
 ---
 
-## 📊 SUCCESS PATTERNS (Season 3 & Season 4 Learning)
+## 📊 SUCCESS PATTERNS (Iterations 5-7 & 10 Learning)
 
-### Season 3 Achievements (with fabrication):
 **Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
 **Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
 **Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD**
 **Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY**
 
-### Season 4 Achievement (authentic patterns only):
-**🎯 Iteration 2 (9.0/10)**: 49 endings, 240 lines, 9.0/10 author voice, 4 sections, 0 violations, **PASS fabrication** ✅✅
-- **FIRST Season 4 article to achieve 9.0+/10 with ZERO fabricated experiences**
-- 5 "筆者" uses, all authentic patterns (reactions, opinions, limitations)
-- Proves uhyo voice achievable with authenticity constraints
-- Footnotes compensated for missing Zenn blocks
-- Investigation pacing: question → test → result → reflection
-- Questioning title style: "React 19のuseフックは本当にPromiseを直接扱えるのか"
+**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 endings).
 
-**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 minimum, 50-60 optimal).
+**Proven 9.0+ Formula** (validated by Iteration 7's 9.5/10):
+1. Article length: 180-230 lines (sweet spot) - Iteration 7: 218 lines
+2. です/ます: 50-70 absolute count optimal (40+ minimum) - Iteration 7: 55 endings
+3. Author voice: 8+ uhyo patterns (see Section 👤) - Iteration 7: 10/10 patterns
+4. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
+5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
+6. **SEASON 4**: Zero fabricated personal experiences - NEW requirement
 
-**Proven 9.0+ Formula** (validated by Season 3 Iter 7 & Season 4 Iter 2):
-1. Article length: 180-230 lines (sweet spot) - Iter 2: 240 lines (slightly high but acceptable)
-2. です/ます: 50-60 absolute count optimal (40+ minimum) - Iter 2: 49 endings (at threshold)
-3. Author voice: 8+ uhyo patterns (see Section 👤) - Iter 2: 9/10 patterns
-4. Zero forbidden patterns (see Section ⚠️) - Iter 2: 0 violations
-5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iter 2: RFC reference
-6. **SEASON 4**: Zero fabricated personal experiences - Iter 2: PASS ✅
-
-**Season 4 Working Formula**: Systematic code investigation + meta-commentary on shown results + honest limitation admissions = authentic uhyo voice without fabrication.
+**Iteration 7 & 10 Achievement**: Both achieved 9.5/10, proving the formula works consistently. Iteration 10 demonstrated **internalized mastery** by recovering from Iterations 8-9 regressions.
 
 ---
 
-**Last updated:** Season 4, Iteration 2
-**Version:** 3.2 (Season 4: First 9.0+ Achievement with Authentic Patterns)
-**Changes from v3.1**:
-- Section 2: Updated です/ます guidance - recommend 50-60 for 9.0+ (not just 40+ minimum) based on Iter 2 achieving 9.0 at 49 endings
-- Pattern 3: Added 5 exemplary "筆者" usage patterns from Iteration 2 (all authentic, PASS fabrication)
-- Pattern 6: Added footnotes as effective alternative to Zenn formatting blocks (Iter 2 used 2 footnotes → 9.0/10)
-- Pattern 7: Documented "question → test → result → reflection" investigation pacing rhythm from Iter 2
-- SUCCESS PATTERNS: Added Season 4 Iteration 2 as first 9.0+ achievement with ZERO fabricated experiences
-- Pre-submission checklist: Added step 8 for 40-49 endings (consider adding 5-10 more for stronger foundation)
-**Line count:** ~545 lines
+**Last updated:** Season 4, Iteration 1
+**Version:** 3.1 (Season 4: Authenticity + Depth Variation)
+**Changes from v3.0**:
+- Section 5.4: Strengthened code evolution requirement (at least ONE iteration required)
+- Section 5.5: Enhanced dramatic depth variation with 8:1+ ratio requirement
+- Section 🟢 POLISH: Elevated footnotes from optional to recommended (all human benchmarks use them)
+- Pre-submission checklist: Added footnote recommendation
+**Line count:** ~485 lines
