@@ -157,7 +157,6 @@ published: true
 - [ ] **Target: 50-70 endings for 9.0+** (long articles >250 lines need proportionally more)
 - [ ] Main declarative sentences use です/ます (70-80% of main sentences)
 - [ ] **SEASON 4: ZERO fabricated personal experiences** (see Pattern 3 for verification procedure)
-- [ ] **Proofread for typos** (especially character input errors like 混乔 vs 混乱)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: At least ONE bug → fix OR unexpected result → investigation
@@ -169,7 +168,7 @@ published: true
 
 ### ✅ BASIC QUALITY
 - [ ] **Maximum 6-7 H2 sections** (8+ = encyclopedic, caps at 8.5)
-- [ ] **4-5 strategic bold TERMS preferred** (3 is minimum; 1-4 words max; <3 = caps at 8.5)
+- [ ] **3-5 strategic bold TERMS** (1-4 words max; no full clauses; <3 = caps at 8.5)
 - [ ] 1-2 conceptual frameworks (meta-insights that reframe understanding)
 - [ ] Technical accuracy verified
 - [ ] Version information
@@ -216,38 +215,41 @@ published: true
 
 #### ✅ ALLOWED Patterns
 
-**⭐ EXEMPLARS** (Iterations 2 & 3, all authentic, 9.0-9.5/10):
+**⭐ ITERATION 2 EXEMPLARS** (5 uses, all authentic, 9.0/10 achieved):
 
 1. **Reactions to findings shown in the article**
-   - "筆者はここの結果が一番驚きだったのですが" / "個人的にはちょっとびっくりしました"
-   - ✅ **Iter 2**: "筆者はここの挙動が一番興味深かったのですが、Reactはどうやってコンポーネントを「再開」しているのでしょうか。"
-   - ✅ **Iter 3**: "筆者はここの挙動が一番意外だったのですが" (reacting to revalidate discovery)
+   - "筆者はここの結果が一番驚きだったのですが"
+   - "個人的にはちょっとびっくりしました"
+   - ✅ **Iter 2 example**: "筆者はここの挙動が一番興味深かったのですが、Reactはどうやってコンポーネントを「再開」しているのでしょうか。" (reacting to suspension behavior shown in article)
+   - ✅ **Iter 2 example**: "この挙動は筆者にとって予想外でした。エラーケースでもSuspenseが関与するとは思っていませんでした。" (surprise at error boundary behavior)
    - **Constraint**: Must react to code/tests actually shown in the article
 
 2. **Opinions & interpretations**
-   - Common phrases: "筆者の考えでは" / "筆者としては" / "筆者の意見では"
-   - ✅ **Iter 2**: "筆者の考えでは、この挙動がuseフックの最大の利点だと思います。"
-   - ✅ **Iter 3**: "筆者の考えでは、この仕様は直感的ではないと思います。" (opinion on API design)
-   - ✅ **Iter 3**: "筆者としては、この設計判断には疑問があります。" (architectural opinion)
+   - "筆者の考えでは", "筆者の意見では", "筆者の解釈では"
+   - "筆者としては、これからどうなるかまた見守っていきたいと思います"
+   - ✅ **Iter 2 example**: "筆者の考えでは、この挙動がuseフックの最大の利点だと思います。" (opinion on technology value)
+   - ✅ **Iter 2 example**: "筆者としては、Promiseの共有によるリクエスト重複の回避が最も実用的な利点だと感じました。" (subjective value judgment)
    - **Constraint**: Must be subjective views, not factual claims
 
 3. **Concerns & speculation**
-   - "筆者は...について心配なことがありました" / "筆者としてはまだ答えを出せていません"
-   - ✅ **Iter 3**: "筆者の考えでは、せめて開発モードで警告を出してくれれば" (concern about DX)
+   - "筆者は...について心配なことがありました"
+   - "筆者としてはまだ答えを出せていません"
    - **Constraint**: Future uncertainties, not past experiences
 
 4. **Admitting limitations**
-   - "筆者はまだ試していないのですが" / "筆者の力が足りないので説明できません"
-   - ✅ **Iter 2**: "筆者はまだ試していないのですが、useTransitionと組み合わせた場合の挙動も気になっています。"
-   - ✅ **Iter 3**: "筆者はまだ試していないのですが、Server Actionsと組み合わせた場合の挙動も気になっています。"
+   - "筆者はまだ試していないのですが"
+   - "筆者の力が足りないので説明できません"
+   - ✅ **Iter 2 example**: "筆者はまだ試していないのですが、useTransitionと組み合わせた場合の挙動も気になっています。" (honest admission of untested scenario)
    - **Constraint**: Honest admission of not having done something
 
 5. **Personal terminology/naming**
-   - "筆者は個人的にこの書き方を〜と呼んでいます" / "筆者が今考えた訳語"
+   - "筆者は個人的にこの書き方を〜と呼んでいます"
+   - "筆者が今考えた訳語"
    - **Constraint**: Naming only, not implementation stories
 
 6. **Vague preferences (no details)**
-   - "筆者はこちらの方が好みです" / "筆者としては...を好んでいます"
+   - "筆者はこちらの方が好みです"
+   - "筆者としては...を好んでいます"
    - **Constraint**: Preference only, no fake history explaining why
 
 #### ❌ FORBIDDEN Patterns (ZERO TOLERANCE)
@@ -347,7 +349,7 @@ This creates a natural investigative flow that engages readers and justifies aut
 
 ### Pattern 8: Strategic Bold (3-5 terms) ⚠️ ESSENTIAL
 
-**Bold key technical TERMS on first introduction ONLY.** Target 4-5 per article (3 is minimum, 4-5 is preferable).
+**Bold key technical TERMS on first introduction ONLY.** 3-5 per article.
 
 **WHAT TO BOLD**:
 ✅ Technical terms/concepts (1-4 words max): **Server Actions**, **型推論**, **並列処理の強化**, **インクリメンタルビルド**
@@ -357,21 +359,17 @@ This creates a natural investigative flow that engages readers and justifies aut
 ❌ Section labels in prose: "**良い点**: ビルドが速い" "**テストプロジェクト**: React 18"
 ❌ Full clauses/sentences: "**クライアント側でcatchしていないのに、アプリケーション全体がクラッシュしない**"
 ❌ Concepts or ideas longer than 4 words
+❌ Generic descriptive phrases
 
 **PRECISION RULE**: If bold is longer than 4 words, it's probably wrong. Bold should be technical TERMS, not explanatory CLAUSES.
-
-**Target Rationale**: While 3 terms meets minimum requirements, 4-5 provides richer emphasis and stronger uhyo voice. Iteration 3 achieved 9.5/10 with only 3 terms, but reviewer noted 4-5 would strengthen voice further.
 
 **<3 terms = caps score at 8.5/10** (weak uhyo voice marker)
 
 ### Pattern 9: Title Style
 
-**Effective patterns**:
-- Specific versions: "Biome v2の型推論を**試して限界を知る**"
-- Pitfall/trap framing: "Next.js 15のキャッシュ戦略における予期しない挙動の罠" (Iter 3: 9.5/10)
-- Investigation framing: "React 19のuseフックは本当にPromiseを直接扱えるのか" (Iter 2: 9.0/10)
+Include specific versions: "Biome v2の型推論を**試して限界を知る**"
 
-**Avoid**: Generic ("〜について") or tutorial ("〜の完全ガイド")
+Avoid: Generic ("〜について") or tutorial ("〜の完全ガイド")
 
 ---
 
@@ -522,9 +520,8 @@ Definitive: "useRefは再レンダリングを引き起こさない" / Speculati
 **Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD**
 **Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY**
 
-### Season 4 Achievements (authentic patterns only):
-
-**🎯 Iteration 2 (9.0/10)**: 49 endings, 240 lines, 9.0/10 author voice, 4 sections, 0 violations, **PASS fabrication** ✅
+### Season 4 Achievement (authentic patterns only):
+**🎯 Iteration 2 (9.0/10)**: 49 endings, 240 lines, 9.0/10 author voice, 4 sections, 0 violations, **PASS fabrication** ✅✅
 - **FIRST Season 4 article to achieve 9.0+/10 with ZERO fabricated experiences**
 - 5 "筆者" uses, all authentic patterns (reactions, opinions, limitations)
 - Proves uhyo voice achievable with authenticity constraints
@@ -532,40 +529,27 @@ Definitive: "useRefは再レンダリングを引き起こさない" / Speculati
 - Investigation pacing: question → test → result → reflection
 - Questioning title style: "React 19のuseフックは本当にPromiseを直接扱えるのか"
 
-**🎯 Iteration 3 (9.5/10)**: 68 endings, 296 lines, 9.0/10 author voice, 5 sections, 0 violations, **PASS fabrication** ✅✅
-- **FIRST 9.5+ score in Season 4 - validates authentic uhyo voice formula**
-- 6 "筆者" uses, all authentic patterns (reactions, opinions, concerns, limitations)
-- Pitfall title pattern: "Next.js 15のキャッシュ戦略における予期しない挙動の罠"
-- 68 です/ます (upper range, natural flow for longer article)
-- Strong systematic investigation: basic → variations → discoveries → related topics
-- 8+ meta-commentary instances creating engaging narrative
-- 4 ecosystem references (2 GitHub issues, community mentions)
-- 1 :::message block for version caveat
-- 2 footnotes for technical context
-- Minor notes: 3 bold terms (minimum; 4-5 would strengthen further), 1 typo
+**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 minimum, 50-60 optimal).
 
-**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 minimum, 50-70 optimal for longer articles).
+**Proven 9.0+ Formula** (validated by Season 3 Iter 7 & Season 4 Iter 2):
+1. Article length: 180-230 lines (sweet spot) - Iter 2: 240 lines (slightly high but acceptable)
+2. です/ます: 50-60 absolute count optimal (40+ minimum) - Iter 2: 49 endings (at threshold)
+3. Author voice: 8+ uhyo patterns (see Section 👤) - Iter 2: 9/10 patterns
+4. Zero forbidden patterns (see Section ⚠️) - Iter 2: 0 violations
+5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iter 2: RFC reference
+6. **SEASON 4**: Zero fabricated personal experiences - Iter 2: PASS ✅
 
-**Proven 9.0+ Formula** (validated by Season 4 Iter 2 & 3):
-1. Article length: 180-300 lines (validated range: 240-296 lines for 9.0-9.5/10)
-2. です/ます: Scale with length (49 for 240 lines = 9.0; 68 for 296 lines = 9.5)
-3. Author voice: 8-9+ uhyo patterns (see Section 👤) - Both: 9-10/10 patterns
-4. Zero forbidden patterns (see Section ⚠️) - Both: 0 violations
-5. Ecosystem context: 2-4 GitHub issues/PRs or community refs
-6. "筆者" usage: 5-6 times, all authentic patterns (reactions, opinions, limitations, concerns)
-7. **SEASON 4**: Zero fabricated personal experiences - Both: PASS ✅
-
-**Season 4 Working Formula**: Systematic code investigation + meta-commentary on shown results + honest limitation admissions + authentic opinions on design/direction = uhyo voice without fabrication.
+**Season 4 Working Formula**: Systematic code investigation + meta-commentary on shown results + honest limitation admissions = authentic uhyo voice without fabrication.
 
 ---
 
-**Last updated:** Season 4, Iteration 3
-**Version:** 3.3 (Season 4: First 9.5+ Achievement - Formula Validated)
-**Changes from v3.2**:
-- Pattern 8: Clarified bold usage preference (4-5 preferred over minimum of 3) based on Iter 3 reviewer feedback
-- Pattern 9: Added pitfall title pattern ("〜の罠") and investigation framing as exemplars (Iters 2 & 3)
-- Pattern 3: Consolidated exemplars from Iterations 2 & 3, added "筆者の考えでは" / "筆者としては" as proven phrases
-- SUCCESS PATTERNS: Added Iteration 3 (9.5/10) - FIRST 9.5+ in Season 4, validates authentic uhyo voice formula
-- Pre-submission checklist: Added typo proofread step (Iter 3 had character input error)
-- Proven Formula: Updated with learnings from both 9.0 and 9.5 achievements (article length range, です/ます scaling, ecosystem refs)
-**Line count:** ~560 lines
+**Last updated:** Season 4, Iteration 2
+**Version:** 3.2 (Season 4: First 9.0+ Achievement with Authentic Patterns)
+**Changes from v3.1**:
+- Section 2: Updated です/ます guidance - recommend 50-60 for 9.0+ (not just 40+ minimum) based on Iter 2 achieving 9.0 at 49 endings
+- Pattern 3: Added 5 exemplary "筆者" usage patterns from Iteration 2 (all authentic, PASS fabrication)
+- Pattern 6: Added footnotes as effective alternative to Zenn formatting blocks (Iter 2 used 2 footnotes → 9.0/10)
+- Pattern 7: Documented "question → test → result → reflection" investigation pacing rhythm from Iter 2
+- SUCCESS PATTERNS: Added Season 4 Iteration 2 as first 9.0+ achievement with ZERO fabricated experiences
+- Pre-submission checklist: Added step 8 for 40-49 endings (consider adding 5-10 more for stronger foundation)
+**Line count:** ~545 lines
