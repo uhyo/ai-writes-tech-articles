@@ -154,11 +154,12 @@ published: true
 - [ ] **SEASON 4: ZERO fabricated personal experiences** (see Pattern 3 for verification procedure)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
-- [ ] Code evolution: bug → fix OR V1 → V2 iterations
+- [ ] Code evolution: At least ONE bug → fix OR unexpected result → investigation
 - [ ] 2-3 unresolved elements: speculation, "まだ試してない", abandoned tangents
 - [ ] **Ecosystem context: 1-2 GitHub refs OR community mentions** (required for 9.0+)
-- [ ] Dramatically uneven depth (15 para on favorite topic, 2 sentences on boring one)
+- [ ] Dramatically uneven depth: 8:1+ ratio (15+ para on favorite, 2-3 sentences on boring)
 - [ ] Messy conclusion (no numbered synthesis)
+- [ ] **1-2 footnotes** for technical asides (seen in all human benchmarks)
 
 ### ✅ BASIC QUALITY
 - [ ] **Maximum 6-7 H2 sections** (8+ = encyclopedic, caps at 8.5)
@@ -379,10 +380,17 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 ### 5.4 Code Evolution & Ecosystem Context ⚠️ ESSENTIAL
 
-**Code evolution** (showing iteration):
+**Code evolution** (showing iteration) - **REQUIRED: At least ONE iteration/discovery**:
 - Code → "あ、これundefinedで落ちる" → fix
 - Code → test → "なんと、エラーが出ました" → investigation
+- Discovery narrative: "試してみると、なんと〜でした" "残念ながら〜は検知されませんでした"
 - **SEASON 4 CONSTRAINT**: Evolution must be shown in the article itself, not from fake past experience
+- **ANTI-PATTERN**: All code examples work perfectly on first try = AI tell
+
+**Specific patterns to use:**
+- Show unexpected results: "実行すると、意外なことに〜"
+- Document failed attempts: "これを試したが、残念ながら動作しなかった"
+- Edge case discoveries: "〜のケースでは予想外の挙動を示しました"
 
 **Ecosystem context - MANDATORY for 9.0+** (at least 1-2 references):
 - GitHub issues/PRs: "(#2851とか)" "issue #XXXで..." ← ✅ COUNTS
@@ -401,10 +409,20 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 **CRITICAL: Maximum 6-7 H2 sections** (8+ caps at 8.5, encyclopedic feel)
 - Avoid subsection hierarchies (H3 lists = textbook)
-- **Wild depth variation**: Favorite = 15 para, Boring = 2 sentences
+- **DRAMATIC depth variation required**: Ratio 8:1 or MORE between longest and shortest sections
+  * Favorite topic: 15+ paragraphs, multiple code examples, deep exploration
+  * Boring/necessary topic: 2-3 sentences, minimal elaboration, move on quickly
+  * Interest-driven depth, NOT systematic coverage of all aspects equally
 
-❌ AI tell: 10+ sections, even treatment
-✅ Human: 6 sections, wild variation (15 para, 2 para, 8 para, 3 para, 12 para, 5 para)
+**Examples of wild variation:**
+✅ Section 1: 18 para (deep dive on fascinating edge case)
+✅ Section 2: 2 sentences (boring but necessary background)
+✅ Section 3: 9 para (interesting application)
+✅ Section 4: 3 para (moderate depth)
+
+❌ AI tell: All sections 5-8 paragraphs (uniform treatment)
+❌ AI tell: 10+ sections, even treatment across all topics
+✅ Human: 6 sections with 8:1+ depth ratio based on interest
 
 ### 5.6 Vary Assertion Strength
 
@@ -425,9 +443,25 @@ Definitive: "useRefは再レンダリングを引き起こさない" / Speculati
 
 ❌ AI tell: One imperfection per section, evenly spaced
 
-### Footnotes & Side Content
+### Footnotes & Side Content ⚠️ RECOMMENDED
 
-Footnotes for technical asides: "この機能は便利です[^1]。" / `:::details 余談` for digressions
+**Footnotes** (1-2 per article adds authenticity):
+- Use for technical asides that would disrupt main flow
+- Background information: "esbuildの作者として知られる方です[^1]"
+- Version compatibility notes: "この機能はNode.js 18以降で動作します[^2]"
+- Minor corrections or clarifications
+
+**Format**:
+```markdown
+本文での参照[^note_1]
+
+[^note_1]: 補足的な説明や背景情報
+```
+
+**Observation**: 4/4 human benchmark articles contain footnotes. Absence is noticeable.
+
+**Zenn details blocks** for longer digressions:
+`:::details 余談` for tangential explorations (0-2 per article)
 
 ---
 
@@ -471,12 +505,11 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Season 4 (Authenticity Constraint)
-**Version:** 3.0 (Season 4: Removing Fabricated Experiences)
-**Changes from v2.10**:
-- Pattern 3: Replaced with comprehensive allowed/forbidden "筆者" patterns
-- Pattern 4: Removed project depth levels (kept meta-commentary)
-- Section 5.4: Added Season 4 constraint (no fabricated anecdotes)
-- Section 5.5: Removed entirely (encouraged fabrication)
-- Pre-submission checklist: Added fabrication verification
-**Line count:** ~475 lines
+**Last updated:** Season 4, Iteration 1
+**Version:** 3.1 (Season 4: Authenticity + Depth Variation)
+**Changes from v3.0**:
+- Section 5.4: Strengthened code evolution requirement (at least ONE iteration required)
+- Section 5.5: Enhanced dramatic depth variation with 8:1+ ratio requirement
+- Section 🟢 POLISH: Elevated footnotes from optional to recommended (all human benchmarks use them)
+- Pre-submission checklist: Added footnote recommendation
+**Line count:** ~485 lines
