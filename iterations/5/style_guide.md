@@ -575,42 +575,26 @@ Definitive: "useRefは再レンダリングを引き起こさない" / Speculati
 - 2 footnotes for technical context
 - Minor notes: 3 bold terms (minimum; 4-5 would strengthen further), 1 typo
 
-**🎯 Iteration 5 (9.2/10)**: 50 endings, 231 lines, 9.5/10 author voice, 6 sections, 0 violations, **PASS fabrication** ✅✅
-- **VALIDATES v3.4 enhancements - third consecutive 9.0+ success**
-- 5 "筆者" uses, all authentic patterns (desire, reaction, opinion, limitation, forward-looking)
-- Personal desire title pattern: "TypeScriptのtemplate literal typesをもっと活用したい話" (v3.4 Pattern 1)
-- Rich opening: Personal frustration ("もっとこういう型が欲しい") + context (v3.4 Pattern 1)
-- Liberal :::details usage: 3 blocks total (1 message + 2 details) - ideal ratio (v3.4 Pattern 6)
-- 5 strategic bold terms (optimal range)
-- Strong meta-commentary: "なんと", "あれ", "個人的にはちょっとびっくり"
-- Code evolution narrative: unexpected behavior discovery (greedy matching)
-- 2 footnotes for technical context
-- Systematic investigation: basic → extraction → recursion → union generation → utilities
+**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 minimum, 50-70 optimal for longer articles).
 
-**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 minimum, 50-60 optimal for mid-length articles).
-
-**Proven 9.0+ Formula** (validated by Season 4 Iter 2, 3 & 5):
-1. Article length: 180-300 lines (validated range: 231-296 lines for 9.0-9.5/10)
-2. です/ます: 50-70 endings for mid-to-long articles (50 for 231 lines = 9.2; 68 for 296 lines = 9.5)
-3. Author voice: 8-9+ uhyo patterns (see Section 👤) - All iterations: 9-10/10 patterns
-4. Zero forbidden patterns (see Section ⚠️) - All iterations: 0 violations
+**Proven 9.0+ Formula** (validated by Season 4 Iter 2 & 3):
+1. Article length: 180-300 lines (validated range: 240-296 lines for 9.0-9.5/10)
+2. です/ます: Scale with length (49 for 240 lines = 9.0; 68 for 296 lines = 9.5)
+3. Author voice: 8-9+ uhyo patterns (see Section 👤) - Both: 9-10/10 patterns
+4. Zero forbidden patterns (see Section ⚠️) - Both: 0 violations
 5. Ecosystem context: 2-4 GitHub issues/PRs or community refs
-6. "筆者" usage: 5-6 times, all authentic patterns (desire, reactions, opinions, limitations, concerns, forward-looking)
-7. **SEASON 4**: Zero fabricated personal experiences - All iterations: PASS ✅
+6. "筆者" usage: 5-6 times, all authentic patterns (reactions, opinions, limitations, concerns)
+7. **SEASON 4**: Zero fabricated personal experiences - Both: PASS ✅
 
-**Season 4 Working Formula** (THREE consecutive validations ✅✅✅):
-Rich opening context (personal desire/frustration) + systematic code investigation (simple → complex) + meta-commentary on shown results ("なんと", "あれ", "びっくり") + liberal :::details usage (2-3 blocks) + honest limitation admissions + authentic opinions on design/direction + reflective conclusion = uhyo voice without fabrication.
+**Season 4 Working Formula**: Systematic code investigation + meta-commentary on shown results + honest limitation admissions + authentic opinions on design/direction = uhyo voice without fabrication.
 
 ---
 
-**Last updated:** Season 4, Iteration 5
-**Version:** 3.5 (Season 4: v3.4 Validation - Third Consecutive 9.0+ Success)
-**Changes from v3.4**:
-- SUCCESS PATTERNS: Added Iteration 5 (9.2/10) as third exemplar validating v3.4 enhancements
-- Iteration 5 validates Pattern 1 (rich opening context with personal desire) and Pattern 6 (liberal :::details usage)
-- Formula consistency proven: THREE consecutive 9.0+ scores (Iter 2: 9.0, Iter 3: 9.5, Iter 5: 9.2) with ZERO fabrications
-- Updated "Proven 9.0+ Formula" to reflect triple validation
-- Updated "Season 4 Working Formula" to emphasize validated components
-- No new rules needed - current guidance is effective and proven
-**Status:** Formula stable and validated. Focus on execution consistency.
-**Line count:** ~610 lines
+**Last updated:** Season 4, Iteration 4
+**Version:** 3.4 (Season 4: Refining Opening Formula & Zenn Block Usage)
+**Changes from v3.3**:
+- Pattern 1 (Opening Formula): Enhanced with richer contextual framing guidance - connect to reader experience, reference community, express curiosity (addresses Iter 4 gap: 0.5→1.0 potential)
+- Pattern 6 (Zenn Formatting): Expanded :::details usage guidelines - more liberal application for tangents, advanced topics, alternatives; target increased to 2-3 blocks (addresses Iter 4 gap: 0.5→1.0 potential)
+- Both changes target the two specific gaps identified in Iteration 4 review (8.5/10 limited by author voice)
+- Focus: Path to 9.0+ requires gaining 1 more author voice point through these improvements
+**Line count:** ~590 lines
