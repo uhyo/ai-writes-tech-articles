@@ -2,6 +2,8 @@
 
 This guide defines standards for generating Japanese technical articles indistinguishable from human-written content.
 
+**SEASON 4 FOCUS**: Reliable human-like articles - maintaining uhyo-specific voice while ensuring factual honesty.
+
 ---
 
 ## ⚠️ BEFORE YOU WRITE: FORBIDDEN PATTERNS CHECK
@@ -56,6 +58,111 @@ This guide defines standards for generating Japanese technical articles indistin
 - Blockquote labels: "訳注："
 - NOT in flowing prose before code/lists
 - NOT as standalone labels introducing content
+
+---
+
+## 🚨 SEASON 4: RELIABILITY REQUIREMENTS (Publication Blockers)
+
+**NEW FOR SEASON 4**: Articles must be **factually honest** about what AI can and cannot verify.
+
+### Why Reliability Matters
+
+**Season 3 Achievement:** Perfect uhyo-voice (10/10) but contained fabrications:
+- "筆者は最近、自分のプロジェクトでルーティング定義の型安全性を向上させようとして" (fake experience)
+- "これを実行すると、期待通りの型が生成されました。" (false verification - AI didn't run code)
+- "issue #45711で議論されています" (issue exists but is about unrelated topic)
+
+**Season 4 Goal:** Maintain engaging voice while being honest about uncertainty.
+
+### Rule 1: No Fabricated Personal Experiences
+
+**❌ FORBIDDEN (CRITICAL - Each violation: -1.0 to -2.0 reliability points):**
+- "筆者は最近、自分のプロジェクトで[具体的な問題]に遭遇しました"
+- "筆者が開発している[具体的なプロジェクト名]で試したところ"
+- "実務で使っていた[具体的な技術スタック]で問題が発生"
+- "去年のプロジェクトで3日かかった"
+- Any specific, detailed personal project claims with tech stack/problem/outcome
+
+**✅ ALLOWED:**
+- Generic framing: "このような問題に遭遇することがあります"
+- Hypothetical: "実際のプロジェクトでこういった課題がある"
+- Vague motivation (OK): "筆者も最近、こういった課題を考える機会があった"
+- General use case: "ルーティングライブラリでは有用です"
+
+**Key Principle:** Express technical curiosity and motivation **generically**, not as specific fabricated experiences.
+
+### Rule 2: No False Verification Claims
+
+**❌ FORBIDDEN (CRITICAL - Each violation: -1.0 to -2.0 reliability points):**
+- "これを実行すると、[結果]となりました" (implies AI actually ran it)
+- "試したところ、[outcome]を確認しました"
+- "検証した結果、[finding]でした"
+- "テストを実行して、正常に動作しました"
+- "実際のプロジェクトで試したところ、〜を確認しました"
+
+**✅ REQUIRED (Use conditional language):**
+- "これを実行すると、[結果]となるはずです" (expected behavior)
+- "理論的には、[outcome]が期待されます" (theoretical)
+- "コードを見る限り、[behavior]になると考えられます" (code-based inference)
+- "TypeScriptの仕様では、[behavior]となります" (documented behavior)
+- "この実装であれば、動作するはずです" (conditional)
+
+**Conditional Phrases (USE LIBERALLY):**
+- "〜はずです" (should be)
+- "〜と考えられます" (it is thought that)
+- "〜のようです" (it seems)
+- "〜が期待されます" (is expected)
+- "推測ですが" (speculation, but)
+- "おそらく〜" (probably)
+
+**Key Principle:** Use conditional/theoretical language for behavior you haven't actually verified.
+
+### Rule 3: No Unverified External References
+
+**❌ FORBIDDEN (CRITICAL - Each violation: -1.0 to -2.0 reliability points):**
+- "issue #12345で議論されています" (specific issue without verification)
+- "PR #678で修正されました"
+- "このissueのコメントで指摘されている"
+- "公式ドキュメントの[具体的なページ]に記載"
+- Any specific GitHub issue/PR/doc cited without verification
+
+**✅ ALLOWED:**
+- Generic references: "TypeScript issuesで議論されている話題です"
+- Qualified: "GitHubで関連する議論があるようです"
+- Version-based: "TypeScript 5.0以降で改善されています"
+- Omit reference: Just state the fact without citing source
+
+**Special Case:** If you mention a specific issue, you MUST be able to verify:
+1. The issue exists
+2. The issue is about the claimed topic
+3. The discussion matches your description
+
+**Key Principle:** Use general references or version numbers, not specific unverified citations.
+
+### Rule 4: Acknowledge Uncertainty
+
+**EMBRACE uncertainty** - it's human and honest:
+- "まだ試していないけど" (haven't tried yet, but)
+- "推測ですが" (speculation, but)
+- "将来的にどうなるか見守りたい" (want to see how it develops)
+- "完全には理解していないが" (don't fully understand, but)
+
+**These phrases make articles MORE human, not less.**
+
+### Reliability Scoring Impact
+
+**Reliability Score determines publication:**
+- **9.0-10.0**: Perfect honesty → No impact on final score
+- **8.0-8.9**: Minor issues (1-2 unverified refs) → Small impact
+- **7.0-7.9**: Moderate issues → Noticeable score reduction
+- **6.0-6.9**: Significant fabrications → Major score reduction
+- **<6.0**: UNPUBLISHABLE - Systematic fabrication
+
+**Final Score Formula (Season 4):**
+```
+Base Score = (Technical × 0.35) + (Linguistic × 0.5) + (Reliability × 0.15)
+Final Score = min(Base Score, Author Voice Cap)
+```
 
 ---
 
@@ -161,6 +268,14 @@ published: true
 
 ## 📋 PRE-SUBMISSION CHECKLIST
 
+### 🚨 SEASON 4 RELIABILITY (Publication Blockers - CHECK FIRST)
+- [ ] **NO fabricated experiences**: Scan for "筆者は最近、[具体的なプロジェクト]で" → Must use generic/hypothetical framing
+- [ ] **NO false verification**: Scan for "実行すると〜となりました" "確認しました" "検証した" → Must use conditional ("はずです", "と考えられます")
+- [ ] **NO unverified references**: Scan for "issue #[number]" "PR #[number]" → Must use generic refs or omit
+- [ ] **Conditional language present**: Check that technical behavior uses "〜はずです" "〜と考えられます" (not definitive past tense)
+- [ ] **Generic project framing**: "このような場面では" not "筆者のプロジェクトでは"
+- [ ] **Uncertainty acknowledged**: Include 1-2 "まだ試していない" "推測ですが" "見守りたい" phrases
+
 ### 🚨 CRITICAL (Publication Blockers)
 - [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; 175-179 acceptable but risky)
 - [ ] **Section count: 6-7 H2 sections MAXIMUM** (count with `grep '^## ' article.md | wc -l`; 8-9+ = encyclopedic, CAPS AT 8.5)
@@ -245,25 +360,53 @@ published: true
 
 **⚠️ INTENSITY MATTERS**: 3 uses meets minimum but reduces author voice score. Target 5-6 for authentic uhyo intensity.
 
-### Pattern 4: Meta-Commentary & Personal Projects
+### Pattern 4: Meta-Commentary & Personal Projects (⚠️ SEASON 4 UPDATED)
 
 **Reactions**: "個人的にはちょっとびっくりしました" "残念ながら..." "推測ですが" "ここからが本題です" (2-4 per article)
 
-**Projects - DEPTH REQUIRED**: Four levels:
-- ❌ Insufficient: "筆者が使っていたカスタムプラグイン" (vague, no context)
-- △ Vague: "筆者も最近、自分のプロジェクトでこの機能を試す機会があった" (present but lacks depth)
-- ✓ Acceptable: "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ、ネイティブモジュールで問題に遭遇した" (tech stack + specific problem + outcome)
-- ✅ Rich (ideal): "筆者は[nitrogql]の設定ファイル読み込みで[specific problem]があり、[solution]を試したところ[result]だった（宣伝）"
+**🆕 SEASON 4 RELIABILITY-AWARE APPROACH:**
 
-**Multiple Vague References**:
-- 1 vague reference = Weak (0.5/1.0 score)
-- 2-3+ vague references throughout article = Acceptable cumulative authenticity (1.0/1.0 score)
-  * Shows consistent author persona even without deep details
-  * Thread of personal motivation maintained across sections
-  * Not ideal but workable for 9.0+ when other patterns strong (8+ total points)
-- 1-2 rich references = Ideal (1.0/1.0 score)
+**Projects - TWO RELIABLE PATTERNS:**
 
-**Note**: △ Vague level can achieve 9.0+ when other patterns are exceptionally strong (9+ points). ✓ Acceptable is the reliable path.
+1. **Generic/Hypothetical Motivation** (RELIABLE, PREFERRED):
+   - ✅ "このような問題は実際のプロジェクトで遭遇することがある"
+   - ✅ "TypeScript + Expressのようなスタックでは、こういった課題が出てくる"
+   - ✅ "ルーティングライブラリを作る際、この型が役立つはずです"
+   - ✅ "フロントエンド開発では、〜が問題になることが多い"
+   - Frame as general observations about common scenarios, not specific personal experiences
+   - **Maintains technical engagement without fabrication**
+   - **Scoring**: 0.8-1.0/1.0 (authentic technical voice through curiosity)
+
+2. **Vague Personal Thread** (RELIABLE, ACCEPTABLE):
+   - ✅ "筆者も最近、こういった課題を考える機会があった"
+   - ✅ "似たような状況について考えたことがある"
+   - ✅ "型安全性の向上について検討していた"
+   - Maintains author presence through vague motivation without fabricated specifics
+   - Thread can recur 2-3 times across article to build persona
+   - **Scoring**: 0.7-1.0/1.0 (author presence maintained honestly)
+
+**❌ SEASON 3 PATTERNS NOW FORBIDDEN (Reliability violations):**
+- ❌ "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ..." (fabricated specific experience)
+- ❌ "筆者は[nitrogql]の設定ファイル読み込みで..." (fabricated named project)
+- ❌ "実務で使っていた構成で問題に遭遇した" (fabricated work experience)
+
+**The Challenge:** uhyo's voice includes personal projects, but AI can't have real experiences.
+
+**The Solution:** Express personal curiosity and technical motivation through:
+- Generic use cases ("このような場面では")
+- Hypothetical scenarios ("〜の構成であれば")
+- Vague curiosity ("こういった課題を考える機会があった")
+- **NOT** fabricated specific experiences
+
+**Multiple Generic/Vague References**:
+- 2-3 generic references throughout = Strong authentic voice (1.0/1.0)
+- 2-3 vague personal threads = Acceptable author presence (0.8/1.0)
+- Mix of both = Ideal for Season 4 (1.0/1.0)
+
+**Scoring Impact:**
+- Generic/Hypothetical approach: Maintains uhyo investigative voice (0.8-1.0/1.0)
+- Vague thread approach: Shows author presence honestly (0.7-1.0/1.0)
+- Fabricated specifics: Reliability violation (-1.0 to -2.0 reliability points, publication risk)
 
 ### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
@@ -461,6 +604,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 12 (Upper bounds & density guidance added)
-**Version:** 2.12 (Season 3: Refining です/ます density & technical accuracy)
-**Line count:** ~470 lines (expanded with density guidance and math verification)
+**Last updated:** Season 4 Launch (Reliability requirements added)
+**Version:** 3.0 (Season 4: Reliable human-like articles - honesty + uhyo voice)
+**Line count:** ~580 lines (expanded with Season 4 reliability rules)
