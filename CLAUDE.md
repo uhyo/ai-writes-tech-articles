@@ -6,7 +6,9 @@ This document guides Claude Code instances to orchestrate the iterative process 
 
 **Season 3 Goal**: Generate Japanese technical articles about TypeScript, JavaScript, React, and frontend technologies that match **uhyo's specific writing voice** (9.0+/10).
 
-The project uses an iterative feedback loop with three specialized sub-agents to progressively improve article quality. Season 3 builds on Season 2's human-quality foundation by adding author-specific voice patterns.
+The project uses an iterative feedback loop with specialized sub-agents to progressively improve article quality. Season 3 builds on Season 2's human-quality foundation by adding author-specific voice patterns.
+
+**Post-Season 3 Enhancement**: The review process now uses **four specialized reviewer agents** instead of a single reviewer, enabling more sophisticated analysis and preventing context overload.
 
 **Evolution**:
 - Season 1: Basic technical articles
@@ -17,7 +19,7 @@ The project uses an iterative feedback loop with three specialized sub-agents to
 
 ### Sub-Agents
 
-Three specialized agents work together in each iteration:
+Six specialized agents work together in each iteration:
 
 1. **Writer Agent** (`.claude/agents/writer.md`)
    - Generates technical articles based on topics and the current style guide
@@ -25,15 +27,37 @@ Three specialized agents work together in each iteration:
    - Must NOT access `human-bench/articles/` directly
    - Outputs: `iterations/{N}/article.md`
 
-2. **Reviewer Agent** (`.claude/agents/reviewer.md`)
-   - Reviews generated articles by comparing them to human benchmarks
-   - The ONLY agent that reads `human-bench/articles/`
-   - **MUST NOT read previous iterations** to maintain review independence
-   - Provides detailed feedback and quality scores
-   - Outputs: `iterations/{N}/review.md`
+2. **Technical Quality Reviewer** (`.claude/agents/technical_reviewer.md`)
+   - Evaluates technical accuracy, code quality, and educational value
+   - Focuses exclusively on technical content correctness
+   - **MUST NOT read previous iterations** to maintain independence
+   - Outputs: `iterations/{N}/technical_review.md`
 
-3. **Style Guide Updater Agent** (`.claude/agents/style_guide_updater.md`)
-   - Refines the style guide based on review feedback
+3. **Linguistic Quality Reviewer** (`.claude/agents/linguistic_reviewer.md`)
+   - Assesses natural Japanese patterns and human-likeness (Season 2 baseline)
+   - Performs quantitative analysis (です/ます counts, etc.)
+   - Checks style guide compliance and detects AI tells
+   - Reads `human-bench/articles/` to establish baseline
+   - **MUST NOT read previous iterations** to maintain independence
+   - Outputs: `iterations/{N}/linguistic_review.md`
+
+4. **Author Voice Reviewer** (`.claude/agents/author_voice_reviewer.md`)
+   - Verifies uhyo-specific voice patterns (Season 3 focus)
+   - Scores author voice presence (0-10 points)
+   - Determines score cap based on voice authenticity
+   - Reads `human-bench/articles/` for pattern verification
+   - **MUST NOT read previous iterations** to maintain independence
+   - Outputs: `iterations/{N}/author_voice_review.md`
+
+5. **Score Synthesizer** (`.claude/agents/score_synthesizer.md`)
+   - Combines three specialized reviews into unified assessment
+   - Calculates Base Quality Score (Technical + Linguistic)
+   - Applies Author Voice Cap using Season 3 two-layer formula
+   - Prioritizes recommendations across all dimensions
+   - Outputs: `iterations/{N}/review.md` (unified comprehensive review)
+
+6. **Style Guide Updater Agent** (`.claude/agents/style_guide_updater.md`)
+   - Refines the style guide based on unified review feedback
    - Translates reviewer insights into actionable guidelines
    - **CAN access previous iterations** to track patterns and rule effectiveness
    - Updates: `style_guide.md`
@@ -41,26 +65,37 @@ Three specialized agents work together in each iteration:
 ### Key Resources
 
 - **Style Guide**: `style_guide.md` - Evolving guidelines for article generation (Writer's primary input)
-- **Human Benchmarks**: `human-bench/articles/` - Reference articles (Reviewer only)
+- **Human Benchmarks**: `human-bench/articles/` - Reference articles (Linguistic & Author Voice Reviewers)
 - **Iteration Output**: `iterations/{N}/` - Each iteration contains:
   - `article.md` - Generated article
-  - `review.md` - Review feedback
+  - `technical_review.md` - Technical quality assessment
+  - `linguistic_review.md` - Linguistic quality assessment
+  - `author_voice_review.md` - Author voice assessment
+  - `review.md` - Unified comprehensive review (from Score Synthesizer)
   - `style_guide.md` - Copy of the style guide used for this iteration (for version tracking)
   - `changelog.md` - Changes made to the style guide in this iteration
 
 ### Information Flow
 
-The architecture maintains a clean separation of concerns:
+The architecture maintains a clean separation of concerns with parallel review:
 
 ```
-Human Benchmarks → Reviewer → Style Guide → Writer → Article
-                        ↓                       ↓
-                    Review ←──────────────── Article
-                        ↓
-              Style Guide Updater → Updated Style Guide
+                                    ┌─ Technical Reviewer ─┐
+                                    │                       │
+Human Benchmarks ──┬─→ Linguistic Reviewer ─┤              ├─→ Score Synthesizer
+                   │                          │              │          ↓
+                   └─→ Author Voice Reviewer ─┘              │    Unified Review
+                                                              │          ↓
+Style Guide ──→ Writer ──→ Article ──────────────────────────┘   Style Guide Updater
+                                                                         ↓
+                                                                  Updated Style Guide
 ```
 
-This ensures the Writer learns patterns from human articles **indirectly through the style guide**, not by directly copying from examples.
+**Key Points**:
+- Three reviewers run in **parallel** for efficiency (Technical, Linguistic, Author Voice)
+- Each reviewer has a **focused scope** to prevent context overload
+- Score Synthesizer **combines** the three reviews into unified assessment
+- Writer learns patterns from human articles **indirectly through the style guide**
 
 ## Orchestrator Workflow
 
@@ -135,53 +170,115 @@ Task:
     The article should be in Zenn format, written in Japanese, and match uhyo's specific voice.
 ```
 
-### Step 5: Invoke Reviewer Agent
+### Step 5: Invoke Review Agents (Parallel)
 
-After the Writer completes, invoke the Reviewer Agent:
+After the Writer completes, invoke **all three review agents in parallel** for efficiency:
+
+**IMPORTANT**: Use a single message with three Task tool calls to run these in parallel.
+
+#### 5a. Technical Quality Reviewer
 
 ```
 Task:
 - subagent_type: general-purpose
-- description: Review article with human baseline comparison
+- description: Review technical quality and accuracy
 - prompt: |
-    You are the Reviewer Agent. Read your agent definition at .claude/agents/reviewer.md.
-
-    **SEASON 3 FOCUS**: Verify author-specific voice patterns in addition to human quality.
+    You are the Technical Quality Reviewer. Read your agent definition at .claude/agents/technical_reviewer.md.
 
     Your task:
-    1. **STEP 0 - Pattern Discovery**: Look for any new uhyo-specific patterns not yet documented
-    2. **STEP 1 - Human Baseline**: Sample 3-5 human articles, document linguistic patterns
-       - MANDATORY: Count です/ます sentence endings (baseline: 15-70)
-    3. **STEP 2 - Quantitative Analysis**: Pattern analysis with line numbers
-       - MANDATORY FIRST CHECK: Count です。and ます。(<10 = blocker)
-    4. **STEP 2.5 - Author Voice Analysis (NEW)**: Verify uhyo-specific patterns
-       - Opening formula check ("皆さんこんにちは。" + context)
-       - Systematic investigation structure (simple → complex)
-       - Personal project integration
-       - Meta-commentary presence
-       - "筆者" usage contexts (3-8 times)
-       - Zenn formatting blocks (:::details, :::message)
-       - Reflective conclusion style
-       - Strategic bold usage (3-5 terms)
-       - Code-driven narrative
-       - Title style
-       - **Calculate author voice score (0-10 points)**
-       - **Apply author voice cap** (9-10 pts: no cap, 7-8: 8.5 cap, 5-6: 8.0 cap, etc.)
-    5. **STEP 3 - Compliance**: Check ALL rules in style_guide.md
-    6. **STEP 4 - Holistic Review**: Comprehensive review
-    7. **STEP 5 - Score**: Apply Season 3 two-layer scoring
-       - Base Score (Season 2 criteria)
-       - Author Voice Cap (from STEP 2.5)
-       - Final Score = min(Base Score, Author Voice Cap)
-    8. Save review to iterations/{N}/review.md
+    1. Read the article at iterations/{N}/article.md
+    2. Assess technical accuracy, code quality, and educational value
+    3. Check for technical errors or misconceptions
+    4. Evaluate code examples for correctness and practicality
+    5. Assess article structure and pedagogical effectiveness
+    6. Assign a technical quality score (0-10)
+    7. Save your review to iterations/{N}/technical_review.md
 
-    **CRITICAL**: The article must be both human-quality (Season 2) AND match uhyo's specific voice (Season 3).
+    Focus exclusively on technical content. Do NOT assess linguistic patterns or author voice.
+```
 
-    **IMPORTANT**:
-    - Do NOT read or reference previous iterations. Each review must be independent.
-    - Provide quantitative evidence for all patterns
-    - Author voice score determines maximum achievable score
-    - Path to 9.0+ requires: Base ≥9.0 AND Author Voice ≥7 points
+#### 5b. Linguistic Quality Reviewer
+
+```
+Task:
+- subagent_type: general-purpose
+- description: Review linguistic quality and human-likeness
+- prompt: |
+    You are the Linguistic Quality Reviewer. Read your agent definition at .claude/agents/linguistic_reviewer.md.
+
+    Your task:
+    1. Sample 3-5 articles from human-bench/articles/ to establish baseline
+       - MANDATORY: Count です/ます endings (baseline: 15-70)
+    2. Read the article at iterations/{N}/article.md
+    3. Perform quantitative analysis:
+       - Count です。and ます。(<10 = critical failure)
+       - Analyze sentence patterns and variety
+       - Document all findings with line numbers
+    4. Check compliance with ALL rules in style_guide.md
+    5. Detect AI tells and unnatural patterns
+    6. Assess overall human-likeness (Season 2 baseline)
+    7. Assign linguistic quality score (0-10)
+    8. Save your review to iterations/{N}/linguistic_review.md
+
+    Focus exclusively on linguistic quality. Do NOT assess technical content or author voice.
+
+    **IMPORTANT**: Do NOT read previous iterations. Each review must be independent.
+```
+
+#### 5c. Author Voice Reviewer
+
+```
+Task:
+- subagent_type: general-purpose
+- description: Review uhyo-specific voice patterns
+- prompt: |
+    You are the Author Voice Reviewer. Read your agent definition at .claude/agents/author_voice_reviewer.md.
+
+    Your task:
+    1. Read the article at iterations/{N}/article.md
+    2. Evaluate presence of 10 uhyo-specific patterns:
+       - Opening formula, systematic investigation, personal projects
+       - Meta-commentary, "筆者" usage, Zenn formatting
+       - Reflective conclusion, strategic bold, code-driven narrative, title style
+    3. Assign points (0.0, 0.5, or 1.0) for each pattern with evidence
+    4. Calculate total Author Voice Score (0-10 points)
+    5. Determine score cap based on voice score:
+       - 9-10 pts: no cap | 7-8 pts: 8.5 cap | 5-6 pts: 8.0 cap | 3-4 pts: 7.5 cap | 0-2 pts: 7.0 cap
+    6. Assess authenticity beyond checklist patterns
+    7. Save your review to iterations/{N}/author_voice_review.md
+
+    Focus exclusively on uhyo's voice. Do NOT assess technical content or general linguistic quality.
+
+    **IMPORTANT**: Do NOT read previous iterations. Each review must be independent.
+```
+
+### Step 5.5: Invoke Score Synthesizer
+
+After all three reviewers complete, invoke the Score Synthesizer:
+
+```
+Task:
+- subagent_type: general-purpose
+- description: Synthesize reviews and calculate final score
+- prompt: |
+    You are the Score Synthesizer. Read your agent definition at .claude/agents/score_synthesizer.md.
+
+    Your task:
+    1. Read all three specialized reviews:
+       - iterations/{N}/technical_review.md
+       - iterations/{N}/linguistic_review.md
+       - iterations/{N}/author_voice_review.md
+    2. Read the article at iterations/{N}/article.md for context
+    3. Calculate Base Quality Score:
+       - Base = (Technical × 0.4) + (Linguistic × 0.6)
+    4. Apply Author Voice Cap:
+       - Final Score = min(Base Score, Voice Cap)
+    5. Synthesize feedback across all three dimensions
+    6. Prioritize recommendations (blockers, high-impact, polish)
+    7. Create comprehensive unified review
+    8. Save to iterations/{N}/review.md
+
+    Your unified review is what the Style Guide Updater will use to improve the guidelines.
 ```
 
 ### Step 6: Invoke Style Guide Updater Agent
@@ -296,7 +393,11 @@ Iteration 1:
 ├── Topic: "TypeScript 5.0の新機能について"
 ├── Archive style guide → iterations/1/style_guide.md
 ├── Write article → iterations/1/article.md
-├── Review article → iterations/1/review.md (Quality: 6.5/10)
+├── Review (parallel):
+│   ├── Technical review → iterations/1/technical_review.md (Tech: 7.0/10)
+│   ├── Linguistic review → iterations/1/linguistic_review.md (Ling: 6.2/10)
+│   └── Author voice review → iterations/1/author_voice_review.md (Voice: 4 pts, cap 7.5)
+├── Synthesize → iterations/1/review.md (Final: 6.5/10)
 ├── Update root style guide + Create changelog → iterations/1/changelog.md
 └── Continue (quality below threshold)
 
@@ -304,7 +405,11 @@ Iteration 2:
 ├── Topic: "Reactのカスタムフックのパターン"
 ├── Archive style guide → iterations/2/style_guide.md
 ├── Write article → iterations/2/article.md
-├── Review article → iterations/2/review.md (Quality: 7.2/10)
+├── Review (parallel):
+│   ├── Technical review → iterations/2/technical_review.md (Tech: 7.5/10)
+│   ├── Linguistic review → iterations/2/linguistic_review.md (Ling: 7.5/10)
+│   └── Author voice review → iterations/2/author_voice_review.md (Voice: 5 pts, cap 8.0)
+├── Synthesize → iterations/2/review.md (Final: 7.5/10)
 ├── Update root style guide + Create changelog → iterations/2/changelog.md
 └── Continue (quality improving but below threshold)
 
@@ -314,17 +419,25 @@ Iteration 8:
 ├── Topic: "JavaScriptのProxyとReflectの実践的な使い方"
 ├── Archive style guide → iterations/8/style_guide.md
 ├── Write article → iterations/8/article.md
-├── Review article → iterations/8/review.md (Quality: 8.7/10)
+├── Review (parallel):
+│   ├── Technical review → iterations/8/technical_review.md (Tech: 8.8/10)
+│   ├── Linguistic review → iterations/8/linguistic_review.md (Ling: 9.0/10)
+│   └── Author voice review → iterations/8/author_voice_review.md (Voice: 7 pts, cap 8.5)
+├── Synthesize → iterations/8/review.md (Final: 8.5/10, capped by voice)
 ├── Update root style guide + Create changelog → iterations/8/changelog.md
-└── Continue one more iteration to confirm
+└── Continue (close to threshold, voice needs strengthening)
 
 Iteration 9:
 ├── Topic: "型安全なReactコンポーネントの設計パターン"
 ├── Archive style guide → iterations/9/style_guide.md
 ├── Write article → iterations/9/article.md
-├── Review article → iterations/9/review.md (Quality: 8.8/10)
+├── Review (parallel):
+│   ├── Technical review → iterations/9/technical_review.md (Tech: 9.0/10)
+│   ├── Linguistic review → iterations/9/linguistic_review.md (Ling: 9.2/10)
+│   └── Author voice review → iterations/9/author_voice_review.md (Voice: 9 pts, no cap)
+├── Synthesize → iterations/9/review.md (Final: 9.1/10, no cap applied!)
 ├── Create changelog → iterations/9/changelog.md
-└── Success! Quality threshold met for 2 consecutive iterations
+└── Success! Quality threshold met with strong uhyo voice
 ```
 
 ## Success Criteria
