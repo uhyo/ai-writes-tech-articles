@@ -251,49 +251,18 @@ published: true
 **Pre-Submission Technical Accuracy Checklist**:
 - [ ] **Mathematical calculations verified** (counts, combinations, percentages)
   * Example: "4 × 3 = 12" not "4 × 4 = 16" - verify ALL arithmetic claims
-- [ ] **Promise lifecycle patterns correct** (see below - CRITICAL)
 - [ ] Code examples tested or validated for correctness
 - [ ] Version-specific claims verified against documentation
 - [ ] GitHub issue/PR references checked (numbers exist, descriptions accurate)
 - [ ] Technical concepts match official documentation or authoritative sources
 - [ ] Error messages shown are actual TypeScript/tool outputs (not paraphrased)
 
-**🚨 CRITICAL PATTERN: Promise Creation in React**
-
-**❌ WRONG: Creating Promises during render (causes infinite loops)**
-```tsx
-function Component({ userId }) {
-  const promise = fetchUser(userId);  // ❌ New Promise every render!
-  const user = use(promise);          // Suspends → resolves → re-renders → new Promise → infinite loop
-  return <div>{user.name}</div>;
-}
-```
-
-**✅ CORRECT: Create in parent with memoization, pass as prop**
-```tsx
-function Parent({ userId }) {
-  const promise = useMemo(() => fetchUser(userId), [userId]);  // ✅ Memoized
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Child userPromise={promise} />
-    </Suspense>
-  );
-}
-
-function Child({ userPromise }) {
-  const user = use(userPromise);  // ✅ Consumes stable Promise from parent
-  return <div>{user.name}</div>;
-}
-```
-
-**PRINCIPLE**: Promises should be created **outside** the consuming component and passed as props. Never create Promises inline where `use()` consumes them.
-
 **Key Principles**:
 - Correct concepts with sources
-- Working code examples (test Promise patterns!)
+- Working code examples
 - Specific GitHub PRs/issues with links
 - Version information (e.g., "TypeScript 4.8以降")
-- **Verify before publishing**: Mathematical claims and Promise patterns are particularly prone to errors
+- **Verify before publishing**: Mathematical claims are particularly prone to errors
 
 ---
 
@@ -397,48 +366,47 @@ function Child({ userPromise }) {
 
 **🆕 SEASON 4 RELIABILITY-AWARE APPROACH:**
 
-**Projects - THREE RELIABLE PATTERNS (ranked by depth):**
+**Projects - TWO RELIABLE PATTERNS:**
 
-1. **Generic Project Context** (RELIABLE, OPTIMAL) - 🎯 **TARGET THIS**:
-   - ✅ "筆者が開発しているReactアプリケーションでは、〜"
-   - ✅ "筆者の作っているTypeScriptプロジェクトで、〜が問題になる"
-   - ✅ "以前のプロジェクトで、ルーティング設計に悩んだ経験があり"
-   - ✅ "筆者も最近、Server Componentsの設計を考える機会があった"
-   - **Key**: Mention project TYPE/DOMAIN (React app, TypeScript project) without fabricating specific tech stacks or outcomes
-   - **Depth**: Provides concrete context while staying honest
-   - **Scoring**: 0.9-1.0/1.0 (strong author presence + reliable)
-
-2. **Generic/Hypothetical Use Cases** (RELIABLE, GOOD):
+1. **Generic/Hypothetical Motivation** (RELIABLE, PREFERRED):
    - ✅ "このような問題は実際のプロジェクトで遭遇することがある"
    - ✅ "TypeScript + Expressのようなスタックでは、こういった課題が出てくる"
    - ✅ "ルーティングライブラリを作る際、この型が役立つはずです"
-   - Frame as general observations about common scenarios
-   - **Scoring**: 0.7-0.8/1.0 (technical engagement, less personal)
+   - ✅ "フロントエンド開発では、〜が問題になることが多い"
+   - Frame as general observations about common scenarios, not specific personal experiences
+   - **Maintains technical engagement without fabrication**
+   - **Scoring**: 0.8-1.0/1.0 (authentic technical voice through curiosity)
 
-3. **Vague Personal Thread** (RELIABLE, MINIMUM):
-   - ⚠️ "筆者も最近、考える機会があった" (too vague - lacks project context)
-   - ⚠️ "似たような状況について考えたことがある" (too vague)
-   - **Problem**: No concrete project context, feels like placeholder
-   - **Scoring**: 0.3-0.5/1.0 (weak presence, borderline authentic)
+2. **Vague Personal Thread** (RELIABLE, ACCEPTABLE):
+   - ✅ "筆者も最近、こういった課題を考える機会があった"
+   - ✅ "似たような状況について考えたことがある"
+   - ✅ "型安全性の向上について検討していた"
+   - Maintains author presence through vague motivation without fabricated specifics
+   - Thread can recur 2-3 times across article to build persona
+   - **Scoring**: 0.7-1.0/1.0 (author presence maintained honestly)
 
-**❌ FORBIDDEN (Reliability violations):**
-- ❌ "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ..." (fabricated specific tech stack + outcome)
-- ❌ "筆者は[nitrogql]の設定ファイル読み込みで..." (fabricated named real project)
-- ❌ "実務で使っていた構成で問題に遭遇した" (fabricated work experience with implied specifics)
+**❌ SEASON 3 PATTERNS NOW FORBIDDEN (Reliability violations):**
+- ❌ "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ..." (fabricated specific experience)
+- ❌ "筆者は[nitrogql]の設定ファイル読み込みで..." (fabricated named project)
+- ❌ "実務で使っていた構成で問題に遭遇した" (fabricated work experience)
 
-**The Distinction**:
-- ✅ Generic project type: "Reactアプリケーション" "TypeScriptプロジェクト" (honest, no fabricated details)
-- ❌ Specific tech stack: "TypeScript + Express + PostgreSQL構成" (implies verified specific experience)
-- ✅ Generic problem domain: "ルーティング設計" "型安全性向上" (common scenarios)
-- ❌ Specific outcome: "3日かかった" "正常に動作した" (fabricated results)
+**The Challenge:** uhyo's voice includes personal projects, but AI can't have real experiences.
 
-**Best Practice**: Use Pattern 1 (Generic Project Context) as default. Mention project 2-3 times throughout article to build coherent thread.
+**The Solution:** Express personal curiosity and technical motivation through:
+- Generic use cases ("このような場面では")
+- Hypothetical scenarios ("〜の構成であれば")
+- Vague curiosity ("こういった課題を考える機会があった")
+- **NOT** fabricated specific experiences
+
+**Multiple Generic/Vague References**:
+- 2-3 generic references throughout = Strong authentic voice (1.0/1.0)
+- 2-3 vague personal threads = Acceptable author presence (0.8/1.0)
+- Mix of both = Ideal for Season 4 (1.0/1.0)
 
 **Scoring Impact:**
-- Pattern 1 (Generic project context): 0.9-1.0/1.0 ✅ Target for 9.0+ scores
-- Pattern 2 (Generic use cases): 0.7-0.8/1.0 (acceptable but less personal)
-- Pattern 3 (Vague thread only): 0.3-0.5/1.0 (insufficient depth)
-- Fabricated specifics: -1.0 to -2.0 reliability points (publication blocker)
+- Generic/Hypothetical approach: Maintains uhyo investigative voice (0.8-1.0/1.0)
+- Vague thread approach: Shows author presence honestly (0.7-1.0/1.0)
+- Fabricated specifics: Reliability violation (-1.0 to -2.0 reliability points, publication risk)
 
 ### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
@@ -477,13 +445,7 @@ Server Actionsのエラーは...
 
 ### Pattern 8: Strategic Bold (3-5 terms) ⚠️ ESSENTIAL
 
-**Bold key technical TERMS on first introduction ONLY.**
-
-**OPTIMAL FREQUENCY**:
-- **5-6 bold terms**: Optimal uhyo marker (no penalty, strong voice signal)
-- **3-4 bold terms**: Acceptable minimum (borderline, weak voice signal)
-- **<3 bold terms**: Caps score at 8.5/10 (insufficient uhyo voice)
-- **7+ bold terms**: Over-emphasized (distracting, -0.2 deduction)
+**Bold key technical TERMS on first introduction ONLY.** 3-5 per article.
 
 **WHAT TO BOLD**:
 ✅ Technical terms/concepts (1-4 words max): **Server Actions**, **型推論**, **並列処理の強化**, **インクリメンタルビルド**
@@ -496,6 +458,8 @@ Server Actionsのエラーは...
 ❌ Generic descriptive phrases
 
 **PRECISION RULE**: If bold is longer than 4 words, it's probably wrong. Bold should be technical TERMS, not explanatory CLAUSES.
+
+**<3 terms = caps score at 8.5/10** (weak uhyo voice marker)
 
 ### Pattern 9: Title Style
 
@@ -524,13 +488,7 @@ Avoid: Generic ("〜について") or tutorial ("〜の完全ガイド")
 
 ### 5.2 Conversational Tone & Depth Variation
 
-- NO pedagogical scaffolding:
-  - ❌ "では〜見ていきましょう" (textbook transition)
-  - ❌ "まずは〜を見ていきます" (sequential marker, teacher-like)
-  - ❌ "次に〜を見てみます" (structured lesson flow)
-  - ✅ "〜から始めましょう" (collaborative, natural)
-  - ✅ "〜もあります" (casual discovery)
-  - ✅ Direct topic entry without meta-commentary
+- NO pedagogical scaffolding ("では〜見ていきましょう")
 - Peer conversation, not teacher-to-student
 - **Vary depth by INTEREST**: Interesting simple concept = 8 para; Boring complex = 2 sentences
 
@@ -548,21 +506,11 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 **Show iteration**: Code → "あ、これundefinedで落ちる" → fix (or "まあ、動くので放置")
 
-**Ecosystem context - MANDATORY for 9.0+** (tiered requirements):
-
-**For 9.0-9.3 scores** (at least 1-2 generic references):
-- ✅ Generic GitHub refs: "React issuesで議論されているようです" "GitHubで関連する議論がある"
-- ✅ Community mentions: "Twitterで見た" "zodみたいなライブラリ" "Discordで話題に"
-- ✅ Temporal: "TypeScript 5.5で入るかも" "次のバージョンで修正される予定"
-
-**For 9.5+ scores** (at least 1 specific reference):
-- ✅ Specific GitHub issues/PRs: "(#2851とか)" "issue #12345で議論されている" **← ONLY if verified!**
-- ⚠️ SEASON 4 WARNING: Do NOT cite specific issues without verification (reliability violation)
-- ✅ Specific version milestones: "TypeScript 5.3のPR #54678で実装された" (if verified)
-
-**What DOESN'T count as ecosystem context**:
-- ❌ GitHub repo links alone: "https://github.com/..." (too generic)
-- ❌ Documentation references: "公式ドキュメントに記載" (not community)
+**Ecosystem context - MANDATORY for 9.0+** (at least 1-2 references):
+- GitHub issues/PRs: "(#2851とか)" "issue #XXXで..." ← ✅ COUNTS
+- GitHub repo links ONLY: "https://github.com/..." ← ❌ DOESN'T COUNT (too generic)
+- Community: "Twitterで見た" "zodみたいなライブラリ" "Discordで話題に"
+- Temporal: "TypeScript 5.5で入るかも" "次のバージョンで修正される予定"
 
 **NOTE**: Missing ecosystem context = automatic cap below 9.0/10 regardless of other quality
 
@@ -656,6 +604,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 1 Post-Review (Code correctness patterns + personal project depth)
-**Version:** 3.1 (Season 4: Technical accuracy refinement + author voice depth)
-**Line count:** ~660 lines (added Promise patterns, enhanced personal project guidance)
+**Last updated:** Season 4 Launch (Reliability requirements added)
+**Version:** 3.0 (Season 4: Reliable human-like articles - honesty + uhyo voice)
+**Line count:** ~580 lines (expanded with Season 4 reliability rules)
