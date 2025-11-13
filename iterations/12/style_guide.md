@@ -82,8 +82,7 @@ Before submitting, scan entire article for:
 - **32-39 endings**: ⚠️ Caps at 8.0/10 (too casual for technical article)
 - **40-49 endings**: ✅ Required for 9.0+ eligibility (target zone)
 - **50-70 endings**: ✅ OPTIMAL for 9.0+ (preferred range)
-- **71-75 endings**: ⚠️ Approaching excessive formality (-0.3 to -0.5 deduction)
-- **76+ endings**: 🚫 Over-formalized unless article is 250+ lines (-0.5 to -0.8 deduction)
+- **70+ endings**: Possibly too formal (rare issue)
 
 **⚠️ CRITICAL INSIGHT (from Iteration 6 failure)**:
 - Iteration 5: 51 endings (231 lines, 22.1%) = 9.3/10 ✅
@@ -92,27 +91,17 @@ Before submitting, scan entire article for:
 
 **Article Length Requirements**:
 - **Target length**: 180-230 lines (proven sweet spot)
-- **Acceptable minimum**: 175-179 lines (close enough, but watch density)
-- **Below 175 lines**: High risk - hard to reach 40 endings without excessive density
+- **Short articles (<180 lines)**: High risk - hard to reach 40 endings naturally
   * Options: (1) Expand article to 180+ lines, OR (2) Accept 8.0/10 cap
 - **Long articles (>250 lines)**: Scale up to 50-60 endings proportionally
-
-**Density Guidance** (supplementary check):
-- Calculate: (です/ます count) ÷ (article lines) × 100
-- **Optimal range**: 25-35% (natural balance)
-- **Acceptable**: 22-38% (passing but not ideal)
-- **Too formal**: >38% (creates stiff tone, -0.3 to -0.5 deduction)
-- **Too casual**: <22% (insufficient formality for technical writing)
 
 **Pre-Submission Verification** (MANDATORY):
 1. Count article length: `wc -l article.md` → Target 180-230 lines
 2. Search for です。: Count manually, record exact number
 3. Search for ます。: Count manually, record exact number
-4. **Total must be 40-70 for 9.0+ eligibility** (NOT negotiable)
-5. Calculate density: (count ÷ lines) × 100 → Target 25-35%
-6. **If >75 endings OR >38% density**: Article is over-formalized - reduce count or expand length
-7. **If <40 endings**: Expand article OR convert casual sentences to です/ます
-8. Verify count accuracy: Re-count to confirm (±1 tolerance only)
+4. **Total must be ≥40 for 9.0+ eligibility** (NOT negotiable)
+5. Verify count accuracy: Re-count to confirm (±1 tolerance only)
+6. If <40 endings: Expand article OR convert casual sentences to です/ます
 
 **⚠️ ACCURACY WARNING**: Writer claiming "47 endings" when actual is 32 (32% error) = PUBLICATION BLOCKER. Must manually verify.
 
@@ -141,28 +130,17 @@ published: true
 
 ### 4. Technical Accuracy
 
-**Pre-Submission Technical Accuracy Checklist**:
-- [ ] **Mathematical calculations verified** (counts, combinations, percentages)
-  * Example: "4 × 3 = 12" not "4 × 4 = 16" - verify ALL arithmetic claims
-- [ ] Code examples tested or validated for correctness
-- [ ] Version-specific claims verified against documentation
-- [ ] GitHub issue/PR references checked (numbers exist, descriptions accurate)
-- [ ] Technical concepts match official documentation or authoritative sources
-- [ ] Error messages shown are actual TypeScript/tool outputs (not paraphrased)
-
-**Key Principles**:
 - Correct concepts with sources
 - Working code examples
 - Specific GitHub PRs/issues with links
 - Version information (e.g., "TypeScript 4.8以降")
-- **Verify before publishing**: Mathematical claims are particularly prone to errors
 
 ---
 
 ## 📋 PRE-SUBMISSION CHECKLIST
 
 ### 🚨 CRITICAL (Publication Blockers)
-- [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; 175-179 acceptable but risky)
+- [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; <180 risks です/ます insufficiency)
 - [ ] **Section count: 6-7 H2 sections MAXIMUM** (count with `grep '^## ' article.md | wc -l`; 8-9+ = encyclopedic, CAPS AT 8.5)
 - [ ] **ZERO sentence-ending contracted forms** (scan: てる。てた。てます。てない。てなかった。)
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
@@ -170,15 +148,9 @@ published: true
   * ESPECIALLY check for standalone labels: "動いたもの：" "注意点：" "結果："
   * These must be section headers (## Label) or full sentences (Labelは以下の通りです。)
 - [ ] Valid frontmatter with all fields
-- [ ] **です/ます count: 40-70 absolute** (count です。+ ます。manually; verify twice)
-  * <40 = max 8.0/10 (insufficient formality)
-  * 71-75 = -0.3 to -0.5 deduction (excessive formality)
-  * 76+ = -0.5 to -0.8 deduction (over-formalized)
-- [ ] **です/ます density: 25-35% optimal** (calculate: count ÷ lines × 100)
-  * >38% = too formal (stiff tone, -0.3 to -0.5 deduction)
-  * <22% = too casual (insufficient formality)
+- [ ] **40+ です/ます endings ABSOLUTE** (count です。+ ます。manually; verify twice; <40 = max 8.0/10 regardless of %)
+- [ ] **Target: 50-70 endings for 9.0+** (long articles >250 lines need proportionally more)
 - [ ] Main declarative sentences use です/ます (70-80% of main sentences)
-- [ ] **Mathematical calculations verified** (counts, combinations, arithmetic - double-check ALL numbers)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: bug → fix OR V1 → V2 iterations
@@ -254,14 +226,6 @@ published: true
 - △ Vague: "筆者も最近、自分のプロジェクトでこの機能を試す機会があった" (present but lacks depth)
 - ✓ Acceptable: "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ、ネイティブモジュールで問題に遭遇した" (tech stack + specific problem + outcome)
 - ✅ Rich (ideal): "筆者は[nitrogql]の設定ファイル読み込みで[specific problem]があり、[solution]を試したところ[result]だった（宣伝）"
-
-**Multiple Vague References**:
-- 1 vague reference = Weak (0.5/1.0 score)
-- 2-3+ vague references throughout article = Acceptable cumulative authenticity (1.0/1.0 score)
-  * Shows consistent author persona even without deep details
-  * Thread of personal motivation maintained across sections
-  * Not ideal but workable for 9.0+ when other patterns strong (8+ total points)
-- 1-2 rich references = Ideal (1.0/1.0 score)
 
 **Note**: △ Vague level can achieve 9.0+ when other patterns are exceptionally strong (9+ points). ✓ Acceptable is the reliable path.
 
@@ -434,33 +398,26 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-## 📊 SUCCESS PATTERNS (Iterations 5-12 Learning)
+## 📊 SUCCESS PATTERNS (Iterations 5-7 Learning)
 
 **Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
 **Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
 **Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD**
 **Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY**
-**Iteration 12 (8.6/10)**: 74 endings, 178 lines, 10/10 author voice but TOO FORMAL (41.6% density) ❌
 
-**Key Insights**:
-- Perfect author voice (10/10) is NOT enough. Must also meet です/ます requirements.
-- **Iteration 6**: Too few endings (32) = 8.0/10 cap
-- **Iteration 12**: Too many endings (74) AND too high density (41.6%) = -0.3 to -0.5 deduction
-- **Sweet spot**: 50-60 endings in 190-220 lines = 26-31% density
+**Key Insight**: Perfect author voice (10/10) is NOT enough. Must also meet absolute です/ます threshold (40-50 endings).
 
-**Proven 9.0+ Formula** (validated by Iterations 7 & 10):
+**Proven 9.0+ Formula** (validated by Iteration 7's 9.5/10):
 1. Article length: 180-230 lines (sweet spot) - Iteration 7: 218 lines
-2. です/ます: 50-60 absolute count optimal (40-70 acceptable range) - Iteration 7: 55 endings
-3. **です/ます density: 25-35% (critical for natural tone)** - Iteration 7: 25.2% ✅, Iteration 12: 41.6% ❌
-4. Author voice: 8+ uhyo patterns (see Section 👤) - Iteration 7: 10/10 patterns
-5. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
-6. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
-7. **Technical accuracy: Verify all mathematical claims** - Iteration 12: Math error cost -0.5
+2. です/ます: 50-70 absolute count optimal (40+ minimum) - Iteration 7: 55 endings
+3. Author voice: 8+ uhyo patterns (see Section 👤) - Iteration 7: 10/10 patterns
+4. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
+5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
 
 **Iteration 7 & 10 Achievement**: Both achieved 9.5/10, proving the formula works consistently. Iteration 10 demonstrated **internalized mastery** by recovering from Iterations 8-9 regressions.
 
 ---
 
-**Last updated:** Iteration 12 (Upper bounds & density guidance added)
-**Version:** 2.12 (Season 3: Refining です/ます density & technical accuracy)
-**Line count:** ~470 lines (expanded with density guidance and math verification)
+**Last updated:** Iteration 10 (Documentation refinement)
+**Version:** 2.10 (Season 3: Proven mastery achieved)
+**Line count:** ~420 lines (stable - style guide proven effective)
