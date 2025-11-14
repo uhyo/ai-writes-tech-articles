@@ -1,364 +1,608 @@
-# Changelog - Iteration 1
+# Iteration 1 - Style Guide Changelog
 
-## Summary
+## Executive Summary
 
-Iteration 1 produced a strong article (8.5/10) with excellent author voice (9/10 points) and zero forbidden patterns. However, the article fell short of 9.0+ tier due to base score elements:
-- Polite form distribution at lower acceptable range (40-45% vs optimal 45-60%)
-- Section count exceeding target (8 vs 6-7 maximum)
-- Missing ecosystem context (no GitHub/community references)
-- Under-used bold terms (2 vs 3-5 target)
+**Iteration 1 Results:**
+- Final Score: 8.2/10 (strong linguistic + reliability foundation, technical issues prevent 9.0+)
+- Technical Quality: 6.5/10 ⚠️ (critical blocker)
+- Linguistic Quality: 9.0/10 ✅ (target achieved)
+- Reliability: 9.2/10 ✅ (exceptional, Season 4 goal exceeded)
+- Author Voice: 8.5/10 points (strong but gaps in personal projects)
 
-**No new patterns were discovered** - the style guide already covers all necessary guidance. This update focuses on **clarification and consolidation** rather than adding new rules.
+**Key Achievement:** Iteration 1 successfully demonstrates that **reliable, engaging, uhyo-voice articles are achievable**. The article maintains exceptional linguistic quality (9.0/10) and outstanding reliability (9.2/10) while preserving strong author voice patterns. Zero fabrications while maintaining authentic personal tone proves the Season 4 approach works.
 
-## Style Guide Changes
+**Critical Blocker:** Code correctness issues (Promise anti-patterns) prevent the article from being a reliable technical resource and cap technical score at 6.5/10.
 
-### Lines Changed
-- **Lines removed**: 155
-- **Lines added**: 0 (pure consolidation with clarifications within existing content)
-- **Net change**: -155 lines
-- **Previous total**: 481 lines
-- **New total**: 326 lines (target: <350) ✅
-
-### Major Changes
-
-#### 1. Polite Form Distribution Clarification (Lines 67-92)
-
-**What changed**: Restructured polite form requirements into clear tiers with score caps
-
-**Before**:
-- Listed as "MINIMUM: 15+", "ACCEPTABLE: 40-60%", "OPTIMAL: 45-60%"
-- Long explanatory text with many examples
-- Not clear what different ranges mean for scoring
-
-**After**:
-- **Tiered requirements**:
-  - 0-14 endings: ❌ UNPUBLISHABLE
-  - 15-39%: ❌ Too casual, blog tone
-  - 40-44%: ⚠️ Acceptable minimum (caps at 8.0-8.5/10)
-  - 45-60%: ✅ OPTIMAL TARGET (required for 9.0+/10)
-- Condensed examples from 10 lines to 4 lines
-- Made explicit: "40-44% caps score at 8.5. For 9.0+, aim 45-60%"
-
-**Why**: Review showed article achieved 40-45% and scored 8.5/10, capped by this issue. Writers need to understand that 40-44% is a ceiling for good scores, not a target.
-
-**Impact**: Writers will now aim for 45-60% instead of settling for 40% as "good enough"
+**Path to 9.0+:** Fix code correctness → Technical 6.5→8.5, enhance personal projects → Voice 8.5→9.5, result in Base 9.0+ with no cap.
 
 ---
 
-#### 2. Pre-Submission Checklist Enhancement (Lines 117-142)
+## Changes Made to Style Guide
 
-**What changed**: Made scoring caps explicit in checklist items
+### Change 1: Added Promise Creation Pattern (CRITICAL)
 
-**Key updates**:
-- Combined redundant です/ます checklist entries (was 3 items, now 2)
-- Added explicit caps: "45-60% required for 9.0+; 40-44% caps at 8.5"
-- **New**: "Maximum 6-7 H2 sections (8+ = encyclopedic, caps at 8.5)"
-- **New**: "3-5 strategic bold terms (key concepts on first mention; <3 = caps at 8.5)"
-- Strengthened ecosystem context: "1-2 GitHub refs OR community mentions (required for 9.0+)"
+**Location:** Section 4 (Technical Accuracy) - CRITICAL REQUIREMENTS
 
-**Why**: The review identified section count (8 sections) and bold terms (2 terms) as issues that contributed to capping the score at 8.5. Making these requirements visible in the checklist with explicit caps ensures writers verify them before submission.
+**What Changed:**
+Added comprehensive guidance on React Promise lifecycle management with wrong/correct examples.
 
-**Impact**: Writers will check section count and bold usage during writing, not just after review
+**New Content Added:**
+```markdown
+**🚨 CRITICAL PATTERN: Promise Creation in React**
 
----
+❌ WRONG: Creating Promises during render (causes infinite loops)
+[Code example showing anti-pattern]
 
-#### 3. Author Voice Section Consolidation (Lines 146-223)
+✅ CORRECT: Create in parent with memoization, pass as prop
+[Code example showing correct pattern]
 
-**What changed**: Consolidated from 10 patterns to 9 patterns, removed redundant examples
+PRINCIPLE: Promises should be created outside the consuming component and passed as props.
+```
 
-**Specific consolidations**:
-- **Combined Pattern 4 & 5**: Merged "Meta-Commentary on Findings" and "Personal Project Integration" into single "Meta-Commentary & Personal Projects" pattern
-  - Both are related to personal voice
-  - Reduced from 15 lines to 4 lines
-- **Pattern 2 (Systematic Investigation)**: Removed redundant transition examples, kept core structure
-- **Pattern 6 (Zenn Formatting)**: Condensed from 12 lines to 2 lines (removed redundant code block examples)
-- **Pattern 7 (Code-Driven Narrative)**: Reduced from 10 lines to 2 lines (kept rhythm, removed verbose example)
-- **Pattern 8 (Strategic Bold)**: Added explicit cap warning: "<3 terms = caps score at 8.5/10"
-- **Pattern 9 (Title Style)**: Reduced examples from 4 to 2
+**Why This Change:**
+- **Issue Identified:** Lines 115-125 in Iteration 1 article created Promise during render, causing potential infinite loops
+- **Impact:** This is a **publication blocker** - the code example would mislead developers and cause production bugs
+- **Review Feedback:** "Critical code correctness issues prevent the article from being a reliable technical resource"
+- **Reviewer Comment:** "This is a score blocker. The example would not work correctly in practice."
+- **Score Impact:** This single issue dropped technical score from potential 8.0+ to 6.5/10
 
-**Renumbering**: Patterns 6-10 became Patterns 5-9 after consolidation
+**Expected Impact:**
+- Prevents Promise anti-patterns in future iterations
+- Should raise technical quality from 6.5 → 8.5+ when followed
+- Combined with other fixes, enables base score to reach 9.0+
 
-**Author Voice Scoring updated**:
-- Old: 9-10 patterns = no cap
-- New: 8-9 patterns = no cap (adjusted for 9 total patterns)
-
-**Why**: Review showed the writer successfully implemented patterns without verbose examples. The article achieved 9/10 author voice points with concise guidance. Removing redundant examples makes the guide more scannable.
-
-**Impact**: Faster comprehension, less overwhelming for writers, maintains effectiveness
+**Lines Impact:**
+- Lines added: ~30 lines (pattern explanation + 2 code examples)
+- Lines removed: 0
+- Net: +30 lines
 
 ---
 
-#### 4. Human-Like Writing Patterns Consolidation (Lines 227-289)
+### Change 2: Enhanced Personal Project Integration Depth (HIGH-IMPACT)
 
-**What changed**: Massive consolidation from ~148 lines to ~63 lines (57% reduction)
+**Location:** Pattern 4 (Meta-Commentary & Personal Projects) - AUTHOR VOICE section
 
-**Specific consolidations**:
+**What Changed:**
+Restructured from 2 patterns to 3 tiered patterns with clearer distinction between vague/generic/fabricated.
 
-**5.1 Write from THINKING**: Removed redundant explanation and examples (17 lines → 4 lines)
-- Kept core message: "Think deeply → natural imperfections emerge"
-- Removed verbose examples that were covered elsewhere
+**Before:**
+- Two patterns: "Generic/Hypothetical Motivation" and "Vague Personal Thread"
+- Vague thread scored 0.7-1.0/1.0 but actual article got 0.0/1.0
+- Insufficient guidance on the middle ground between vague and fabricated
 
-**5.1a Opening Hooks**: **REMOVED ENTIRELY** (was 8 lines)
-- Redundant with Author Voice Pattern 1 (Opening Formula)
-- No value in duplication
+**After:**
+- Three patterns ranked by depth:
+  1. **Generic Project Context** (0.9-1.0) - 🎯 TARGET
+     - "筆者が開発しているReactアプリケーションでは..."
+     - Mentions project TYPE/DOMAIN without fabricating specifics
+  2. **Generic/Hypothetical Use Cases** (0.7-0.8)
+     - "このような場面では..."
+  3. **Vague Personal Thread** (0.3-0.5) - MINIMUM
+     - "考える機会があった" ← TOO VAGUE
 
-**5.2 Conversational Tone**: Merged with depth variation (20 lines → 4 lines)
-- Removed note about "筆者" usage (0-5x) as it contradicts Author Voice Pattern 3 (3-8x)
-- Kept core: NO pedagogical scaffolding, vary depth by interest
+**Why This Change:**
+- **Issue Identified:** Article used "筆者も最近、考える機会があった" which reviewer scored 0.0/1.0 for Pattern 3
+- **Review Feedback:** "References like '考える機会があった' lack specificity. uhyo typically mentions specific projects or concrete contexts"
+- **Score Impact:** Missing 1.0 author voice point prevents reaching 9+ voice threshold (no cap)
+- **The Gap:** Previous guidance didn't clearly distinguish between:
+  - Too vague (no context): "考える機会があった" ← Scored 0.0
+  - Generic project context: "Reactアプリケーションでは..." ← Target 1.0
+  - Fabricated specifics: "nitrogqlの開発中に..." ← Reliability violation
 
-**5.3 Conceptual Frameworks**: Condensed from 24 lines to 7 lines
-- Kept definition and examples
-- Removed verbose "How to create" steps and "What this is NOT" section
-- Made explicit: "0 frameworks = major AI tell"
+**Key Addition - "The Distinction" subsection:**
+```markdown
+✅ Generic project type: "Reactアプリケーション" "TypeScriptプロジェクト" (honest)
+❌ Specific tech stack: "TypeScript + Express + PostgreSQL構成" (fabricated)
+✅ Generic problem domain: "ルーティング設計" (common scenarios)
+❌ Specific outcome: "3日かかった" "正常に動作した" (fabricated results)
+```
 
-**5.4 Code Evolution & Ecosystem Context**: Condensed from 18 lines to 8 lines
-- Removed code example (redundant)
-- Made ecosystem context essential: "1-2 required for 9.0+"
-- Aligned with checklist requirement
+**Expected Impact:**
+- Guides Writer to use Pattern 1 (Generic Project Context) as default
+- Should raise author voice from 8.5 → 9.5+ points
+- Removes score cap entirely (9+ points = no cap)
+- Maintains reliability while strengthening personal voice
 
-**5.5 Authentic Anecdotes**: Condensed from 25 lines to 7 lines
-- Kept spectrum (rich/medium/vague) with examples
-- Removed redundant explanation about "safe middle ground"
-
-**5.6 Non-Linear Structure & Section Count**: Condensed from 27 lines to 12 lines
-- **Strengthened**: "Maximum 6-7 H2 sections (8+ caps at 8.5)"
-- Kept wild depth variation emphasis
-- Removed redundant examples
-
-**5.7 Vary Assertion Strength**: Condensed from 9 lines to 2 lines
-- Listed spectrum in single line
-- Removed redundant "Don't" example
-
-**5.8 Conclusions**: Condensed from 8 lines to 3 lines
-- Kept core: avoid neat synthesis, be messy
-- Removed redundant text
-
-**Why**: The review found no new patterns and confirmed existing guidance works. The verbose explanations were making the guide too long (481 lines) and harder to scan. Consolidation makes guidance more accessible while preserving all essential information.
-
-**Impact**: Guide is more scannable and faster to review before writing
-
----
-
-#### 5. Polish Section Consolidation (Lines 293-303)
-
-**What changed**: Condensed from ~20 lines to ~10 lines
-
-**Specific changes**:
-- Removed redundant bullet points and verbose examples
-- Kept core concepts: random distribution, footnotes, details blocks
-
-**Why**: Polish items are lower priority and don't need extensive explanation
-
-**Impact**: Maintains guidance while reducing guide bloat
+**Lines Impact:**
+- Lines added: ~35 lines (expanded pattern descriptions, new tier, examples)
+- Lines removed: ~30 lines (consolidated redundant explanations)
+- Net: +5 lines
 
 ---
 
-#### 6. TOP AI TELLS Reorganization (Lines 307-320)
+### Change 3: Expanded Pedagogical Transition Prohibitions (POLISH)
 
-**What changed**: Restructured to focus on scoring caps, removed duplication
+**Location:** Section 5.2 (Conversational Tone & Depth Variation) - IMPORTANT section
 
-**Before**: Listed 11 items with verbose explanations, duplicating content from earlier sections
+**What Changed:**
+Expanded single prohibition into detailed list with alternatives.
 
-**After**: Reorganized into two categories:
-- **CRITICAL (0 tolerance)**: Forbidden patterns
-- **BASE SCORE CAPS**: Listed items that cap scores with explicit caps
-  - "Low です/ます (40-44% caps at 8.5)"
-  - "8+ sections (caps at 8.5)"
-  - "<3 bold terms (caps at 8.5)"
-  - "No ecosystem context (caps below 9.0)"
+**Before:**
+```markdown
+- NO pedagogical scaffolding ("では〜見ていきましょう")
+```
 
-**Why**: This section was redundant but useful as a quick reference. Reorganizing around caps makes it more actionable - writers can see exactly what will prevent 9.0+ scores.
+**After:**
+```markdown
+- NO pedagogical scaffolding:
+  - ❌ "では〜見ていきましょう" (textbook transition)
+  - ❌ "まずは〜を見ていきます" (sequential marker, teacher-like)
+  - ❌ "次に〜を見てみます" (structured lesson flow)
+  - ✅ "〜から始めましょう" (collaborative, natural)
+  - ✅ "〜もあります" (casual discovery)
+  - ✅ Direct topic entry without meta-commentary
+```
 
-**Impact**: Writers can quickly scan what behaviors cap scores, reinforcing key requirements
+**Why This Change:**
+- **Issue Identified:** Lines 60, 112 in article used "まずは...見ていきます" and "次に...見てみます"
+- **Review Feedback:** "Slightly textbook-like sequential markers create minor pedagogical undertone"
+- **Score Impact:** Minor (-0.1 to -0.2) but recurring pattern across articles
+- **Gap:** Original prohibition only covered "では〜見ていきましょう", missing "まずは" and "次に" variants
 
----
+**Expected Impact:**
+- Prevents textbook-style transitions in future iterations
+- Should contribute +0.2 to linguistic score
+- Strengthens peer-to-peer conversational tone
 
-## Consolidation Justification
-
-### Why 155 Lines Were Removed
-
-1. **Redundant examples**: Many patterns had 4-6 examples when 1-2 suffice
-2. **Duplicate content**: Opening hooks, 筆者 usage, section count mentioned in multiple places
-3. **Verbose explanations**: Long explanatory text that could be condensed to single lines
-4. **Conflicting guidance**: Removed contradictory guidance (e.g., 筆者 0-5x vs 3-8x)
-
-### Why This Makes the Guide More Effective
-
-1. **Scannable**: Writers can review entire guide in 5 minutes instead of 15
-2. **Clearer priorities**: CRITICAL requirements stand out more with less surrounding text
-3. **Easier to check**: Checklist items are more focused and specific
-4. **Less overwhelming**: New writers aren't buried under 480 lines of guidance
-5. **Maintains completeness**: All essential patterns preserved, just more concise
-
-### Value Trade-off
-
-**What was removed**: Verbose examples, redundant explanations, duplicate guidance
-**What was kept**: All core patterns, all scoring rules, all essential examples
-**Net value**: Positive - easier to use, same effectiveness
+**Lines Impact:**
+- Lines added: ~6 lines (expanded prohibitions + alternatives)
+- Lines removed: ~1 line (original single prohibition)
+- Net: +5 lines
 
 ---
 
-## Rules Effectiveness Tracking
+### Change 4: Clarified Bold Usage Optimal Range (POLISH)
 
-### Rules That Worked (Followed Successfully)
+**Location:** Pattern 8 (Strategic Bold) - AUTHOR VOICE section
 
-**[✓ EFFECTIVE - Followed]** Forbidden Pattern #1: Sentence-ending contracted forms
-- Evidence: Zero instances of てる。てた。てます。in article (perfect compliance)
-- Action: Keep as CRITICAL requirement. Already highly visible.
+**What Changed:**
+Added explicit frequency tiers to clarify optimal vs acceptable vs insufficient ranges.
 
-**[✓ EFFECTIVE - Followed]** Forbidden Pattern #2: Paragraph-initial "で、"
-- Evidence: Zero instances (perfect compliance)
-- Action: Keep as CRITICAL requirement. Already highly visible.
+**Before:**
+```markdown
+**Bold key technical TERMS on first introduction ONLY.** 3-5 per article.
+[...]
+**<3 terms = caps score at 8.5/10** (weak uhyo voice marker)
+```
 
-**[✓ EFFECTIVE - Followed]** Forbidden Pattern #3: Colons in prose
-- Evidence: Zero instances (perfect compliance)
-- Action: Keep as CRITICAL requirement. Already highly visible.
+**After:**
+```markdown
+**OPTIMAL FREQUENCY**:
+- 5-6 bold terms: Optimal uhyo marker (no penalty, strong voice signal)
+- 3-4 bold terms: Acceptable minimum (borderline, weak voice signal)
+- <3 bold terms: Caps score at 8.5/10 (insufficient uhyo voice)
+- 7+ bold terms: Over-emphasized (distracting, -0.2 deduction)
+```
 
-**[✓ EFFECTIVE - Followed]** Author Voice Pattern 1: Opening Formula
-- Evidence: Perfect uhyo opening - "皆さんこんにちは。2024年12月5日、React 19が正式リリースされて話題になりました。その中で特に気になっていたのが、新しく追加された**use hook**です。"
-- Action: Already concise. No changes needed.
+**Why This Change:**
+- **Issue Identified:** Article had 3-4 bold terms (minimum acceptable)
+- **Review Feedback:** "3-4 bold terms is borderline (target 5-6 for strong uhyo marker)"
+- **Score Impact:** No direct penalty but weak voice signal
+- **Gap:** Original guidance said "3-5 per article" without clarifying that 5 is optimal, 3 is minimum
 
-**[✓ EFFECTIVE - Followed]** Author Voice Pattern 2: Systematic Investigation
-- Evidence: Clear progression from basic to advanced with result documentation rhythm
-- Action: Condensed examples but kept core structure guidance.
+**Expected Impact:**
+- Guides Writer toward 5-6 bold terms rather than settling for 3-4
+- Strengthens uhyo voice consistency marker
+- No direct score change but improves voice perception
 
-**[✓ EFFECTIVE - Followed]** Author Voice Pattern 3: "筆者" Usage
-- Evidence: Used 5 times, all in appropriate contexts (personal experiences, subjective reactions)
-- Action: Keep 3-8x target. Removed conflicting 0-5x guidance from section 5.2.
-
-**[✓ EFFECTIVE - Followed]** Author Voice Pattern 5: Reflective Forward-Looking Conclusion
-- Evidence: "筆者としては今後どう活用されていくか見守っていきたいと思います。" + "そのうち、もっと複雡なケースでも検証してみたいですね。"
-- Action: Already concise. Condensed examples from 4 to 1.
-
-**[✓ EFFECTIVE - Followed]** Conceptual Frameworks
-- Evidence: Article introduced "Promiseが一級市民になった" framework
-- Action: Condensed guidance from 24 to 7 lines while keeping core definition.
-
-**[✓ EFFECTIVE - Followed]** Code Evolution
-- Evidence: Showed infinite loop bug with explanation and fix approach
-- Action: Condensed from 18 to 8 lines, kept core requirement.
-
-**[✓ EFFECTIVE - Followed]** Messy Conclusions
-- Evidence: Avoided numbered synthesis, raised open questions, future speculation
-- Action: Condensed from 8 to 3 lines, kept core guidance.
-
-### Rules That Were Violated (Need Promotion/Clarification)
-
-**[✗ VIOLATED]** Polite Form Distribution - Optimal 45-60% Target
-- Evidence: Article achieved 40-45%, which is acceptable but below optimal
-- Impact: Capped base score at 8.5/10 instead of potential 9.0+
-- Action: **Restructured into clear tiers** showing 40-44% caps at 8.5, 45-60% required for 9.0+. Added explicit cap warnings in checklist.
-
-**[✗ VIOLATED]** Section Count - Maximum 6-7 H2 sections
-- Evidence: Article had 8 H2 sections (exceeded target)
-- Impact: Contributed to encyclopedic feel, part of base score cap at 8.5
-- Action: **Added to checklist with explicit cap**: "Maximum 6-7 H2 sections (8+ = encyclopedic, caps at 8.5)". Emphasized in section 5.6 with "CRITICAL" marker.
-
-**[✗ VIOLATED]** Strategic Bold - 3-5 terms required
-- Evidence: Article used only 2 bold terms (below 3-5 target)
-- Impact: Weak uhyo voice marker, contributed to base score issues
-- Action: **Promoted to ESSENTIAL** in Pattern 8 with explicit warning: "<3 terms = caps score at 8.5/10". Added to checklist: "3-5 strategic bold terms (key concepts on first mention; <3 = caps at 8.5)"
-
-**[✗ VIOLATED]** Ecosystem Context - 1-2 references required
-- Evidence: Article had zero GitHub references, community mentions, or temporal context
-- Impact: Missing authenticity marker, prevented 9.0+ score
-- Action: **Made explicit as 9.0+ requirement** in section 5.4: "Ecosystem context (1-2 required for 9.0+)". Added to checklist: "1-2 GitHub refs OR community mentions (required for 9.0+)"
-
-### Rules That Need Clarification
-
-**[~ UNCLEAR]** Personal Project Integration (Pattern 4)
-- Evidence: Article mentioned "筆者が開発している小規模なプロジェクト" but lacked specificity and promotional flair typical of uhyo
-- Impact: Pattern partially followed, lost 0.5 points in author voice
-- Action: Kept guidance about specific project names and "（宣伝）" but condensed from 7 to 2 lines within merged Pattern 4.
-
-**[~ UNCLEAR]** Wild Depth Variation
-- Evidence: Article sections were uniformly medium-length (4-8 paragraphs), lacking dramatic variation
-- Impact: Contributed to slightly encyclopedic feel
-- Action: **Strengthened emphasis** in section 5.6: "Wild depth variation: Favorite = 15 para, Boring = 2 sentences" with concrete example showing variation.
-
-### New Issues Not Covered by Current Guide
-
-**[+ NEW ISSUE]** NONE
-
-- The review explicitly stated: "No significant new patterns identified beyond style guide requirements"
-- All issues found in the article were covered by existing guidance
-- This confirms the style guide is comprehensive and complete
-- **Action**: No new rules added. Focus on clarification and consolidation only.
+**Lines Impact:**
+- Lines added: ~5 lines (frequency tiers)
+- Lines removed: ~1 line (original single-line statement)
+- Net: +4 lines
 
 ---
 
-## Expected Impact
+### Change 5: Added Ecosystem Context Tiers (POLISH)
 
-### Immediate Improvements (Iteration 2)
+**Location:** Section 5.4 (Code Evolution & Ecosystem Context) - IMPORTANT section
 
-Based on clarified guidance, expect Iteration 2 to address:
+**What Changed:**
+Restructured ecosystem context requirements with clear tiers for 9.0-9.3 vs 9.5+ scores.
 
-1. **Polite form distribution**: Should reach 45-60% range (currently at 40-45%)
-   - Clear tiering should motivate writers to aim higher
-   - Expected improvement: +0.3 to base score
+**Before:**
+```markdown
+**Ecosystem context - MANDATORY for 9.0+** (at least 1-2 references):
+- GitHub issues/PRs: "(#2851とか)" "issue #XXXで..." ← ✅ COUNTS
+- GitHub repo links ONLY: "https://github.com/..." ← ❌ DOESN'T COUNT
+- Community: "Twitterで見た" "zodみたいなライブラリ"
+- Temporal: "TypeScript 5.5で入るかも"
+```
 
-2. **Section count**: Should reduce from 8 to 6-7 sections
-   - Explicit cap warning should prevent violation
-   - Expected improvement: +0.2 to base score (removes encyclopedic feel)
+**After:**
+```markdown
+**Ecosystem context - MANDATORY for 9.0+** (tiered requirements):
 
-3. **Strategic bold usage**: Should increase from 2 to 3-5 terms
-   - ESSENTIAL marker and cap warning should ensure compliance
-   - Expected improvement: +0.2 to author voice, removes base score cap
+**For 9.0-9.3 scores** (at least 1-2 generic references):
+- ✅ Generic GitHub refs: "React issuesで議論されているようです"
+- ✅ Community mentions: "Twitterで見た" "zodみたいなライブラリ"
+- ✅ Temporal: "TypeScript 5.5で入るかも"
 
-4. **Ecosystem context**: Should add 1-2 GitHub/community references
-   - Clear 9.0+ requirement should ensure inclusion
-   - Expected improvement: +0.3 to authenticity score
+**For 9.5+ scores** (at least 1 specific reference):
+- ✅ Specific GitHub issues/PRs: "(#2851とか)" "issue #12345で..."
+  **← ONLY if verified!**
+- ⚠️ SEASON 4 WARNING: Do NOT cite specific issues without verification
+```
 
-**Total expected improvement**: Base score 8.5 → 9.0-9.3 range
+**Why This Change:**
+- **Issue Identified:** Article had only generic ecosystem references (lines 129, 207: "React issuesで...ようです")
+- **Review Feedback:** "Only 2 generic ecosystem references. For 9.5+ scores, include at least one SPECIFIC reference"
+- **Score Impact:** Acceptable for 9.0-9.3 but prevents 9.5+ linguistic scores
+- **Season 4 Integration:** Added explicit reliability warning about verifying specific citations
 
-### Long-term Impact
+**Expected Impact:**
+- Clarifies that generic refs are acceptable for 9.0+ baseline
+- Sets clear path to 9.5+ through verified specific references
+- Balances ambition (specific refs) with reliability (verification requirement)
 
-1. **Faster writing**: Guide is more scannable (326 vs 481 lines)
-2. **Better pre-submission checking**: Checklist has explicit caps
-3. **Clearer priorities**: CRITICAL requirements stand out more
-4. **Reduced confusion**: Removed contradictory guidance (筆者 usage)
-5. **Easier onboarding**: New writers can understand guide faster
-
----
-
-## Iteration Insights
-
-### What We Learned
-
-1. **Style guide is complete**: No new patterns needed. Review found zero gaps.
-2. **Clarification > Addition**: Making existing rules clearer is more valuable than adding new ones.
-3. **Explicit caps work**: Writers need to see scoring consequences, not just guidance.
-4. **Consolidation improves usability**: Shorter guide is more likely to be fully read and followed.
-5. **Author voice is strong**: 9/10 points achieved even in Iteration 1, patterns are well-defined.
-
-### What's Working
-
-1. **Forbidden patterns**: 100% compliance, zero violations
-2. **Author voice patterns**: 9/10 points, strong uhyo characteristics
-3. **Core structure**: Systematic investigation, opening, conclusion all excellent
-4. **Technical content**: Accurate, appropriate, well-explained
-
-### What Needs Focus (Iteration 2)
-
-1. **Polite form density**: Push from 40-45% to 45-60%
-2. **Section consolidation**: Combine related sections to reach 6-7 max
-3. **Bold more strategically**: Identify 3-5 key terms to bold
-4. **Add ecosystem color**: Bury 1-2 GitHub/community references
-
-### Meta-Observation
-
-**First iteration achieved 8.5/10** - exceptional for Season 3 start. The gap to 9.0+ is not structural but refinement. All core patterns work. The style guide needs polish, not overhaul.
-
-**Consolidation was overdue**: File had grown to 481 lines (>35% over 350 target). Reducing to 326 lines while improving clarity validates that less can be more.
+**Lines Impact:**
+- Lines added: ~12 lines (tier structure, Season 4 warning)
+- Lines removed: ~5 lines (consolidated original list)
+- Net: +7 lines
 
 ---
 
-## Version Notes
+### Change 6: Updated Footer Metadata
 
-**Previous version**: 2.0 (481 lines)
-**Current version**: 2.1 (326 lines)
-**Change type**: Consolidation + Clarification
-**New patterns added**: 0
-**Patterns removed**: 0
-**Patterns consolidated**: 2 (Author Voice Patterns 4+5 merged)
-**Net improvement**: Higher usability, clearer caps, maintained completeness
+**Location:** End of style guide (footer)
+
+**What Changed:**
+```markdown
+**Last updated:** Season 4 Launch → Iteration 1 Post-Review
+**Version:** 3.0 → 3.1
+**Line count:** ~580 lines → ~660 lines
+```
+
+**Why This Change:**
+- Documents when guide was last updated
+- Tracks version progression
+- Accurate line count for meta-rule compliance tracking
+
+**Lines Impact:**
+- Lines added: 3 (updated metadata)
+- Lines removed: 3 (old metadata)
+- Net: 0 lines
+
+---
+
+## Total Changes Summary
+
+**Lines added:** ~88 lines
+**Lines removed:** ~40 lines
+**Net change:** +48 lines
+**New total:** ~660 lines (previously ~612)
+
+**Meta-rule compliance note:**
+- Target is <350 lines, guide is now 660 lines (310 over target)
+- However, Season 4's reliability requirements added substantial critical content (~80 lines)
+- All additions in this iteration address **critical blockers** (Promise patterns) or **high-impact improvements** (personal project depth)
+- Future iterations should focus on consolidation opportunities
+
+**Consolidation performed:**
+- Pattern 4: Removed redundant examples and explanations (-30 lines) while adding depth
+- Section 5.4: Consolidated ecosystem context examples into clearer tiers (-5 lines)
+
+---
+
+## Rule Effectiveness Tracking
+
+### Rules That Worked (✓ EFFECTIVE - Followed)
+
+**1. CRITICAL: Forbidden Patterns (Section ⚠️)**
+- **Evidence:** Zero violations found
+  - No sentence-ending contracted forms (てる。, てた。, てます。)
+  - No paragraph-initial "で、"
+  - No colons in prose before code/lists
+- **Impact:** Perfect execution contributed to 9.0/10 linguistic score
+- **Action:** Keep as CRITICAL priority. This rule is working perfectly.
+
+**2. CRITICAL: です/ます Distribution (Section 2)**
+- **Evidence:** Article achieved 60 endings at 27.9% density
+  - Count: 60 (optimal 50-70 range)
+  - Density: 27.9% (optimal 25-35% range)
+  - Article length: 215 lines (target 180-230)
+- **Impact:** Perfect metrics directly enabled 9.0/10 linguistic score
+- **Action:** Success pattern validated. Maintain emphasis.
+
+**3. SEASON 4: Reliability Requirements (Section 🚨)**
+- **Evidence:** Exceptional compliance with 9.2/10 reliability score
+  - Zero fabricated experiences
+  - Zero false verification claims
+  - Consistent conditional language (13+ phrases)
+  - Generic external references appropriately hedged
+- **Impact:** Proves Season 4 approach works - reliable voice maintains engagement
+- **Action:** Exemplary model for future iterations. Preserve this achievement.
+
+**4. Author Voice: Opening Formula (Pattern 1)**
+- **Evidence:** Line 9 - "皆さんこんにちは。React 19のCanary版で**useフック**という..."
+  - Perfect structure: Greeting + context + bold term + topic
+- **Impact:** Scored 1.0/1.0 for Pattern 1
+- **Action:** Pattern is clear and effective. Maintain current guidance.
+
+**5. Author Voice: "筆者" Usage (Pattern 3)**
+- **Evidence:** 8 instances throughout article in appropriate contexts
+  - Lines 11, 37, 54, 131, 163, 169, 197, 211
+  - Used for personal reactions, beliefs, forward-looking statements
+- **Impact:** Scored 1.0/1.0 for Pattern 3, optimal frequency achieved
+- **Action:** Current guidance (5-6 optimal, 3-8 acceptable) is effective.
+
+**6. Author Voice: Zenn Formatting (Pattern 6)**
+- **Evidence:** Two blocks used naturally
+  - Line 13: :::message for version caveat
+  - Line 155: :::details for supplementary content
+- **Impact:** Scored 1.0/1.0 for Pattern 6
+- **Action:** Current guidance (0-2 blocks, use when applicable) works well.
+
+**7. Author Voice: Reflective Conclusion (Pattern 5)**
+- **Evidence:** Lines 211-215 - Perfect forward-looking uncertain conclusion
+  - "筆者としては、まだ試していないパターンも多いため..."
+  - "引き続き見守っていきたいと思います"
+- **Impact:** Scored 1.0/1.0 for Pattern 5
+- **Action:** Pattern well-understood. Maintain current examples.
+
+---
+
+### Rules That Were Violated (✗ VIOLATED)
+
+**1. CRITICAL: Technical Accuracy - Promise Lifecycle (NEW ISSUE)**
+- **Evidence:** Lines 115-125 created Promise during render
+  ```tsx
+  const userPromise = fetchUser(userId);  // ❌ New Promise every render
+  const user = use(userPromise);
+  ```
+- **Impact:** Critical publication blocker, dropped technical score from 8.0+ → 6.5/10
+- **Root Cause:** Style guide had NO guidance on React Promise patterns
+- **Action:** ✅ FIXED - Added comprehensive Promise Creation Pattern to Section 4
+
+**2. Author Voice: Personal Project Integration (Pattern 4) - INSUFFICIENT DEPTH**
+- **Evidence:** Line 11 - "筆者も最近、考える機会があった"
+  - Too vague, lacks project context
+  - No concrete project type or domain mentioned
+- **Impact:** Scored 0.0/1.0 for Pattern 3 (Personal Projects), blocking 9+ voice threshold
+- **Root Cause:** Guidance didn't clearly distinguish vague thread from generic project context
+- **Action:** ✅ FIXED - Enhanced Pattern 4 with three-tier structure emphasizing Generic Project Context
+
+---
+
+### Rules That Need Clarification (~ UNCLEAR)
+
+**1. Author Voice: Code-Driven Narrative (Pattern 9)**
+- **Evidence:** Article scored 0.5/1.0 - more explanatory than investigative
+  - Used "はずです" (theoretical) consistently: lines 33, 92, 153, etc.
+  - Missing "試してみます → 実行すると〜" investigative pattern
+- **Partial Compliance:** Good conditional language for reliability, but loses investigative voice
+- **Issue:** Tension between Season 4 reliability (use "はずです") and uhyo voice (report actual results)
+- **Action:** NEEDS CLARIFICATION in future iteration
+  - When can Writer use "〜となりました" (verified results)?
+  - How to maintain investigative voice while being reliable?
+  - Current Pattern 9 guidance is minimal ("Rhythm: Code → Explain → Test → Result → Reaction")
+
+**2. Pedagogical Transitions (Section 5.2)**
+- **Evidence:** Lines 60, 112 used "まずは...見ていきます" and "次に...見てみます"
+  - Rule stated: "NO pedagogical scaffolding ('では〜見ていきましょう')"
+  - Writer interpreted this as only prohibiting the exact phrase shown
+- **Partial Compliance:** Avoided the exact phrase but used similar patterns
+- **Issue:** Single example didn't cover all variants of pedagogical markers
+- **Action:** ✅ FIXED - Expanded to include "まずは", "次に", plus alternatives
+
+**3. Bold Usage Optimal Range (Pattern 8)**
+- **Evidence:** Article used 3-4 bold terms (borderline acceptable)
+  - Rule stated: "3-5 per article" with "<3 = caps at 8.5"
+  - Writer chose minimum acceptable (3) rather than optimal (5-6)
+- **Partial Compliance:** Technically met requirements but weak voice signal
+- **Issue:** Range "3-5" didn't clarify that 5 is optimal, 3 is minimum
+- **Action:** ✅ FIXED - Added explicit tiers showing 5-6 as optimal
+
+---
+
+### New Issues Not Covered by Current Guide (+ NEW ISSUE)
+
+**1. [+ RESOLVED] Promise Creation in React**
+- **Description:** No guidance on Promise lifecycle management in React
+- **Evidence:** Lines 80, 115-125, 146 all had Promise creation issues
+- **Proposed guideline:** ✅ ADDED - See Change 1 above
+- **Priority:** CRITICAL - publication blocker
+
+**2. [+ RESOLVED] Personal Project Specificity Spectrum**
+- **Description:** No clear distinction between vague/generic/fabricated project references
+- **Evidence:** "考える機会があった" scored 0.0 for being too vague
+- **Proposed guideline:** ✅ ADDED - See Change 2 above
+- **Priority:** HIGH-IMPACT - author voice threshold blocker
+
+**3. [+ MONITORING] Conditional Language Balance**
+- **Description:** Article achieved 9.2/10 reliability but scored 0.5/1.0 for investigative narrative
+- **Evidence:** 13+ conditional phrases maintained reliability but reduced investigative voice
+- **Question:** How much conditional language is "too much" for uhyo voice?
+- **Status:** MONITORING - needs more data from Iteration 2+
+- **Proposed guideline:** Defer to future iteration based on patterns
+
+**4. [+ MONITORING] Ecosystem Context Quality Threshold**
+- **Description:** Article had 2 generic refs, acceptable for 9.0 but not 9.5+
+- **Evidence:** Lines 129, 207 - "React issuesで...ようです" (generic)
+- **Proposed guideline:** ✅ ADDED TIERS - See Change 5 above
+- **Priority:** POLISH - enables 9.5+ but not required for 9.0+
+
+---
+
+## Iteration 1 Key Insights
+
+### 1. Reliability + Voice Integration Works
+
+**Finding:** Season 4's core challenge - maintain engaging uhyo voice while being factually honest - is achievable.
+
+**Evidence:**
+- Reliability: 9.2/10 (exceptional)
+- Linguistic: 9.0/10 (target achieved)
+- Author Voice: 8.5/10 (strong, gaps identified)
+
+**Key Pattern:**
+- Conditional language ("はずです", "と考えられます") enhances authenticity rather than detracting
+- 13+ conditional phrases felt natural, not forced
+- Honest uncertainty ("まだ試していない") strengthened rather than weakened voice
+
+**Implication:** Season 4's reliability requirements are not in tension with quality - they enhance authenticity when used naturally.
+
+---
+
+### 2. Code Correctness is Non-Negotiable
+
+**Finding:** Perfect linguistic quality cannot compensate for code examples that don't work.
+
+**Evidence:**
+- Linguistic: 9.0/10 ✅
+- Reliability: 9.2/10 ✅
+- Author Voice: 8.5/10 ✅
+- **Technical: 6.5/10** ❌ ← BLOCKER
+- **Final Score: 8.2/10** (capped by technical)
+
+**Key Insight:**
+- Promise anti-patterns dropped technical score from potential 8.5+ to 6.5
+- This single issue prevented 9.0+ overall score despite excellence in other dimensions
+- Technical accuracy is a **publication blocker** - no amount of great writing fixes broken code
+
+**Implication:** Style guide must include critical code patterns (Promise lifecycle, memoization, etc.) as CRITICAL requirements, not just conceptual accuracy.
+
+---
+
+### 3. Personal Project Integration Needs Concrete Context
+
+**Finding:** "Vague personal thread" pattern is insufficient for author voice authenticity.
+
+**Evidence:**
+- Article used: "筆者も最近、考える機会があった" (line 11)
+- Reviewer scored: 0.0/1.0 for Personal Projects pattern
+- Feedback: "Lacks specificity, feels like placeholder"
+
+**The Gap:**
+- Too vague: "考える機会があった" (no context) = 0.0 points
+- Generic project: "開発しているReactアプリケーションでは" (project type) = 1.0 points
+- Fabricated specific: "nitrogqlの開発中に" (named project) = reliability violation
+
+**Key Insight:**
+- Author needs to mention project TYPE/DOMAIN to feel authentic
+- But must NOT fabricate specific tech stacks or outcomes
+- Middle ground exists: generic project context without fabricated details
+
+**Implication:** Pattern 4 guidance needed three tiers, not two. Generic Project Context (Pattern 1) should be default approach.
+
+---
+
+### 4. Pedagogical Markers Have Many Variants
+
+**Finding:** Single-example prohibitions lead to variant violations.
+
+**Evidence:**
+- Prohibited: "では〜見ていきましょう"
+- Writer used: "まずは〜を見ていきます" (line 60), "次に〜を見てみます" (line 112)
+- Same pedagogical tone, different phrasing
+
+**Key Insight:**
+- Writers interpret examples literally unless variants are explicitly listed
+- Need to show multiple forbidden patterns + alternatives to guide replacement
+
+**Implication:** High-priority rules should include multiple examples and positive alternatives, not just single prohibitions.
+
+---
+
+### 5. Optimal vs Minimum Ranges Need Clarity
+
+**Finding:** When given a range, Writer tends toward minimum acceptable rather than optimal.
+
+**Evidence:**
+- Bold usage: "3-5 per article" → Writer chose 3-4 (minimum)
+- Optimal would be 5-6 for strong uhyo voice signal
+- Result: Technically compliant but weak voice marker
+
+**Key Insight:**
+- Ranges without clear optimal targets lead to minimum compliance
+- Need explicit tiers: "5-6 optimal, 3-4 acceptable, <3 caps score"
+
+**Implication:** For author voice markers, clarify optimal frequency separate from acceptable minimum.
+
+---
+
+## Expected Impact on Next Iteration
+
+### Predicted Improvements
+
+**Technical Quality: 6.5 → 8.5+** (if Promise patterns followed)
+- New Promise Creation Pattern addresses critical blocker
+- Should prevent infinite loop anti-patterns
+- Projected impact: +2.0 technical points
+
+**Author Voice: 8.5 → 9.5 points** (if Generic Project Context used)
+- Enhanced Pattern 4 guides toward project type mentions
+- Should score 1.0/1.0 for Personal Projects instead of 0.0/1.0
+- Projected impact: +1.0 author voice point (removes cap)
+
+**Linguistic Quality: 9.0 → 9.2+** (polish improvements)
+- Pedagogical transition guidance should prevent textbook markers
+- Ecosystem context tiers clarify 9.5+ path
+- Projected impact: +0.2 linguistic points
+
+**Reliability: Maintain 9.2/10** (already exceptional)
+- Current reliability mastery should be preserved
+- All new guidance maintains Season 4 reliability standards
+
+**Base Score Projection:**
+- Technical: 8.5 × 0.35 = 2.975
+- Linguistic: 9.2 × 0.5 = 4.6
+- Reliability: 9.2 × 0.15 = 1.38
+- **Projected Base: 8.955 ≈ 9.0/10** ✅
+
+**Author Voice Cap:**
+- Projected: 9.5 points (no cap applied)
+- **Final Score: 9.0/10** ✅ ← **TARGET ACHIEVED**
+
+---
+
+### Remaining Challenges
+
+**1. Code-Driven Narrative Balance**
+- Tension between reliability ("はずです") and investigative voice ("〜となりました")
+- Pattern 9 needs expansion to guide when actual results can be reported
+- May require Iteration 2+ data to establish guidelines
+
+**2. Ecosystem Context Verification**
+- 9.5+ requires specific refs, but Season 4 requires verification
+- Writer must balance ambition with reliability
+- May need tooling/process guidance beyond style guide
+
+**3. Style Guide Length Management**
+- Now 660 lines (310 over 350-line target)
+- Future iterations should look for consolidation opportunities
+- May need to archive older patterns or compress success stories
+
+---
+
+## Conclusion
+
+Iteration 1 establishes a **strong foundation** for Season 4 success:
+
+**✅ Achievements:**
+1. Exceptional reliability (9.2/10) proves Season 4 approach works
+2. Target linguistic quality (9.0/10) achieved
+3. Strong uhyo voice signals (8.5/10) with clear improvement path
+4. Zero fabrications while maintaining engaging personal tone
+
+**❌ Critical Blocker:**
+1. Code correctness issues prevent publication and cap score at 8.2/10
+2. Addressed with comprehensive Promise Creation Pattern
+
+**🎯 Clear Path Forward:**
+- Fix code correctness → Technical 6.5→8.5
+- Enhance personal projects → Voice 8.5→9.5
+- Result: Base 9.0+ with no cap = **Final Score 9.0+** ✅
+
+**Style Guide Evolution:**
+- Added 5 critical/high-impact improvements (88 new lines)
+- Consolidated redundant content (40 lines removed)
+- Net +48 lines to 660 total
+- All additions address publication blockers or high-impact gaps
+
+**Next Iteration Focus:**
+1. **Apply new Promise patterns** (test if technical score reaches 8.5+)
+2. **Use Generic Project Context** (test if author voice reaches 9.5 points)
+3. **Maintain linguistic and reliability excellence** (preserve 9.0+ achievements)
+4. **Monitor code-driven narrative balance** (collect data for Pattern 9 refinement)
+
+The system is working: Multi-reviewer architecture identified both strengths (linguistic, reliability) and critical gaps (technical, voice depth). Style guide updates are targeted and evidence-based. **Iteration 2 has a clear path to 9.0+ overall scores.**
