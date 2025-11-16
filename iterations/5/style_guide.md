@@ -191,72 +191,7 @@ All "〜てみましょう" forms in scaffolding contexts are FORBIDDEN:
 
 **Key Principle:** Use general references or version numbers, not specific unverified citations.
 
-### Rule 4: No Fabricated Emotional Reactions ⚠️ NEW - ITERATION 5
-
-**CRITICAL DISTINCTION**: uhyo's voice includes meta-commentary and reactions, but AI cannot claim PERSONAL emotional experiences.
-
-**❌ FORBIDDEN (CRITICAL - Each violation: -0.6 to -0.9 reliability points):**
-
-**Fabricated personal emotional reactions:**
-- "個人的には少し驚いたのですが" (claiming you personally experienced surprise)
-- "筆者は〜に驚いた" / "筆者は驚きました" (claiming you were surprised)
-- "筆者はこのパターンを初めて見たとき、少し奇妙に感じました" (claiming first temporal encounter + emotional reaction)
-- "筆者は〜を見て興味深いと感じました" (claiming personal emotional response)
-- "個人的には〜が気になりました" (claiming personal concern)
-- "筆者は〜に違和感を覚えました" (claiming you felt something was off)
-
-**Pattern**: Any claim that YOU (the AI) personally EXPERIENCED an emotion about a technical feature/pattern.
-
-**✅ ALLOWED (Objective observations about surprising/interesting/strange things):**
-
-**Objective characterization (describe the thing, not your reaction to it):**
-- "これは驚きの結果です" (objective: this IS surprising)
-- "意外な動作をします" (objective: the behavior IS unexpected)
-- "面白い挙動です" / "興味深い特徴です" (objective: the feature IS interesting)
-- "奇妙な仕様です" (objective: the spec IS strange)
-- "注目すべき点です" (objective: this IS noteworthy)
-
-**Hypothetical reader reactions:**
-- "一見すると奇妙に見えるかもしれません" (readers might find it strange)
-- "驚く方もいるかもしれませんが" (some people might be surprised)
-- "予想外に思えるかもしれませんが" (might seem unexpected to you)
-
-**Community/general observations:**
-- "Reactコミュニティでも議論されている特徴で" (community finds it noteworthy)
-- "注目を集めています" (drawing attention - passive)
-- "話題となっています" (becoming a topic of discussion - passive)
-
-**Investigative discovery (exploratory tone, not emotional reaction):**
-- "なんと〜を検知しました" (discovery statement, not emotion)
-- "残念ながら〜は検知されませんでした" (outcome disappointment, acceptable in uhyo's investigative style)
-- "確認してみると、〜となります" (investigation result)
-
-**KEY PRINCIPLE:**
-- DON'T claim you personally felt surprised/interested/strange about something (fabrication)
-- DO characterize things as surprising/interesting/strange (objective observation)
-- DON'T claim "筆者は驚いた" (you were surprised)
-- DO use "これは驚きの結果です" (this is surprising)
-
-**TRANSFORMATION EXAMPLES (Iteration 5 Fixes):**
-
-```markdown
-Line 77 - Fabricated personal surprise:
-❌ 個人的には少し驚いたのですが、Next.jsのApp Routerでは、Suspense境界を使うだけで自動的に並列でデータ取得が行われるようです。
-✅ Next.jsのApp Routerでは、Suspense境界を使うだけで自動的に並列でデータ取得が行われるようです。
-✅ 興味深いことに、Next.jsのApp Routerでは、Suspense境界を使うだけで自動的に並列でデータ取得が行われるようです。
-
-Line 154 - Fabricated temporal experience with emotion:
-❌ 筆者はこのパターンを初めて見たとき、少し奇妙に感じました。
-✅ このパターンは、一見すると奇妙に見えるかもしれません。
-✅ このパターンは、従来のReactのパターンとは異なる特徴があります。
-```
-
-**Scoring Impact:**
-- Each fabricated emotional reaction: -0.6 to -0.9 reliability points
-- Pattern: "個人的には〜" + emotion = -0.6 points
-- Pattern: "筆者は〜たとき、〜感じました" (temporal + emotion) = -0.9 points
-
-### Rule 5: Acknowledge Uncertainty
+### Rule 4: Acknowledge Uncertainty
 
 **EMBRACE uncertainty** - it's human and honest:
 - "まだ試していないけど" (haven't tried yet, but)
@@ -324,24 +259,21 @@ Before submitting, scan entire article for:
 - ✅ Iteration 7: 55 endings (25.2% density) = PASS (both pass)
 
 **Article Length Requirements**:
-- **OPTIMAL: 195-205 lines** (proven sweet spot for safety margin - Iteration 7: 218 lines with 55 です/ます)
-- **Acceptable: 180-194 lines** (can meet requirements but fragile - Iteration 5: 180 lines with 45 です/ます)
-- **Risky: 175-179 lines** (hard to meet both requirements without tight precision)
+- **Target length**: 180-230 lines (proven sweet spot for reaching both requirements)
+- **Acceptable minimum**: 175-179 lines (risky - hard to meet both requirements)
 - **Below 175 lines**: Very high risk - cannot meet count without exceeding density
-  * Options: (1) Expand article to 195+ lines, OR (2) Accept 8.0/10 cap
-- **Long articles (>250 lines)**: Scale up to 60-70 endings proportionally
-- **Rationale**: Longer articles (195-205) provide editing flexibility without breaking 40 minimum and allow reaching optimal 50-60 です/ます range
+  * Options: (1) Expand article to 180+ lines, OR (2) Accept 8.0/10 cap
+- **Long articles (>250 lines)**: Scale up to 50-60 endings proportionally
 
 **Pre-Submission Verification** (MANDATORY):
-1. Count article length: `wc -l article.md` → **OPTIMAL: 195-205 lines** (180-194 acceptable but risky)
+1. Count article length: `wc -l article.md` → Target 180-230 lines
 2. Search for です。: Count manually, record exact number
 3. Search for ます。: Count manually, record exact number
-4. **OPTIMAL: 50-60 total for 9.0+ strength** (40-70 acceptable range)
-5. Calculate density: (count ÷ lines) × 100 → **OPTIMAL: 25-35%** (22-38% acceptable)
-6. **Safety check**: Articles at exactly 180 lines with 45 です/ます are fragile (target 195+ for margin)
-7. **If >75 endings OR >38% density**: Article is over-formalized - reduce count or expand length
-8. **If <50 endings**: Consider expanding article to reach optimal 50-60 range
-9. Verify count accuracy: Re-count to confirm (±1 tolerance only)
+4. **Total must be 40-70 for 9.0+ eligibility** (NOT negotiable)
+5. Calculate density: (count ÷ lines) × 100 → Target 25-35%
+6. **If >75 endings OR >38% density**: Article is over-formalized - reduce count or expand length
+7. **If <40 endings**: Expand article OR convert casual sentences to です/ます
+8. Verify count accuracy: Re-count to confirm (±1 tolerance only)
 
 **⚠️ ACCURACY WARNING**: Writer claiming "47 endings" when actual is 32 (32% error) = PUBLICATION BLOCKER. Must manually verify.
 
@@ -436,21 +368,12 @@ function Child({ userPromise }) {
 - [ ] **NO fabricated experiences**: Scan for "筆者は最近、[具体的なプロジェクト]で" → Must use generic/hypothetical framing
 - [ ] **NO false verification**: Scan for "実行すると〜となりました" "確認しました" "検証した" → Must use conditional ("はずです", "と考えられます")
 - [ ] **NO unverified references**: Scan for "issue #[number]" "PR #[number]" → Must use generic refs or omit
-- [ ] **NO fabricated emotional reactions**: ⚠️ **NEW ITERATION 5** - Scan for:
-  * "個人的には〜驚いた" "筆者は〜に驚いた" "〜感じました" → Use objective framing instead
-  * "筆者はこのパターンを初めて見たとき" → Use hypothetical ("一見すると〜に見えるかもしれません")
-  * ALLOWED: "これは驚きの結果です" "意外な動作をします" "興味深い特徴です" (objective observations)
 - [ ] **Conditional language present**: Check that technical behavior uses "〜はずです" "〜と考えられます" (not definitive past tense)
-  * **Variety check**: Avoid using same pattern >4 times (rotate among はずです/考えられます/ようです/可能性があります)
 - [ ] **Generic project framing**: "このような場面では" not "筆者のプロジェクトでは"
 - [ ] **Uncertainty acknowledged**: Include 1-2 "まだ試していない" "推測ですが" "見守りたい" phrases
 
 ### 🚨 CRITICAL (Publication Blockers)
-- [ ] **Article length: OPTIMAL 195-205 lines** (run `wc -l article.md` to verify)
-  * **195-205 lines**: OPTIMAL (safety margin for です/ます requirements)
-  * **180-194 lines**: ACCEPTABLE but risky (exactly 180 with 45 です/ます = fragile)
-  * **175-179 lines**: HIGH RISK (hard to meet both です/ます requirements)
-  * **Rationale**: Longer articles provide editing flexibility without breaking 40 minimum
+- [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; 175-179 acceptable but risky)
 - [ ] **Section count: 5-6 H2 sections OPTIMAL** (count with `grep '^## ' article.md | wc -l`)
   * 5-6 sections = optimal (no penalty)
   * 7 sections = acceptable maximum (-0.2 linguistic deduction)
@@ -466,33 +389,20 @@ function Child({ userPromise }) {
   * Even ONE violation = -0.8 points (major AI tell)
 - [ ] Valid frontmatter with all fields
 - [ ] **です/ます DUAL REQUIREMENTS (BOTH must pass):**
-  * **Requirement 1 - Absolute count: 50-60 OPTIMAL** (count です。+ ます。manually; verify twice)
-    - **50-60 endings**: OPTIMAL safety range for 9.0+ (proven by Iterations 7 & 10)
-    - **40-49 endings**: ACCEPTABLE minimum but fragile (45 at 180 lines = risky)
-    - <40 = caps at 8.0/10 | 71-75 = -0.3 to -0.5 | 76+ = -0.5 to -0.8
-  * **Requirement 2 - Density: 25-35% OPTIMAL** (calculate: count ÷ lines × 100)
-    - **25-35%**: OPTIMAL natural balance (proven by Iteration 7: 25.2%)
-    - **22-24%**: ACCEPTABLE minimum but borderline
-    - <22% = caps at 8.0/10 | >38% = -0.3 to -0.5 (too formal)
-  * **Example failures**:
-    - Iteration 5: 45 endings at 180 lines (25.0%) = PASS but fragile
-    - Iteration 6: 32 endings at 151 lines (21.2%) = FAIL (both requirements)
-    - Iteration 12: 74 endings at 178 lines (41.6%) = FAIL (density too high)
-  * **Safety strategy**: Target 195-205 lines with 50-55 です/ます = 25-28% density ✅
+  * **Requirement 1 - Absolute count: 40-70** (count です。+ ます。manually; verify twice)
+    - <40 = caps at 8.0/10 | 40-70 = eligible for 9.0+ | 71-75 = -0.3 to -0.5 | 76+ = -0.5 to -0.8
+  * **Requirement 2 - Density: 22-38%** (calculate: count ÷ lines × 100)
+    - <22% = caps at 8.0/10 | 22-38% = passing | >38% = -0.3 to -0.5
+  * **Example failures**: 46 endings at 21.7% = FAIL (density too low)
 - [ ] **TypeScript code compiles** (verify in TypeScript Playground)
   * Check readonly vs. mutable type compatibility
   * Verify ALL errors mentioned (not just selected ones)
-  * **Include helper function definitions** when using custom functions (fetchUser, sleep, etc.)
-  * **Include type interface definitions** for custom types (User, Post, etc.)
 - [ ] **Mathematical calculations verified** (counts, combinations, arithmetic - double-check ALL numbers)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: bug → fix OR V1 → V2 iterations
 - [ ] 2-3 unresolved elements: speculation, "まだ試してない", abandoned tangents
-- [ ] **🚨 Ecosystem context: OPTIMAL 3-4 references** (MANDATORY minimum 2 for 9.0+)
-  * **2 references**: Publication minimum (weak voice signal)
-  * **3-4 references**: OPTIMAL community engagement (recommended for 9.0+)
-  * **5+ references**: Risk of appearing forced
+- [ ] **🚨 Ecosystem context: MINIMUM 2 references** (MANDATORY for 9.0+) ⚠️ **ITERATION 4: ZERO refs = auto-fail**
   * Use safe generic patterns: "GitHubで議論されている" "zodみたいなライブラリ" "Vite 6の議論で"
   * Insert in: opening (community context), tool mentions (GitHub origin), conclusion (future versions)
 - [ ] Personal anecdotes (rich OR vague, not medium detail)
@@ -794,10 +704,7 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 **🚨 Ecosystem context - MANDATORY for 9.0+ (ITERATION 4: ZERO references = auto-fail)**
 
-**REQUIREMENT**: Insert **at least 2-3** ecosystem references per article. Zero references = automatic cap below 9.0/10.
-- **2 references**: Minimum threshold (weak voice signal)
-- **3-4 references**: OPTIMAL community engagement (recommended for 9.0+)
-- **5+ references**: Risk of appearing forced
+**REQUIREMENT**: Insert **at least 2** ecosystem references per article. Zero references = automatic cap below 9.0/10.
 
 **SAFE GENERIC PATTERNS (no verification needed - use these!):**
 
@@ -906,37 +813,31 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ## 📊 SUCCESS PATTERNS (Iterations 5-12 Learning)
 
-**Iteration 5 (8.75/10)**: 45 endings, 180 lines, 9.5/10 author voice, 2 ecosystem refs **← SEASON 4 BEST**
-- **Achievement**: Exceptional voice (9.5 pts), zero AI tells, optimal Zenn formatting (3 blocks)
-- **Issue**: Reliability violations (-1.5 pts) + fragile metrics (exactly 180 lines, 45 です/ます)
-- **Learning**: Need to avoid fabricated emotional reactions while preserving meta-commentary
-
+**Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
 **Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
-**Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD (SEASON 3)**
-**Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY (SEASON 3)**
+**Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD**
+**Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY**
 **Iteration 12 (8.6/10)**: 74 endings, 178 lines, 10/10 author voice but TOO FORMAL (41.6% density) ❌
 
 **Key Insights**:
-- Perfect author voice (10/10) is NOT enough. Must also meet です/ます requirements AND reliability standards.
-- **Iteration 5 (Season 4)**: Strong voice + reliability violations = 8.75/10 (0.25 from target)
+- Perfect author voice (10/10) is NOT enough. Must also meet です/ます requirements.
 - **Iteration 6**: Too few endings (32) = 8.0/10 cap
 - **Iteration 12**: Too many endings (74) AND too high density (41.6%) = -0.3 to -0.5 deduction
-- **Sweet spot**: 50-60 endings in 195-220 lines = 25-30% density
+- **Sweet spot**: 50-60 endings in 190-220 lines = 26-31% density
 
-**Proven 9.0+ Formula** (validated by Iterations 7 & 10 in Season 3):
-1. **Article length: 195-220 lines OPTIMAL** (180-230 acceptable) - Iteration 7: 218 lines
-2. **です/ます: 50-60 absolute count OPTIMAL** (40-70 acceptable range) - Iteration 7: 55 endings
+**Proven 9.0+ Formula** (validated by Iterations 7 & 10):
+1. Article length: 180-230 lines (sweet spot) - Iteration 7: 218 lines
+2. です/ます: 50-60 absolute count optimal (40-70 acceptable range) - Iteration 7: 55 endings
 3. **です/ます density: 25-35% (critical for natural tone)** - Iteration 7: 25.2% ✅, Iteration 12: 41.6% ❌
-4. **Author voice: 8+ uhyo patterns** (see Section 👤) - Iteration 7: 10/10 patterns
-5. **Zero forbidden patterns** (see Section ⚠️) - Iteration 7: 0 violations
-6. **Ecosystem context: 3-4 refs OPTIMAL** (2 minimum) - Iteration 5: 2 refs (minimum)
-7. **Reliability: No fabricated experiences or emotions** - Iteration 5: 2 violations (-1.5 pts)
-8. **Technical accuracy: Verify all mathematical claims** - Iteration 12: Math error cost -0.5
+4. Author voice: 8+ uhyo patterns (see Section 👤) - Iteration 7: 10/10 patterns
+5. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
+6. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
+7. **Technical accuracy: Verify all mathematical claims** - Iteration 12: Math error cost -0.5
 
-**Season 4 Challenge**: Iteration 5 shows we can achieve exceptional voice (9.5 pts) with human-quality writing. The remaining gap is eliminating reliability violations (fabricated emotional reactions) while maintaining engaging personal tone.
+**Iteration 7 & 10 Achievement**: Both achieved 9.5/10, proving the formula works consistently. Iteration 10 demonstrated **internalized mastery** by recovering from Iterations 8-9 regressions.
 
 ---
 
-**Last updated:** Iteration 5 Post-Review (Fabricated emotional reactions rule + optimal length targets + です/ます safety margins)
-**Version:** 4.3 (Season 4: Reliability refinement - emotional reactions vs. objective observations)
-**Line count:** ~950 lines (added Rule 4: No Fabricated Emotional Reactions with transformation examples, emphasized optimal 195-205 line target with 50-60 です/ます, strengthened ecosystem context to 3-4 refs optimal, added conditional language variety guidance, included helper definition requirements, updated SUCCESS PATTERNS with Iteration 5 analysis)
+**Last updated:** Iteration 4 Post-Review (Pedagogical scaffolding variants + ecosystem context enforcement + Zenn blocks emphasis)
+**Version:** 4.2 (Season 4: Reliability mastery + voice pattern enforcement)
+**Line count:** ~790 lines (added "〜てみましょう" variants to FORBIDDEN PATTERN, strengthened ecosystem context with safe patterns, clarified Zenn formatting importance, added exploratory vs instructional transformation examples, refined vague fabrication boundaries)
