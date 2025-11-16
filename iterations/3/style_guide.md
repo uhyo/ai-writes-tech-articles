@@ -59,27 +59,6 @@ This guide defines standards for generating Japanese technical articles indistin
 - NOT in flowing prose before code/lists
 - NOT as standalone labels introducing content
 
-### ❌ FORBIDDEN PATTERN #4: Pedagogical Scaffolding ⚠️ CRITICAL
-
-**NEVER use teacher-like meta-commentary about what you're about to show:**
-
-**MOST COMMON VIOLATIONS:**
-❌ "まずは、[Topic]を見ていきます。" → ✅ "まずは、[Topic]。" or "まずは[Topic]から。"
-❌ "では〜見ていきましょう" → ✅ Direct topic entry
-❌ "次に〜を見てみます" → ✅ "次に、[Topic]。" or direct entry
-❌ "これから〜を見ていきます。" → ✅ Direct topic entry
-❌ "〜について確認してみましょう" → ✅ Direct entry
-❌ "最もシンプルな例を見てみます。" → ✅ "最もシンプルな例：" or "まずはシンプルな例。"
-
-**✅ ALLOWED (collaborative/direct):**
-✅ "〜から始めましょう" (collaborative, natural)
-✅ "試してみましょう" (exploratory, not scaffolding)
-✅ "確認してみます" (investigative tone)
-✅ Direct topic entry without meta-commentary
-
-**Rule**: NEVER announce what you're "about to show" - just show it. Write as peer, not teacher.
-**Impact**: Even ONE violation = -0.8 linguistic points (major AI tell)
-
 ---
 
 ## 🚨 SEASON 4: RELIABILITY REQUIREMENTS (Publication Blockers)
@@ -98,41 +77,28 @@ This guide defines standards for generating Japanese technical articles indistin
 ### Rule 1: No Fabricated Personal Experiences
 
 **❌ FORBIDDEN (CRITICAL - Each violation: -1.0 to -2.0 reliability points):**
-
-**Explicit project ownership claims:**
 - "筆者は最近、自分のプロジェクトで[具体的な問題]に遭遇しました"
 - "筆者が開発している[プロジェクト]で試したところ" ⚠️ **EVEN WITHOUT NAMING IT**
-- "筆者が開発しているReactアプリケーションでフォームValidationを実装する際に..."
+- "筆者が開発しているReactアプリケーションでフォームValidationを実装する際に..." ⚠️ **NEW CLARIFICATION**
 - "実務で使っていた[具体的な技術スタック]で問題が発生"
 - "去年のプロジェクトで3日かかった"
 - Any claim that you are ACTIVELY DEVELOPING a project (even unnamed)
 - Any claim that you IMPLEMENTED something in a real project
 
-**Vague past experience claims (NEW - also forbidden):**
-- ❌ "筆者はこういったケースに何度か遭遇したことがあり" (-0.6 to -0.8 points)
-- ❌ "筆者自身、以前は[手法]に頼っていましたが" (-0.6 to -0.8 points)
-- ❌ "以前このパターンを使って失敗した経験があり" (-0.6 to -0.8 points)
-- ❌ "過去のプロジェクトでこの問題に直面し" (-0.6 to -0.8 points)
-
 **✅ ALLOWED:**
 - Generic domain framing: "Reactアプリケーションでは、このような問題が出てくる" (no ownership)
 - Hypothetical: "実際のプロジェクトでこういった課題がある"
-- Vague motivation: "筆者も最近、フォーム処理の設計を考える機会があった" (no specific project or claim)
+- Vague motivation: "筆者も最近、フォーム処理の設計を考える機会があった" (no specific project)
 - General use case: "ルーティングライブラリでは有用です"
-- Generic observation: "こういったケースは起こりうる問題であり" (no personal claim)
-- General past situation: "従来は[手法]が必要でした" (impersonal, industry-wide)
+- Past vague experience: "以前のプロジェクトで、ルーティング設計に悩んだ経験があり" (vague, no specifics)
 
 **CRITICAL DISTINCTION:**
 - ❌ "筆者が開発しているReactアプリケーション" → Claims active project ownership (fabrication)
 - ✅ "Reactアプリケーションでは" → Generic domain reference (honest)
 - ❌ "筆者のプロジェクトで実装した" → Claims specific implementation (fabrication)
 - ✅ "このような実装パターンは" → Generic technical discussion (honest)
-- ❌ "筆者は何度か遭遇したことがあり" → Vague but still fabricated encounters (-0.6 to -0.8)
-- ✅ "こういったケースは起こりうる問題であり" → Generic observation (honest)
-- ❌ "以前は[手法]に頼っていました" → Fabricated past practice (-0.6 to -0.8)
-- ✅ "従来は[手法]が必要でした" → Impersonal industry observation (honest)
 
-**Key Principle:** Express technical curiosity and motivation **generically**, not as specific OR vague fabricated experiences. Even vague claims about past encounters or practices are fabrications if AI hasn't actually experienced them.
+**Key Principle:** Express technical curiosity and motivation **generically**, not as specific fabricated experiences. Do NOT claim to be actively developing projects, even unnamed ones.
 
 ### Rule 2: No False Verification Claims
 
@@ -228,9 +194,9 @@ Before submitting, scan entire article for:
 
 ### 2. Polite Form Distribution (CRITICAL)
 
-🚨 **DUAL REQUIREMENT RULE**: BOTH absolute count AND density must pass. Meeting only ONE is insufficient for 9.0+.
+🚨 **ABSOLUTE THRESHOLD RULE**: 40-50 です/ます endings is MANDATORY for 9.0+ scores, regardless of article length.
 
-**Requirement 1: Absolute Count (PRIMARY)**
+**Scoring Tiers (by ABSOLUTE COUNT)**:
 - **0-14 endings**: ❌ UNPUBLISHABLE (publication blocker)
 - **15-31 endings**: ⚠️ Caps at 7.0-7.5/10 (blog tone)
 - **32-39 endings**: ⚠️ Caps at 8.0/10 (too casual for technical article)
@@ -239,26 +205,24 @@ Before submitting, scan entire article for:
 - **71-75 endings**: ⚠️ Approaching excessive formality (-0.3 to -0.5 deduction)
 - **76+ endings**: 🚫 Over-formalized unless article is 250+ lines (-0.5 to -0.8 deduction)
 
-**Requirement 2: Density (SECONDARY BUT MANDATORY)**
-- Calculate: (です/ます count) ÷ (article lines) × 100
-- **Optimal range**: 25-35% (natural balance)
-- **Acceptable minimum**: 22% (must exceed this for 9.0+)
-- **Acceptable maximum**: 38% (exceeding causes stiff tone)
-- **Too formal**: >38% (creates stiff tone, -0.3 to -0.5 deduction)
-- **Too casual**: <22% (insufficient formality, caps at 8.0/10)
-
-**⚠️ BOTH MUST PASS - Common Failures:**
-- ❌ Iteration 3: 46 endings (21.7% density) = FAIL (count passes but density <22%)
-- ❌ Iteration 6: 32 endings (21.2% density) = FAIL (both fail)
-- ❌ Iteration 12: 74 endings (41.6% density) = FAIL (count passes but density >38%)
-- ✅ Iteration 7: 55 endings (25.2% density) = PASS (both pass)
+**⚠️ CRITICAL INSIGHT (from Iteration 6 failure)**:
+- Iteration 5: 51 endings (231 lines, 22.1%) = 9.3/10 ✅
+- Iteration 6: 32 endings (151 lines, 21.2%) = 8.0/10 ❌ (CAPPED)
+- **Why similar percentages scored differently**: 40-50 is an ABSOLUTE minimum, NOT a percentage that scales down for short articles.
 
 **Article Length Requirements**:
-- **Target length**: 180-230 lines (proven sweet spot for reaching both requirements)
-- **Acceptable minimum**: 175-179 lines (risky - hard to meet both requirements)
-- **Below 175 lines**: Very high risk - cannot meet count without exceeding density
+- **Target length**: 180-230 lines (proven sweet spot)
+- **Acceptable minimum**: 175-179 lines (close enough, but watch density)
+- **Below 175 lines**: High risk - hard to reach 40 endings without excessive density
   * Options: (1) Expand article to 180+ lines, OR (2) Accept 8.0/10 cap
 - **Long articles (>250 lines)**: Scale up to 50-60 endings proportionally
+
+**Density Guidance** (supplementary check):
+- Calculate: (です/ます count) ÷ (article lines) × 100
+- **Optimal range**: 25-35% (natural balance)
+- **Acceptable**: 22-38% (passing but not ideal)
+- **Too formal**: >38% (creates stiff tone, -0.3 to -0.5 deduction)
+- **Too casual**: <22% (insufficient formality for technical writing)
 
 **Pre-Submission Verification** (MANDATORY):
 1. Count article length: `wc -l article.md` → Target 180-230 lines
@@ -298,10 +262,6 @@ published: true
 ### 4. Technical Accuracy
 
 **Pre-Submission Technical Accuracy Checklist**:
-- [ ] **TypeScript code compiles** - Verify ALL code examples in TypeScript Playground or compiler
-  * Check type compatibility (readonly vs. mutable, tuple vs. array)
-  * Verify ALL errors mentioned in examples (not just selected ones)
-  * Ensure function signatures match usage (e.g., `T[]` vs. `readonly T[]`)
 - [ ] **Mathematical calculations verified** (counts, combinations, percentages)
   * Example: "4 × 3 = 12" not "4 × 4 = 16" - verify ALL arithmetic claims
 - [ ] **Promise lifecycle patterns correct** (see below - CRITICAL)
@@ -310,13 +270,6 @@ published: true
 - [ ] GitHub issue/PR references checked (numbers exist, descriptions accurate)
 - [ ] Technical concepts match official documentation or authoritative sources
 - [ ] Error messages shown are actual TypeScript/tool outputs (not paraphrased)
-
-**Common TypeScript Code Errors to Check:**
-- **Type mismatches**: `readonly [1, 2, 3]` (readonly tuple) ≠ `T[]` (mutable array)
-  * Fix: Use `readonly T[]` in function signatures when accepting readonly arrays
-- **Incomplete error documentation**: If example shows multiple arguments with type constraints, ALL errors must be documented, not just selected ones
-  * Example: If `NoInfer<T>` requires full object match, BOTH `{ x: 10 }` and `{ z: 3 }` will error (not just one)
-- **Type parameter inference**: Verify what type is actually inferred, don't assume
 
 **🚨 CRITICAL PATTERN: Promise Creation in React**
 
@@ -378,19 +331,15 @@ function Child({ userPromise }) {
 - [ ] **ZERO colons in prose before code/lists** (scan entire article for ：at line end; check next line is - or ```)
   * ESPECIALLY check for standalone labels: "動いたもの：" "注意点：" "結果："
   * These must be section headers (## Label) or full sentences (Labelは以下の通りです。)
-- [ ] **ZERO pedagogical scaffolding** (scan: "見ていきます" "見てみます" "確認してみましょう")
-  * FORBIDDEN: "まずは、[Topic]を見ていきます。" → USE: "まずは、[Topic]。"
-  * Even ONE violation = -0.8 points (major AI tell)
 - [ ] Valid frontmatter with all fields
-- [ ] **です/ます DUAL REQUIREMENTS (BOTH must pass):**
-  * **Requirement 1 - Absolute count: 40-70** (count です。+ ます。manually; verify twice)
-    - <40 = caps at 8.0/10 | 40-70 = eligible for 9.0+ | 71-75 = -0.3 to -0.5 | 76+ = -0.5 to -0.8
-  * **Requirement 2 - Density: 22-38%** (calculate: count ÷ lines × 100)
-    - <22% = caps at 8.0/10 | 22-38% = passing | >38% = -0.3 to -0.5
-  * **Example failures**: 46 endings at 21.7% = FAIL (density too low)
-- [ ] **TypeScript code compiles** (verify in TypeScript Playground)
-  * Check readonly vs. mutable type compatibility
-  * Verify ALL errors mentioned (not just selected ones)
+- [ ] **です/ます count: 40-70 absolute** (count です。+ ます。manually; verify twice)
+  * <40 = max 8.0/10 (insufficient formality)
+  * 71-75 = -0.3 to -0.5 deduction (excessive formality)
+  * 76+ = -0.5 to -0.8 deduction (over-formalized)
+- [ ] **です/ます density: 25-35% optimal** (calculate: count ÷ lines × 100)
+  * >38% = too formal (stiff tone, -0.3 to -0.5 deduction)
+  * <22% = too casual (insufficient formality)
+- [ ] Main declarative sentences use です/ます (70-80% of main sentences)
 - [ ] **Mathematical calculations verified** (counts, combinations, arithmetic - double-check ALL numbers)
 
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
@@ -545,56 +494,31 @@ Server Actionsのエラーは...
 
 **FREQUENCY**: 0-2 blocks per article (1 is most natural when applicable)
 
-### Pattern 7: Code-Driven Narrative (Exploratory Tone)
+### Pattern 7: Code-Driven Narrative
 
-**EXPLORATORY (uhyo style - TARGET THIS):**
-- "試してみましょう。" → code → "結果は次のようになります。" → reaction
-- "確認してみます。" → code → "意外なことに〜" / "興味深いことに〜"
-- Frame code as EXPERIMENTS, not illustrations
-- Show surprise/discovery: "なんと〜を検知しました" "残念ながら〜は検知されませんでした"
-- Real-time investigation feel ("let's explore and see what happens")
+**Rhythm**: Code → Explain → Test → Result → Reaction
 
-**TUTORIAL (AVOID - AI tell):**
-- "〜を使うと、次のようになります。" → code → explanation (explanatory)
-- "〜できます。" → code → confirmation (illustrative)
-- Code presented as foregone conclusions
-- No surprises or reactions to behaviors
+### Pattern 8: Strategic Bold (3-5 terms) ⚠️ ESSENTIAL
 
-**Target**: 70%+ exploratory tone in code examples. Show curiosity, not just explanation.
-
-### Pattern 8: Strategic Bold (5-6 terms) ⚠️ ESSENTIAL
-
-**Bold the 5-6 MOST IMPORTANT technical TERMS on first introduction ONLY.**
+**Bold key technical TERMS on first introduction ONLY.**
 
 **OPTIMAL FREQUENCY**:
 - **5-6 bold terms**: Optimal uhyo marker (no penalty, strong voice signal)
 - **3-4 bold terms**: Acceptable minimum (borderline, weak voice signal)
 - **<3 bold terms**: Caps score at 8.5/10 (insufficient uhyo voice)
-- **7-10 bold terms**: Over-emphasized (distracting, dilutes focus, -0.2 to -0.5 deduction)
-
-**SELECTION CRITERIA (How to choose which 5-6 to bold):**
-✅ Bold terms that are:
-- Central to the article's main argument or thesis
-- Novel or complex ideas requiring emphasis
-- Introduced for the first time in the article
-- Core concepts the reader MUST understand
-
-**SELECTION TEST**: If you removed the bold, would the article's core message be unclear? If NO → don't bold it.
+- **7+ bold terms**: Over-emphasized (distracting, -0.2 deduction)
 
 **WHAT TO BOLD**:
-✅ Core technical terms (1-4 words max): **Server Actions**, **型推論**, **並列処理の強化**, **NoInfer型**
-✅ Novel concepts central to article: **ジェネリクス**, **型パラメータ**
-✅ Main topic introduced in opening: Article about NoInfer → bold **NoInfer型** in opening
+✅ Technical terms/concepts (1-4 words max): **Server Actions**, **型推論**, **並列処理の強化**, **インクリメンタルビルド**
+✅ Single terms or short phrases representing concrete technical concepts
 
-**WHAT NOT TO BOLD** (even if technical):
-❌ Supporting/secondary concepts: デフォルト設定, メソッドチェーン, 流暢なインターフェース, 型の拡大
-❌ Well-known patterns not central to article
-❌ Every technical term mentioned (dilutes focus)
-❌ Section labels in prose: "**良い点**: ビルドが速い"
-❌ Full clauses: "**クライアント側でcatchしていないのに、全体がクラッシュしない**"
+**WHAT NOT TO BOLD**:
+❌ Section labels in prose: "**良い点**: ビルドが速い" "**テストプロジェクト**: React 18"
+❌ Full clauses/sentences: "**クライアント側でcatchしていないのに、アプリケーション全体がクラッシュしない**"
+❌ Concepts or ideas longer than 4 words
+❌ Generic descriptive phrases
 
 **PRECISION RULE**: If bold is longer than 4 words, it's probably wrong. Bold should be technical TERMS, not explanatory CLAUSES.
-**RESTRAINT RULE**: When in doubt, DON'T bold. 5-6 strategic bolds > 10 diluted bolds.
 
 ### Pattern 9: Title Style
 
@@ -623,7 +547,17 @@ Avoid: Generic ("〜について") or tutorial ("〜の完全ガイド")
 
 ### 5.2 Conversational Tone & Depth Variation
 
-- NO pedagogical scaffolding (see FORBIDDEN PATTERN #4 above for details)
+- NO pedagogical scaffolding:
+  - ❌ "では〜見ていきましょう" (textbook transition)
+  - ❌ "まずは〜を見ていきます" (sequential marker, teacher-like)
+  - ❌ "次に〜を見てみます" (structured lesson flow)
+  - ❌ "最もシンプルな例を見てみます。" ⚠️ **ITERATION 2 VIOLATION** (announces what you're about to do)
+  - ❌ "それでは〜について説明します" (teacher announcing lesson plan)
+  - ❌ "〜について確認してみましょう" (guided instruction tone)
+  - ✅ "〜から始めましょう" (collaborative, natural)
+  - ✅ "最もシンプルな例：" or "まずはシンプルな例。" (direct entry without meta-commentary)
+  - ✅ "〜もあります" (casual discovery)
+  - ✅ Direct topic entry without meta-commentary
 - Peer conversation, not teacher-to-student
 - **Vary depth by INTEREST**: Interesting simple concept = 8 para; Boring complex = 2 sentences
 
@@ -758,6 +692,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 3 Post-Review (Pedagogical scaffolding promotion + vague fabrication examples)
-**Version:** 4.1 (Season 4: Technical accuracy + dual です/ます requirements)
-**Line count:** ~750 lines (added pedagogical scaffolding as FORBIDDEN PATTERN, vague fabrication examples, TypeScript code verification, exploratory tone guidance, bold selection criteria)
+**Last updated:** Iteration 2 Post-Review (Reliability-voice alignment + pedagogical pattern elimination)
+**Version:** 4.0 (Season 4: CRITICAL reliability-voice conflict resolution)
+**Line count:** ~700 lines (resolved Pattern 4/Rule 1 conflict, added Iteration 2 violations, section count refinement)
