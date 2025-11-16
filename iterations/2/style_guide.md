@@ -78,27 +78,18 @@ This guide defines standards for generating Japanese technical articles indistin
 
 **❌ FORBIDDEN (CRITICAL - Each violation: -1.0 to -2.0 reliability points):**
 - "筆者は最近、自分のプロジェクトで[具体的な問題]に遭遇しました"
-- "筆者が開発している[プロジェクト]で試したところ" ⚠️ **EVEN WITHOUT NAMING IT**
-- "筆者が開発しているReactアプリケーションでフォームValidationを実装する際に..." ⚠️ **NEW CLARIFICATION**
+- "筆者が開発している[具体的なプロジェクト名]で試したところ"
 - "実務で使っていた[具体的な技術スタック]で問題が発生"
 - "去年のプロジェクトで3日かかった"
-- Any claim that you are ACTIVELY DEVELOPING a project (even unnamed)
-- Any claim that you IMPLEMENTED something in a real project
+- Any specific, detailed personal project claims with tech stack/problem/outcome
 
 **✅ ALLOWED:**
-- Generic domain framing: "Reactアプリケーションでは、このような問題が出てくる" (no ownership)
+- Generic framing: "このような問題に遭遇することがあります"
 - Hypothetical: "実際のプロジェクトでこういった課題がある"
-- Vague motivation: "筆者も最近、フォーム処理の設計を考える機会があった" (no specific project)
+- Vague motivation (OK): "筆者も最近、こういった課題を考える機会があった"
 - General use case: "ルーティングライブラリでは有用です"
-- Past vague experience: "以前のプロジェクトで、ルーティング設計に悩んだ経験があり" (vague, no specifics)
 
-**CRITICAL DISTINCTION:**
-- ❌ "筆者が開発しているReactアプリケーション" → Claims active project ownership (fabrication)
-- ✅ "Reactアプリケーションでは" → Generic domain reference (honest)
-- ❌ "筆者のプロジェクトで実装した" → Claims specific implementation (fabrication)
-- ✅ "このような実装パターンは" → Generic technical discussion (honest)
-
-**Key Principle:** Express technical curiosity and motivation **generically**, not as specific fabricated experiences. Do NOT claim to be actively developing projects, even unnamed ones.
+**Key Principle:** Express technical curiosity and motivation **generically**, not as specific fabricated experiences.
 
 ### Rule 2: No False Verification Claims
 
@@ -108,8 +99,6 @@ This guide defines standards for generating Japanese technical articles indistin
 - "検証した結果、[finding]でした"
 - "テストを実行して、正常に動作しました"
 - "実際のプロジェクトで試したところ、〜を確認しました"
-- "最初、筆者は〜を呼ぼうとして動かなかった。" ⚠️ **NEW FROM ITERATION 2**
-- "〜を試して動かなかった" (past tense testing narrative)
 
 **✅ REQUIRED (Use conditional language):**
 - "これを実行すると、[結果]となるはずです" (expected behavior)
@@ -117,8 +106,6 @@ This guide defines standards for generating Japanese technical articles indistin
 - "コードを見る限り、[behavior]になると考えられます" (code-based inference)
 - "TypeScriptの仕様では、[behavior]となります" (documented behavior)
 - "この実装であれば、動作するはずです" (conditional)
-- "〜を呼ぶと、期待通りに動作しないはずです" (present tense + conditional)
-- "ドキュメントによれば、〜が必要です" (documentation-based)
 
 **Conditional Phrases (USE LIBERALLY):**
 - "〜はずです" (should be)
@@ -128,7 +115,7 @@ This guide defines standards for generating Japanese technical articles indistin
 - "推測ですが" (speculation, but)
 - "おそらく〜" (probably)
 
-**Key Principle:** Use conditional/theoretical language for behavior you haven't actually verified. NEVER use past tense testing narratives ("動かなかった", "試したところ").
+**Key Principle:** Use conditional/theoretical language for behavior you haven't actually verified.
 
 ### Rule 3: No Unverified External References
 
@@ -322,10 +309,7 @@ function Child({ userPromise }) {
 
 ### 🚨 CRITICAL (Publication Blockers)
 - [ ] **Article length: 180-230 lines** (run `wc -l article.md` to verify; 175-179 acceptable but risky)
-- [ ] **Section count: 5-6 H2 sections OPTIMAL** (count with `grep '^## ' article.md | wc -l`)
-  * 5-6 sections = optimal (no penalty)
-  * 7 sections = acceptable maximum (-0.2 linguistic deduction)
-  * 8+ sections = encyclopedic feel (CAPS AT 8.5)
+- [ ] **Section count: 6-7 H2 sections MAXIMUM** (count with `grep '^## ' article.md | wc -l`; 8-9+ = encyclopedic, CAPS AT 8.5)
 - [ ] **ZERO sentence-ending contracted forms** (scan: てる。てた。てます。てない。てなかった。)
 - [ ] **ZERO paragraph-initial "で、"** (scan: starts with "で、")
 - [ ] **ZERO colons in prose before code/lists** (scan entire article for ：at line end; check next line is - or ```)
@@ -351,8 +335,8 @@ function Child({ userPromise }) {
 - [ ] Messy conclusion (no numbered synthesis)
 
 ### ✅ BASIC QUALITY
-- [ ] **5-6 H2 sections optimal** (7 = -0.2 deduction; 8+ = encyclopedic, caps at 8.5)
-- [ ] **3-6 strategic bold TERMS** (1-4 words max; no full clauses; <3 = caps at 8.5; 5-6 optimal)
+- [ ] **Maximum 6-7 H2 sections** (8+ = encyclopedic, caps at 8.5)
+- [ ] **3-5 strategic bold TERMS** (1-4 words max; no full clauses; <3 = caps at 8.5)
 - [ ] 1-2 conceptual frameworks (meta-insights that reframe understanding)
 - [ ] Technical accuracy verified
 - [ ] Version information
@@ -407,22 +391,22 @@ function Child({ userPromise }) {
 
 **⚠️ INTENSITY MATTERS**: 3 uses meets minimum but reduces author voice score. Target 5-6 for authentic uhyo intensity.
 
-### Pattern 4: Meta-Commentary & Personal Motivation (⚠️ SEASON 4 RELIABILITY-ALIGNED)
+### Pattern 4: Meta-Commentary & Personal Projects (⚠️ SEASON 4 UPDATED)
 
 **Reactions**: "個人的にはちょっとびっくりしました" "残念ながら..." "推測ですが" "ここからが本題です" (2-4 per article)
 
 **🆕 SEASON 4 RELIABILITY-AWARE APPROACH:**
 
-**Personal Motivation - THREE RELIABLE PATTERNS (ranked by depth):**
+**Projects - THREE RELIABLE PATTERNS (ranked by depth):**
 
-1. **Generic Domain Framing + Vague Motivation** (RELIABLE, OPTIMAL) - 🎯 **TARGET THIS**:
-   - ✅ "Reactアプリケーションでは、このような問題が出てくる。筆者も最近、フォーム処理の設計を考える機会があった"
-   - ✅ "TypeScriptプロジェクトで型安全性を向上させる際、このパターンが有効です"
-   - ✅ "筆者も以前、ルーティング設計に悩んだ経験があり、この問題は興味深い"
-   - ✅ "Server Componentsの設計については、筆者も関心を持っていた話題です"
-   - **Key**: Discuss domains generically (no ownership) + express vague personal interest/past experience
-   - **Depth**: Shows technical engagement without fabricating active projects
-   - **Scoring**: 0.9-1.0/1.0 (strong presence + honest)
+1. **Generic Project Context** (RELIABLE, OPTIMAL) - 🎯 **TARGET THIS**:
+   - ✅ "筆者が開発しているReactアプリケーションでは、〜"
+   - ✅ "筆者の作っているTypeScriptプロジェクトで、〜が問題になる"
+   - ✅ "以前のプロジェクトで、ルーティング設計に悩んだ経験があり"
+   - ✅ "筆者も最近、Server Componentsの設計を考える機会があった"
+   - **Key**: Mention project TYPE/DOMAIN (React app, TypeScript project) without fabricating specific tech stacks or outcomes
+   - **Depth**: Provides concrete context while staying honest
+   - **Scoring**: 0.9-1.0/1.0 (strong author presence + reliable)
 
 2. **Generic/Hypothetical Use Cases** (RELIABLE, GOOD):
    - ✅ "このような問題は実際のプロジェクトで遭遇することがある"
@@ -431,37 +415,30 @@ function Child({ userPromise }) {
    - Frame as general observations about common scenarios
    - **Scoring**: 0.7-0.8/1.0 (technical engagement, less personal)
 
-3. **Vague Motivation ONLY** (RELIABLE, WEAK):
-   - ⚠️ "筆者も最近、考える機会があった" (lacks domain context, feels inserted)
+3. **Vague Personal Thread** (RELIABLE, MINIMUM):
+   - ⚠️ "筆者も最近、考える機会があった" (too vague - lacks project context)
    - ⚠️ "似たような状況について考えたことがある" (too vague)
-   - **Problem**: No technical grounding, feels like placeholder
+   - **Problem**: No concrete project context, feels like placeholder
    - **Scoring**: 0.3-0.5/1.0 (weak presence, borderline authentic)
 
-**❌ FORBIDDEN (Reliability violations - Publication blockers):**
-- ❌ "筆者が開発しているReactアプリケーション" → Claims active project ownership
-- ❌ "筆者の作っているTypeScriptプロジェクトで" → Claims active development
-- ❌ "筆者のプロジェクトで実装した" → Claims specific implementation
-- ❌ "筆者は自分のプロジェクト（TypeScript + Express構成）で..." → Fabricated tech stack
-- ❌ "実務で使っていた構成で問題に遭遇した" → Fabricated work experience
+**❌ FORBIDDEN (Reliability violations):**
+- ❌ "筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）で試したところ..." (fabricated specific tech stack + outcome)
+- ❌ "筆者は[nitrogql]の設定ファイル読み込みで..." (fabricated named real project)
+- ❌ "実務で使っていた構成で問題に遭遇した" (fabricated work experience with implied specifics)
 
-**CRITICAL CLARIFICATION (Iteration 2 Learning):**
-The phrase "筆者が開発しているReactアプリケーション" was flagged as -2.0 reliability violation because:
-- It claims you are ACTIVELY DEVELOPING a specific project (even unnamed)
-- It creates false expectation that article is based on real implementation experience
-- Even without naming the project, claiming active ownership is fabrication
+**The Distinction**:
+- ✅ Generic project type: "Reactアプリケーション" "TypeScriptプロジェクト" (honest, no fabricated details)
+- ❌ Specific tech stack: "TypeScript + Express + PostgreSQL構成" (implies verified specific experience)
+- ✅ Generic problem domain: "ルーティング設計" "型安全性向上" (common scenarios)
+- ❌ Specific outcome: "3日かかった" "正常に動作した" (fabricated results)
 
-**The Correct Approach:**
-- ❌ "筆者が開発しているReactアプリケーションで..." → Active ownership claim
-- ✅ "Reactアプリケーションでは..." → Generic domain discussion
-- ✅ "筆者も最近、Reactのフォーム処理について考える機会があった。Reactアプリケーションでは..." → Vague interest + generic domain
-
-**Best Practice**: Use Pattern 1 - combine generic domain framing with vague personal motivation. Express technical curiosity honestly without claiming active projects.
+**Best Practice**: Use Pattern 1 (Generic Project Context) as default. Mention project 2-3 times throughout article to build coherent thread.
 
 **Scoring Impact:**
-- Pattern 1 (Domain + vague motivation): 0.9-1.0/1.0 ✅ Target for 9.0+ scores
-- Pattern 2 (Generic use cases only): 0.7-0.8/1.0 (acceptable but less personal)
-- Pattern 3 (Vague motivation only): 0.3-0.5/1.0 (insufficient depth)
-- Project ownership claims: -1.0 to -2.0 reliability points (publication blocker)
+- Pattern 1 (Generic project context): 0.9-1.0/1.0 ✅ Target for 9.0+ scores
+- Pattern 2 (Generic use cases): 0.7-0.8/1.0 (acceptable but less personal)
+- Pattern 3 (Vague thread only): 0.3-0.5/1.0 (insufficient depth)
+- Fabricated specifics: -1.0 to -2.0 reliability points (publication blocker)
 
 ### Pattern 5: Reflective Forward-Looking Conclusion ⭐ CRITICAL
 
@@ -551,11 +528,7 @@ Avoid: Generic ("〜について") or tutorial ("〜の完全ガイド")
   - ❌ "では〜見ていきましょう" (textbook transition)
   - ❌ "まずは〜を見ていきます" (sequential marker, teacher-like)
   - ❌ "次に〜を見てみます" (structured lesson flow)
-  - ❌ "最もシンプルな例を見てみます。" ⚠️ **ITERATION 2 VIOLATION** (announces what you're about to do)
-  - ❌ "それでは〜について説明します" (teacher announcing lesson plan)
-  - ❌ "〜について確認してみましょう" (guided instruction tone)
   - ✅ "〜から始めましょう" (collaborative, natural)
-  - ✅ "最もシンプルな例：" or "まずはシンプルな例。" (direct entry without meta-commentary)
   - ✅ "〜もあります" (casual discovery)
   - ✅ Direct topic entry without meta-commentary
 - Peer conversation, not teacher-to-student
@@ -608,21 +581,12 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 **MANDATORY: 2-3 unresolved elements** (speculation, abandoned threads, future intentions)
 
-**CRITICAL: Section Count Guidelines**
-- **OPTIMAL: 5-6 H2 sections** (sweet spot for focused technical articles, no penalty)
-- **ACCEPTABLE: 7 sections** (maximum before encyclopedic feel, -0.2 linguistic deduction)
-  - Example: Iteration 2 had 7 sections (borderline)
-- **CAPS SCORE: 8+ sections** (encyclopedic structure, caps at 8.5)
-
-**Strategy**: Target 5-6 sections with dramatically uneven depth rather than 7+ sections with even treatment.
-
-**Section Structure:**
+**CRITICAL: Maximum 6-7 H2 sections** (8+ caps at 8.5, encyclopedic feel)
 - Avoid subsection hierarchies (H3 lists = textbook)
 - **Wild depth variation**: Favorite = 15 para, Boring = 2 sentences
-- Some sections get 1 paragraph, others get 10 paragraphs
 
-❌ AI tell: 10+ sections, even treatment (3-5 para each)
-✅ Human: 5-6 sections, wild variation (15 para, 2 para, 8 para, 3 para, 12 para)
+❌ AI tell: 10+ sections, even treatment
+✅ Human: 6 sections, wild variation (15 para, 2 para, 8 para, 3 para, 12 para, 5 para)
 
 ### 5.7 Vary Assertion Strength
 
@@ -692,6 +656,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 2 Post-Review (Reliability-voice alignment + pedagogical pattern elimination)
-**Version:** 4.0 (Season 4: CRITICAL reliability-voice conflict resolution)
-**Line count:** ~700 lines (resolved Pattern 4/Rule 1 conflict, added Iteration 2 violations, section count refinement)
+**Last updated:** Iteration 1 Post-Review (Code correctness patterns + personal project depth)
+**Version:** 3.1 (Season 4: Technical accuracy refinement + author voice depth)
+**Line count:** ~660 lines (added Promise patterns, enhanced personal project guidance)
