@@ -63,26 +63,21 @@ This guide defines standards for generating Japanese technical articles indistin
 
 **NEVER use teacher-like meta-commentary about what you're about to show:**
 
-**🚨 MOST COMMON VIOLATIONS (Iteration 4 Update):**
+**MOST COMMON VIOLATIONS:**
 ❌ "まずは、[Topic]を見ていきます。" → ✅ "まずは、[Topic]。" or "まずは[Topic]から。"
 ❌ "では〜見ていきましょう" → ✅ Direct topic entry
 ❌ "次に〜を見てみます" → ✅ "次に、[Topic]。" or direct entry
 ❌ "これから〜を見ていきます。" → ✅ Direct topic entry
-❌ "〜について確認してみましょう" → ✅ "確認してみます" (investigative) ⚠️ **ITERATION 4 VIOLATION**
-❌ "実際に[action]して確認してみましょう。" → ✅ "確認してみます。" or direct entry
+❌ "〜について確認してみましょう" → ✅ Direct entry
 ❌ "最もシンプルな例を見てみます。" → ✅ "最もシンプルな例：" or "まずはシンプルな例。"
 
-**🔴 CRITICAL PATTERN: "〜てみましょう" variants**
-All "〜てみましょう" forms in scaffolding contexts are FORBIDDEN:
-- "確認してみましょう" "試してみましょう" "見てみましょう" "調べてみましょう" = Teacher inviting students
-
-**✅ ALLOWED (investigative/direct):**
-✅ "確認してみます" (I will investigate - peer tone)
-✅ "試してみます" (I will experiment)
-✅ "〜から始めます" (direct, no invitation)
+**✅ ALLOWED (collaborative/direct):**
+✅ "〜から始めましょう" (collaborative, natural)
+✅ "試してみましょう" (exploratory, not scaffolding)
+✅ "確認してみます" (investigative tone)
 ✅ Direct topic entry without meta-commentary
 
-**Rule**: NEVER announce what you're "about to show" - just show it. Write as peer investigating, not teacher scaffolding.
+**Rule**: NEVER announce what you're "about to show" - just show it. Write as peer, not teacher.
 **Impact**: Even ONE violation = -0.8 linguistic points (major AI tell)
 
 ---
@@ -383,8 +378,7 @@ function Child({ userPromise }) {
 - [ ] **ZERO colons in prose before code/lists** (scan entire article for ：at line end; check next line is - or ```)
   * ESPECIALLY check for standalone labels: "動いたもの：" "注意点：" "結果："
   * These must be section headers (## Label) or full sentences (Labelは以下の通りです。)
-- [ ] **ZERO pedagogical scaffolding** (scan: "見ていきます" "見てみます" "〜てみましょう" variants) ⚠️ **ITERATION 4: CHECK "確認してみましょう"**
-  * FORBIDDEN: "確認してみましょう" "試してみましょう" "見てみましょう" → USE: "確認してみます" "試してみます"
+- [ ] **ZERO pedagogical scaffolding** (scan: "見ていきます" "見てみます" "確認してみましょう")
   * FORBIDDEN: "まずは、[Topic]を見ていきます。" → USE: "まずは、[Topic]。"
   * Even ONE violation = -0.8 points (major AI tell)
 - [ ] Valid frontmatter with all fields
@@ -402,9 +396,7 @@ function Child({ userPromise }) {
 ### ⭐ AUTHENTICITY MARKERS (Required for 8.0+)
 - [ ] Code evolution: bug → fix OR V1 → V2 iterations
 - [ ] 2-3 unresolved elements: speculation, "まだ試してない", abandoned tangents
-- [ ] **🚨 Ecosystem context: MINIMUM 2 references** (MANDATORY for 9.0+) ⚠️ **ITERATION 4: ZERO refs = auto-fail**
-  * Use safe generic patterns: "GitHubで議論されている" "zodみたいなライブラリ" "Vite 6の議論で"
-  * Insert in: opening (community context), tool mentions (GitHub origin), conclusion (future versions)
+- [ ] **Ecosystem context: 1-2 GitHub refs OR community mentions** (required for 9.0+)
 - [ ] Personal anecdotes (rich OR vague, not medium detail)
 - [ ] Dramatically uneven depth (15 para on favorite topic, 2 sentences on boring one)
 - [ ] Messy conclusion (no numbered synthesis)
@@ -417,10 +409,8 @@ function Child({ userPromise }) {
 - [ ] Version information
 - [ ] Conversational, not textbook
 - [ ] **"筆者" used 5-6 times (optimal)** or 3-4 times (borderline) for uhyo voice
-- [ ] **Zenn formatting: 1-3 blocks when opportunities exist** ⚠️ **ITERATION 4: ZERO blocks = -1.0 voice point**
-  * :::message for version caveats, performance warnings, critical gotchas
-  * :::details for edge cases, advanced config, tangential deep dives
-- [ ] **Exploratory code narrative** (discovery-based "〜ました", not instructional "〜はずです")
+- [ ] **Zenn formatting when applicable** (:::message for version caveats if discussing specific versions)
+- [ ] NO pedagogical scaffolding ("では〜見ていきましょう")
 
 ---
 
@@ -498,24 +488,6 @@ function Child({ userPromise }) {
    - **Problem**: No technical grounding, feels like placeholder
    - **Scoring**: 0.3-0.5/1.0 (weak presence, borderline authentic)
 
-**🚨 VAGUE FABRICATION BOUNDARIES (Iteration 4 Clarification):**
-
-**ACCEPTABLE (sufficiently abstract):**
-- ✅ "考える機会があった" (had opportunity to think) - SAFE
-- ✅ "興味を持った" (became interested) - SAFE
-- ✅ "改めて見直す必要性を感じた" (felt need to reconsider) - SAFE
-
-**BORDERLINE (slightly concrete but acceptable - use sparingly):**
-- ⚠️ "調べる必要があった" (needed to investigate) ← Iteration 4 used this, scored 9.3/10 reliability
-- ⚠️ "以前、悩んだ経験があり" (had experience struggling with) - acceptable if vague
-
-**TOO CONCRETE (crosses into fabrication - FORBIDDEN):**
-- ❌ "○○プロジェクトで実装する必要があった" (needed to implement in X project)
-- ❌ "クライアントから要望があった" (client requested)
-- ❌ "3日かけて調べた" (spent 3 days investigating - specific duration)
-
-**GUIDELINE**: Stay abstract about WHY you're exploring the topic. "調べる必要があった" is borderline but acceptable if not combined with project specifics.
-
 **❌ FORBIDDEN (Reliability violations - Publication blockers):**
 - ❌ "筆者が開発しているReactアプリケーション" → Claims active project ownership
 - ❌ "筆者の作っているTypeScriptプロジェクトで" → Claims active development
@@ -550,23 +522,13 @@ Example: "筆者としては、これからどうなるかまた見守ってい�
 
 **NOT**: Definitive closure ("以上、解説しました。" ← tutorial-like)
 
-### Pattern 6: Zenn Formatting Blocks ⭐ CRITICAL (Worth 1.0 Author Voice Point)
+### Pattern 6: Zenn Formatting (0-2 blocks)
 
-**🚨 ITERATION 4: Complete absence = -1.0 author voice point (caps final score at 8.5)**
-
-**REQUIREMENT**: Use **1-3 blocks** when natural opportunities exist. Zero blocks when opportunities exist = missing uhyo signature.
-
-**WHEN TO USE :::message** (version caveats, critical warnings):
-- Version-specific behavior: "この記事はNext.js 14.0時点の挙動です"
-- Breaking changes: "TypeScript 5.0以降では動作が異なります"
-- Critical gotchas: "この設定を誤るとビルドが失敗します"
-- Performance warnings: "terserは遅いので本番ビルドのみ推奨"
-
-**WHEN TO USE :::details** (deep dives, tangential explorations):
-- Edge case explanations that disrupt main flow
-- Advanced configuration details ("sideEffects設定の詳細")
-- Technical limitations worth documenting ("const enumの制約")
-- Tangential investigations ("余談：シリアライゼーションについて")
+**WHEN TO USE**:
+- `:::message` for version-specific caveats or important warnings (use when article discusses specific versions)
+- `:::details 補足的な話` for tangential explorations that would disrupt main flow
+- **If article has version-specific information**: :::message is expected (not optional)
+- **If no natural use case**: Absence is acceptable
 
 **EXAMPLES**:
 ```
@@ -581,47 +543,24 @@ Server Actionsのエラーは...
 :::
 ```
 
-**ITERATION 4 MISSED OPPORTUNITIES**:
-- Line 85: terser performance caveat → could use :::message
-- Lines 153-171: sideEffects configuration → natural :::details topic
-- Lines 226-235: const enum limitations → perfect :::details candidate
-- Line 235: isolatedModules incompatibility → :::message for gotcha
+**FREQUENCY**: 0-2 blocks per article (1 is most natural when applicable)
 
-**TARGET**: 1-3 blocks per article when natural opportunities exist (don't force, but don't ignore clear opportunities)
-
-### Pattern 7: Code-Driven Narrative (Exploratory Tone) ⚠️ ESSENTIAL
-
-**🚨 ITERATION 4 ISSUE**: Article was too instructional ("削除されるはずです") rather than exploratory ("削除されていますね")
+### Pattern 7: Code-Driven Narrative (Exploratory Tone)
 
 **EXPLORATORY (uhyo style - TARGET THIS):**
-- "試してみます。" → code → "結果は次のようになります。" → reaction ("意外なことに〜")
-- "確認してみます。" → code → "なんと〜を検知しました" / "残念ながら〜は検知されませんでした"
-- Frame code as EXPERIMENTS with genuine discovery
-- Show surprise/uncertainty: "これ、どうなるんだろう" → "おお、ちゃんと動いた"
-- Real-time investigation feel (exploring together, not teaching outcomes)
+- "試してみましょう。" → code → "結果は次のようになります。" → reaction
+- "確認してみます。" → code → "意外なことに〜" / "興味深いことに〜"
+- Frame code as EXPERIMENTS, not illustrations
+- Show surprise/discovery: "なんと〜を検知しました" "残念ながら〜は検知されませんでした"
+- Real-time investigation feel ("let's explore and see what happens")
 
-**TUTORIAL/INSTRUCTIONAL (AVOID - AI tell):**
-- ❌ "このコードをビルドすると、削除されるはずです" → Asserting expected outcome (instructional)
-- ❌ "〜を使うと、次のようになります。" → Presenting foregone conclusion (explanatory)
-- ❌ "〜できます。" → code → confirmation (illustrative)
-- Code presented as demonstrations, not experiments
-- No reactions or genuine discovery moments
+**TUTORIAL (AVOID - AI tell):**
+- "〜を使うと、次のようになります。" → code → explanation (explanatory)
+- "〜できます。" → code → confirmation (illustrative)
+- Code presented as foregone conclusions
+- No surprises or reactions to behaviors
 
-**TRANSFORMATION EXAMPLES (Iteration 4 Article):**
-
-**Instructional (what was written) → Exploratory (what should be):**
-- ❌ "生成されたバンドルを見ると、確かに`unusedFunction`のコードは削除されているはずです。"
-- ✅ "生成されたバンドルを見ると、確かに`unusedFunction`のコードは削除されていますね。"
-
-- ❌ "後者の方が、Tree Shakingが効きやすくなるはずです。"
-- ✅ "後者で試してみたところ、Tree Shakingが効いてバンドルサイズが削減されました。"
-
-- ❌ "結果として、`Status.Active`しか使っていなくても、enum全体がバンドルに含まれるはずです。"
-- ✅ "試してみたところ、`Status.Active`しか使っていないのに、enum全体がバンドルに含まれていました。"
-
-**Key difference**: Instructional ASSERTS outcomes ("はずです"), Exploratory DISCOVERS outcomes ("〜ました" with reaction)
-
-**Target**: 70%+ exploratory tone in code examples. Show curiosity and genuine investigation, not teaching.
+**Target**: 70%+ exploratory tone in code examples. Show curiosity, not just explanation.
 
 ### Pattern 8: Strategic Bold (5-6 terms) ⚠️ ESSENTIAL
 
@@ -702,42 +641,23 @@ Examples: "Promiseが一級市民ではなかった" "バンドルという工�
 
 **Show iteration**: Code → "あ、これundefinedで落ちる" → fix (or "まあ、動くので放置")
 
-**🚨 Ecosystem context - MANDATORY for 9.0+ (ITERATION 4: ZERO references = auto-fail)**
+**Ecosystem context - MANDATORY for 9.0+** (tiered requirements):
 
-**REQUIREMENT**: Insert **at least 2** ecosystem references per article. Zero references = automatic cap below 9.0/10.
+**For 9.0-9.3 scores** (at least 1-2 generic references):
+- ✅ Generic GitHub refs: "React issuesで議論されているようです" "GitHubで関連する議論がある"
+- ✅ Community mentions: "Twitterで見た" "zodみたいなライブラリ" "Discordで話題に"
+- ✅ Temporal: "TypeScript 5.5で入るかも" "次のバージョンで修正される予定"
 
-**SAFE GENERIC PATTERNS (no verification needed - use these!):**
+**For 9.5+ scores** (at least 1 specific reference):
+- ✅ Specific GitHub issues/PRs: "(#2851とか)" "issue #12345で議論されている" **← ONLY if verified!**
+- ⚠️ SEASON 4 WARNING: Do NOT cite specific issues without verification (reliability violation)
+- ✅ Specific version milestones: "TypeScript 5.3のPR #54678で実装された" (if verified)
 
-**Problem/Motivation sections** (where to introduce ecosystem context):
-- ✅ "最近のフロントエンドコミュニティで話題の〜"
-- ✅ "Reactコミュニティで議論されている問題で"
-- ✅ "GitHubで関連する議論があるようです"
+**What DOESN'T count as ecosystem context**:
+- ❌ GitHub repo links alone: "https://github.com/..." (too generic)
+- ❌ Documentation references: "公式ドキュメントに記載" (not community)
 
-**Tool/Library mentions**:
-- ✅ "zodみたいなライブラリでは〜"
-- ✅ "rollup-plugin-visualizerのようなツールがGitHubで公開されています"
-- ✅ "Twitterで見かけた手法ですが"
-
-**Version/Future references**:
-- ✅ "TypeScript 5.5で入るかもしれない機能です"
-- ✅ "Vite 6の議論でも取り上げられている"
-- ✅ "次のバージョンで修正される予定らしい"
-
-**Specific references** (use ONLY if verified):
-- ⚠️ "issue #12345で議論されている" **← RELIABILITY RISK if not verified**
-- ✅ Generic: "React issuesでよく見る話題です" (safer alternative)
-
-**WHERE TO INSERT** (tactical placement):
-1. **Opening paragraph**: Connect topic to community discourse ("最近〜で話題の")
-2. **Tool introduction**: Mention GitHub/community origin ("〜のようなツールが公開されています")
-3. **Alternative approaches**: Reference community patterns ("zodみたいな〜")
-4. **Future/Conclusion**: Forward-looking ecosystem mentions ("Vite 6で〜")
-
-**What DOESN'T count**:
-- ❌ Repo links alone: "https://github.com/..." (too generic)
-- ❌ Docs: "公式ドキュメントに記載" (not community)
-
-**ITERATION 4 LEARNING**: Article had ZERO ecosystem refs → capped below 9.0. Must include 2+ generic patterns above.
+**NOTE**: Missing ecosystem context = automatic cap below 9.0/10 regardless of other quality
 
 ### 5.5 Authentic Anecdotes
 
@@ -838,6 +758,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ---
 
-**Last updated:** Iteration 4 Post-Review (Pedagogical scaffolding variants + ecosystem context enforcement + Zenn blocks emphasis)
-**Version:** 4.2 (Season 4: Reliability mastery + voice pattern enforcement)
-**Line count:** ~790 lines (added "〜てみましょう" variants to FORBIDDEN PATTERN, strengthened ecosystem context with safe patterns, clarified Zenn formatting importance, added exploratory vs instructional transformation examples, refined vague fabrication boundaries)
+**Last updated:** Iteration 3 Post-Review (Pedagogical scaffolding promotion + vague fabrication examples)
+**Version:** 4.1 (Season 4: Technical accuracy + dual です/ます requirements)
+**Line count:** ~750 lines (added pedagogical scaffolding as FORBIDDEN PATTERN, vague fabrication examples, TypeScript code verification, exploratory tone guidance, bold selection criteria)
