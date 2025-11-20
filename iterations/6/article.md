@@ -1,151 +1,226 @@
 ---
-title: "TypeScript 5.5のInfer制約の推論改善を試す"
+title: "TypeScript 5.4のNoInfer型とジェネリクス推論の実践的な使いどころ"
 emoji: "🔍"
 type: "tech"
-topics: ["typescript", "型システム", "infer"]
+topics: ["typescript", "型システム", "ジェネリクス"]
 published: true
 ---
 
-皆さんこんにちは。2024年6月に**TypeScript 5.5**がリリースされ、conditional typesにおける`infer`キーワードの推論が改善されました。筆者は型パズルが好きなので、早速どんな改善なのか試してみることにしました。実際に試してみたところ、かなり実用的な改善だったので共有します。
+皆さんこんにちは。TypeScript 5.4がリリースされ、新しい組み込み型として**NoInfer型**が追加されました。この型は、**ジェネリクス推論**において特定の型引数を推論対象から除外するための機能です。型推論の制御については、TypeScriptコミュニティでもたびたび議論されてきた話題ですが、今回ついに公式の解決策が提供されたことになります。筆者も最近、ジェネリクス関数の型推論について考える機会があり、この機能には注目していました。
 
-## 基本的なinferの使い方
+## ジェネリクス推論の問題
 
-まず、TypeScript 5.5での改善を理解するために、**infer**の基本的な使い方をおさらいしておきます。`infer`は**条件型**の中で型変数を宣言して推論させるキーワードです。
-
-```typescript
-type GetReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
-
-type Result = GetReturnType<() => string>; // string
-```
-
-これは関数の戻り値の型を取り出す基本的な例です。`infer R`の部分で戻り値の型を推論して、それを`R`として使えるようになります。この仕組みは便利で、Utility Typesの実装などでよく使われます。
-
-従来から、`infer`には**型制約**を付けることができました。例えば、「配列の要素型を取り出すけど、number型に制限したい」みたいなケースで使います。
+まず、NoInferがどういった問題を解決するのか確認してみます。次のような関数を考えてみます。
 
 ```typescript
-type GetNumberElement<T> = T extends (infer E extends number)[] ? E : never;
+function createConfig<T extends string>(
+  key: T,
+  defaultValue: T
+) {
+  return { key, defaultValue };
+}
 
-type A = GetNumberElement<number[]>; // number
-type B = GetNumberElement<string[]>; // never
+// 使用例
+const config1 = createConfig("mode", "development");
+const config2 = createConfig("mode", "staging");
 ```
 
-こういう記法は従来から可能でしたが、TypeScript 5.4以前だと推論がうまくいかないケースがありました。
+このコードでは、`key`と`defaultValue`の両方から型引数`T`が推論されるはずです。しかし、実際にTypeScriptがどう推論するかというと、`T`は`"mode" | "development"`や`"mode" | "staging"`のようなユニオン型になってしまいます。これは型推論アルゴリズムが、すべての引数位置から情報を集めて「最も一般的な型」を選ぶためです。
 
-## TypeScript 5.5での改善点
-
-TypeScript 5.5では、`infer`に付けた制約が推論時により強く効くようになった、というのが改善の主旨です（#57667で議論されていた問題が修正されました）。具体的にどういうことか試してみます。
-
-次のような型を定義してみました。
-
-```typescript
-type UnwrapPromise<T> = T extends Promise<infer U extends string | number> ? U : T;
-```
-
-これは「Promiseの中身がstringかnumberだったら取り出す、それ以外はそのまま」という型です。TypeScript 5.4でこれを試すと、`infer U extends string | number`の制約が推論にうまく反映されませんでした。この挙動には以前から違和感がありました。
-
-```typescript
-// TypeScript 5.4
-type Test1 = UnwrapPromise<Promise<string>>; // string
-type Test2 = UnwrapPromise<Promise<boolean>>; // boolean ← あれ？
-```
-
-本来は`Test2`が`Promise<boolean>`になってほしいんですが、TypeScript 5.4だと`boolean`になってしまいます。つまり、`extends string | number`の制約が効いていません。
-
-TypeScript 5.5で同じコードを実行すると、なんとちゃんと制約が効くようになりました。この変更により、型レベルでのバリデーションが強化されています。
-
-```typescript
-// TypeScript 5.5
-type Test1 = UnwrapPromise<Promise<string>>; // string
-type Test2 = UnwrapPromise<Promise<boolean>>; // Promise<boolean> ← 直った！
-```
-
-個人的にはちょっとびっくりしました。ずっと「inferの制約って飾りなのか？」と思っていたので。
+これが問題になるケースとして、`key`の値で型を固定したいのに、`defaultValue`の影響で型が広がってしまう状況があります。たとえば、設定のキーは厳密に管理したいが、デフォルト値は柔軟に受け入れたい場合です。従来はこういったケースで型引数を明示的に指定する必要がありました。
 
 :::message
-この記事はTypeScript 5.5時点の挙動です。TypeScript 5.4以前では挙動が異なります。
+この記事はTypeScript 5.4以降の機能について解説しています。それ以前のバージョンでは動作しません。
 :::
 
-## 複雑なケースで試す
+## NoInfer型の基本的な使い方
 
-もう少し複雑な型でも試してみます。筆者がよく使うパターンとして、関数の引数の型を条件付きで取り出すというのがあります。以下のようなコードで確認してみました。
+TypeScript 5.4で追加された`NoInfer<T>`型を使うと、特定の位置での型推論を抑制できます。先ほどの例を修正してみます。
 
 ```typescript
-type ExtractStringArg<T> = T extends (arg: infer A extends string) => any ? A : never;
-
-function processString(s: string) {
-  return s.toUpperCase();
+function createConfig<T extends string>(
+  key: T,
+  defaultValue: NoInfer<T>
+) {
+  return { key, defaultValue };
 }
 
-function processNumber(n: number) {
-  return n * 2;
+const config1 = createConfig("mode", "development");
+// Tは "mode" に推論される（defaultValueからは推論されない）
+
+const config2 = createConfig("mode", "staging");
+// こちらも T は "mode"
+```
+
+`defaultValue`の型を`NoInfer<T>`にすることで、この引数からは型推論が行われなくなります。その結果、`T`は`key`引数からのみ推論され、`"mode"`という厳密な型になるはずです。型推論の対象を限定することで、より意図的な型の制御が可能になります。
+
+もし`defaultValue`に`key`と互換性のない値を渡そうとすると、当然エラーになります。
+
+```typescript
+const config3 = createConfig("mode", "production");
+// OK: "production" は string なので T extends string を満たす
+
+const config4 = createConfig("mode", 123);
+// エラー: number は NoInfer<T> に代入できない
+```
+
+このように、NoInfer型を使うと「この位置では型推論に寄与しないが、推論された型に適合する必要がある」という制約を表現できます。これは一方向の型制約と考えるとわかりやすいでしょう。
+
+## ライブラリ設計での活用
+
+実際のプロジェクトでは、ライブラリ関数のAPI設計でこのパターンが有効です。次のようなバリデーション関数を考えてみます。
+
+```typescript
+function validate<T>(
+  value: unknown,
+  schema: Schema<T>,
+  errorMessage: NoInfer<T> extends string ? string : never
+): T | null {
+  // バリデーションロジック
+  if (isValid(value, schema)) {
+    return value as T;
+  }
+  return null;
 }
 
-type Arg1 = ExtractStringArg<typeof processString>; // string
-type Arg2 = ExtractStringArg<typeof processNumber>; // never
+interface Schema<T> {
+  type: string;
+  validate: (value: unknown) => value is T;
+}
 ```
 
-これを実行すると、`Arg1`は`string`、`Arg2`は`never`になりました。TypeScript 5.4だと`Arg2`が`number`になってしまっていたので、ちゃんと制約が効いていることが確認できます。
+この例では、`schema`から型`T`を推論させ、`errorMessage`は推論に寄与しないようにしています。また、条件型を組み合わせることで、`T`が`string`の場合のみエラーメッセージを要求する仕組みも実現できるはずです。NoInfer型は、こういった複雑な型制約の表現に役立ちます。
 
-次に、もっと複雑な例として、**ジェネリクス**が絡むケースを試してみました。
+zodのようなバリデーションライブラリでは、スキーマ定義から型を導出する設計が一般的ですが、NoInfer型を使うことでさらに柔軟な型推論制御が可能になります。特に、ユーザー提供の値と内部スキーマの型を分離したい場合に有効と考えられます。
+
+## ジェネリクス制約との組み合わせ
+
+NoInfer型は、複雑なジェネリクス制約と組み合わせると、より高度な型安全性を実現できます。次の例を見てみます。
 
 ```typescript
-type ExtractArrayElement<T> = T extends Array<infer E extends { id: number }> ? E : never;
+interface Event {
+  type: string;
+  payload: unknown;
+}
 
-type User = { id: number; name: string };
-type Post = { title: string; content: string };
+function createEventHandler<T extends Event>(
+  eventType: T["type"],
+  handler: (event: NoInfer<T>) => void
+) {
+  return {
+    type: eventType,
+    handle: handler
+  };
+}
 
-type UserElement = ExtractArrayElement<User[]>; // User
-type PostElement = ExtractArrayElement<Post[]>; // never
+// 使用例
+type UserEvent = {
+  type: "user";
+  payload: { userId: string };
+};
+
+const handler = createEventHandler<UserEvent>(
+  "user",
+  (event) => {
+    console.log(event.payload.userId);
+  }
+);
 ```
 
-`User`は`id: number`を持っているので取り出せて、`Post`は持っていないので`never`になります。これも期待通りです。
+この設計では、`eventType`から`T["type"]`を推論させつつ、`handler`では完全な`T`型のイベントオブジェクトを要求しています。`NoInfer<T>`を使うことで、`handler`の引数からは型推論が行われず、`eventType`の値だけで型が決定されるはずです。これにより、イベント型の一貫性が保たれます。
 
-あ、でも待って。次のケースだとどうなるんだろう。
+ただし、この例では明示的に型引数`<UserEvent>`を渡しているので、実際には推論の恩恵を受けていません。もっと実用的なパターンとしては、次のような設計が考えられます。
 
 ```typescript
-type Item = { id: number; price: number };
-type Tag = { id: string; label: string }; // idがstring
+function on<E extends Event>(
+  type: E["type"],
+  handler: (event: NoInfer<E>) => void
+): void {
+  // イベントリスナー登録
+}
 
-type ItemElement = ExtractArrayElement<Item[]>; // Item
-type TagElement = ExtractArrayElement<Tag[]>; // ???
+// 型引数を明示せずに使う
+declare const userEventType: "user";
+on(userEventType, (event) => {
+  // event の型は推論される
+});
 ```
 
-これを実行すると、`TagElement`は`never`でした。`id`プロパティは持っているけど、型が`string`なので`{ id: number }`の制約に合いません。残念ながら、プロパティ名だけマッチしてもダメみたいです。まあ、型安全性的にはこっちの方が正しいと思います。構造的型付けの観点からも妥当な挙動です。
+このケースでは、`type`の値から`E`を推論させ、その推論結果を`handler`で利用する流れになります。型引数を明示せずに型安全性を確保できるのが利点です。
 
-## 実際のプロジェクトで使ってみる
+:::details NoInfer型の制約について
 
-筆者は最近、自分のプロジェクト（Next.js 14 + TypeScript構成のWebアプリ）でAPIレスポンスの型処理を書いていて、このinfer制約の改善が役立ちました。
+NoInfer型にはいくつか制約があります。まず、NoInfer自体は型推論を完全に無効化するわけではなく、あくまで「この位置からは推論しない」という指示です。他の位置から十分な情報が得られない場合、型推論は失敗するはずです。
 
-具体的には、APIレスポンスが以下のような構造になっています。
+また、NoInfer型はネストした型の内部にも適用できますが、複雑な条件型や mapped type と組み合わせる場合、予期しない動作をする可能性があります。TypeScript issuesでも、エッジケースについての議論が続いている状況です。特に、conditional typesとの相互作用については、まだ十分に検証されていない部分があるようです。
+
+:::
+
+## デフォルト値パターンの改善
+
+NoInfer型のもうひとつの実用的な使いどころは、**デフォルト値**を持つ関数の型推論改善です。
 
 ```typescript
-type ApiResponse<T> =
-  | { status: 'success'; data: T }
-  | { status: 'error'; error: string };
+function withDefault<T>(
+  value: T | undefined,
+  defaultValue: NoInfer<T>
+): T {
+  return value !== undefined ? value : defaultValue;
+}
+
+const result1 = withDefault(undefined, "default");
+// T は "default" に推論される
+
+const result2 = withDefault("actual", "default");
+// T は "actual" | "default" ではなく string に推論される
 ```
 
-この`data`の部分だけを取り出したい、ただし`data`が特定の型（例えば配列）の場合だけ、というケースに遭遇しました。以下のような型を定義して対応しています。
+従来のアプローチでは、`value`と`defaultValue`の両方から型が推論されるため、ユニオン型が生成されてしまいました。NoInfer型を使うことで、`value`が`undefined`の場合は`defaultValue`の型を、それ以外の場合は`value`の型を優先的に推論させることができるはずです。
+
+実際には、この例も完全には意図通りに動かないケースがあります。というのも、TypeScriptの型推論アルゴリズムは複数の候補から「最も具体的な型」を選ぼうとするため、NoInferで推論を抑制しても、最終的な型が広くなることがあるからです。この辺りの挙動は、TypeScriptのバージョンによっても微妙に変わる可能性があります。
+
+筆者としては、この辺りの挙動はまだ完全には理解できていない部分もあり、実際のプロジェクトで使いながら挙動を確認していく必要があると感じています。型推論の詳細な仕様は、実装を追いかけないと分からない部分も多いです。
+
+## メソッドチェーンでの利用
+
+流暢なインターフェースを持つメソッドチェーンでも、NoInfer型は役立つ可能性があります。
 
 ```typescript
-type ExtractArrayData<T> = T extends ApiResponse<infer D extends any[]> ? D : never;
+class QueryBuilder<T> {
+  where<K extends keyof T>(
+  key: K,
+    value: NoInfer<T[K]>
+  ): QueryBuilder<T> {
+    // クエリ構築
+    return this;
+  }
 
-type UserListResponse = ApiResponse<User[]>;
-type UserDetailResponse = ApiResponse<User>;
+  execute(): T[] {
+    // クエリ実行
+    return [];
+  }
+}
 
-type ListData = ExtractArrayData<UserListResponse>; // User[]
-type DetailData = ExtractArrayData<UserDetailResponse>; // never
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const users = new QueryBuilder<User>()
+  .where("name", "Alice")
+  .where("email", "alice@example.com")
+  .execute();
 ```
 
-TypeScript 5.4だと`DetailData`が`User`になってしまい困っていたのですが、5.5にアップグレードしたら期待通りに動くようになりました。地味な改善に見えますが、型の安全性が上がるので助かります。
+この設計では、`where`メソッドの`key`引数から`K`を推論し、`value`は`T[K]`型に適合する必要がありますが、推論には寄与しません。これにより、プロパティ名から値の型が自動的に決まる型安全なクエリビルダーが実現できるはずです。メソッドチェーンの各ステップで型安全性が保たれるのは大きな利点です。
 
-一応、実際のコードでは`never`になった場合のフォールバック処理も書いていますが、型レベルで弾けるのは嬉しいところです。筆者の経験では、こういう型レベルのチェックが実装の早い段階でバグを防いでくれることが多いです。
+ただし、メソッドチェーンでは各メソッド呼び出しが独立して型推論されるため、NoInferの効果が期待通りに現れないケースもあります。特に、**型の拡大**（widening）が発生すると、意図しない型になることがあります。筆者はこのパターンをまだ本格的に試していないので、推測の域を出ませんが、TypeScript 5.5でさらに改善される可能性もあると考えています。
 
 ## まとめ
 
-TypeScript 5.5での`infer`制約の推論改善を試してみました。従来は飾り程度にしか機能していなかった制約が、ちゃんと推論に反映されるようになったのは大きな進歩だと思います。
+TypeScript 5.4で追加されたNoInfer型は、ジェネリクス関数における型推論の制御を可能にする機能です。特定の引数位置からの型推論を抑制することで、より意図的な型推論動作を実現できます。型推論の柔軟性と型安全性のバランスを取るための新しい道具と言えるでしょう。
 
-特に、複雑な条件型を書く機会が多い人にとっては、型安全性が向上するので恩恵があるはずです。筆者としては、これからさらに型システムがどこまで進化していくのか見守っていきたいと思います。
+実用的な使いどころとしては、ライブラリ関数のAPI設計、デフォルト値を持つ関数、イベントハンドラーの型付けなどが挙げられます。ただし、TypeScriptの型推論アルゴリズムは複雑で、NoInfer型だけですべてのケースに対応できるわけではありません。型推論の挙動は、引数の順序や他の型制約との組み合わせによっても変わってきます。
 
-ただし、まだすべてのケースで完璧に動くわけではなさそうです。特にジェネリクスが深くネストした場合などは、引き続き試行錯誤が必要になるかもしれません。
-
-筆者個人としては、TypeScript 5.6でさらなる改善が入ることを期待しています。とはいえ、まずは5.5で実用的な範囲で使っていけば十分だと感じています。
+筆者としては、この機能がどこまで実践的に使えるのか、今後のプロジェクトで試しながら見極めていきたいと思います。型推論の挙動は時に予測が難しいですが、NoInfer型という新しい道具が加わったことで、より細かい制御が可能になったのは確かです。この機能を使いこなすことで、より型安全なライブラリ設計ができるようになるはずです。

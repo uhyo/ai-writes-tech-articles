@@ -1,231 +1,180 @@
 ---
-title: "Bun 1.0のNode.js互換性を試して限界を調べる"
-emoji: "🥟"
+title: "React Server Componentsのストリーミングとサスペンスの実装パターン"
+emoji: "🌊"
 type: "tech"
-topics: ["bun", "nodejs", "javascript"]
+topics: ["react", "nextjs", "typescript", "frontend"]
 published: true
 ---
 
-皆さんこんにちは。2023年9月に**Bun 1.0**がリリースされ、「Node.jsのドロップイン代替」という触れ込みで大きな話題になりました。筆者も発表を見てすぐ試してみたのですが、実際にどこまでNode.jsと互換性があるのか、逆にどこで躓くのかを体系的に調べてみることにしました。
+皆さんこんにちは。Next.js 13のApp Routerが登場してから、**Server Components**の**ストリーミング**機能が注目を集めています。筆者も最近、Server Componentsのレンダリング戦略について考える機会があり、ストリーミングと**Suspense**の組み合わせについて調べてみました。
 
-## Bunの互換性レイヤーの仕組み
+Server Componentsでは、サーバー側でコンポーネントをレンダリングし、その結果を段階的にクライアントに送信できます。これにより、初期表示の高速化だけでなく、重い処理を含むコンポーネントを段階的に表示できるようになります。
 
-Bunは内部的に**JavaScriptCore**エンジンを使っており、V8を使うNode.jsとは異なります。それにもかかわらず、BunはNode.jsの標準APIを独自に実装することで互換性を実現しています。
+この記事では、ストリーミングとSuspenseを組み合わせた実装パターンを試してみます。
 
-公式ドキュメントによると、`node:fs`、`node:path`、`node:http`といった主要なモジュールは実装されており、npmパッケージの大半が動作すると謳われています。しかし、「大半が動作する」というのは裏を返せば「一部は動かない」ということです。
+## ストリーミングの基本
 
-筆者は実際にいくつかのケースを試して、どこまで互換性があるのか確かめてみました。
+まずは、最もシンプルなストリーミングの例。
 
-## 簡単なケース：基本的なAPIの互換性
+Server Componentsでは、`async`関数コンポーネントを定義できます。これをSuspenseで囲むと、データ取得中はfallbackが表示され、取得完了後に本来のコンテンツがストリーミングされるはずです。
 
-まずは基本的なファイル操作から試します。
+```tsx
+async function UserProfile({ userId }: { userId: string }) {
+  const user = await fetchUser(userId);
+  return <div>{user.name}</div>;
+}
 
-```javascript
-import fs from 'node:fs';
-import path from 'node:path';
-
-const filePath = path.join(process.cwd(), 'test.txt');
-fs.writeFileSync(filePath, 'Hello from Bun!');
-const content = fs.readFileSync(filePath, 'utf-8');
-console.log(content);
-```
-
-これを実行すると、何の問題もなく動作しました。`node:fs`と`node:path`は完全に実装されているようです。
-
-次にHTTPサーバーを立ててみます。
-
-```javascript
-import http from 'node:http';
-
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello World\n');
-});
-
-server.listen(3000);
-console.log('Server running at http://localhost:3000/');
-```
-
-これも期待通り動作します。Node.jsで書いた簡単なHTTPサーバーはBunでそのまま動くということです。
-
-次に、実際のアプリケーションで使われるフレームワークを試してみます。Expressは最も人気のあるNode.jsフレームワークの一つです。
-
-```javascript
-import express from 'express';
-
-const app = express();
-
-app.get('/', (req, res) => {
-  res.send('Hello from Express on Bun!');
-});
-
-app.listen(3000, () => {
-  console.log('Express server running on port 3000');
-});
-```
-
-Bunで実行してみると、これも問題なく動作しました。公式ドキュメントにも書かれている通り、Express、Koa、Honoといった主要なフレームワークは基本的に動作するようです。
-
-ただし、ここで一つ気になったのは、Expressのミドルウェアの中には動かないものがあるかもしれないという点です。筆者が試した範囲では問題ありませんでしたが、より複雑なミドルウェアを使う場合は注意が必要かもしれません。
-
-## 難しいケース：worker_threadsを試す
-
-ここからが本題です。Node.jsの**worker_threads**モジュールは、マルチスレッド処理を実現するための重要な機能ですが、Bunでどこまで動くのでしょうか。
-
-```javascript
-import { Worker } from 'node:worker_threads';
-
-const worker = new Worker(`
-  const { parentPort } = require('worker_threads');
-  parentPort.postMessage('Hello from worker!');
-`, { eval: true });
-
-worker.on('message', (msg) => {
-  console.log('Received:', msg);
-});
-```
-
-実行してみると、基本的な機能は動作しました。しかし、公式ドキュメントを見ると、`stdin`、`stdout`、`stderr`のオプションがサポートされていないことが分かります。
-
-さらに調べてみると、GitHubのissue #901で`worker_threads`のサポート状況について議論されていました。基本的な機能は実装されているものの、一部のAPIが未実装であることが明記されています。
-
-試しに、より複雑なワーカーを使ってみます。
-
-```javascript
-import { Worker } from 'node:worker_threads';
-import path from 'node:path';
-
-const workerPath = path.join(process.cwd(), 'worker.js');
-const worker = new Worker(workerPath, {
-  stdout: true // このオプションはBunでサポートされていない
-});
-```
-
-残念ながら、これは期待通りには動作しませんでした。`stdout`オプションを使おうとすると、Bunは警告を出すか無視するようです。
-
-### node:vmの限界
-
-`node:vm`モジュールも試してみます。このモジュールは動的なコード実行に使われますが、セキュリティ上の理由で完全な実装は難しいと言われています。
-
-```javascript
-import vm from 'node:vm';
-
-const context = { x: 10, y: 20 };
-vm.createContext(context);
-
-const code = 'x + y';
-const result = vm.runInContext(code, context);
-console.log(result);
-```
-
-実行すると、`30`という結果が得られました。基本的な`vm.runInContext`は動作するようです。
-
-しかし、より高度な機能はどうでしょうか。`vm.Module`や`vm.SourceTextModule`といったES Modulesを扱う機能を試してみます。
-
-```javascript
-import vm from 'node:vm';
-
-const module = new vm.SourceTextModule('export const value = 42;');
-```
-
-これを実行すると、エラーが発生しました。なんと、Bun 1.0時点では`vm.SourceTextModule`が実装されていないようです。公式ドキュメントにも「experimental features are not implemented」と記載されています。
-
-筆者としては、この部分は今後のアップデートで改善されることを期待しています。
-
-### node:clusterと完全に動かなかったケース
-
-`node:cluster`モジュールは、複数のワーカープロセスを起動してCPUコアを最大限活用するための機能です。
-
-```javascript
-import cluster from 'node:cluster';
-import http from 'node:http';
-import { cpus } from 'node:os';
-
-if (cluster.isPrimary) {
-  const numCPUs = cpus().length;
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
-} else {
-  http.createServer((req, res) => {
-    res.end('Hello from worker!');
-  }).listen(3000);
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <UserProfile userId="123" />
+    </Suspense>
+  );
 }
 ```
 
-Bun 1.0リリース時点では、`node:cluster`は実装されていませんでした。しかし、調べてみると、Bun 1.1.25（2024年8月リリース）で追加されたようです。
+このコードでは、`UserProfile`がデータ取得を完了するまで`Loading...`が表示され、完了後に実際のユーザー名が表示されると考えられます。
 
 :::message
-この記事はBun 1.0時点の挙動を基にしています。Bun 1.1以降では機能が追加・改善されている可能性があります。
+この記事はNext.js 14時点の挙動です。Next.js 15ではストリーミングの動作が変わる可能性があります。
 :::
 
-筆者がBun 1.0を試した時点では、`node:cluster`を使おうとするとエラーが発生しましたが、現在のバージョンでは動作するかもしれません。まだ試してないけど、気になるところです。
+## 複数のSuspense境界
 
-また、`node:http2`のサーバー機能も完全には動作しませんでした。クライアントはサポートされていますが、サーバーは未実装です。
+次に、複数のコンポーネントがそれぞれ独立してストリーミングされるパターン。
 
-```javascript
-import http2 from 'node:http2';
-
-const server = http2.createSecureServer({
-  // 設定...
-});
-```
-
-これを実行すると、エラーが発生します。HTTP/2サーバーを使いたい場合は、現時点ではNode.jsを使うしかありません。
-
-さらに、`node:v8`モジュールも部分的にしか実装されていません。V8エンジン固有の機能（**ヒープスナップショット**など）は、JavaScriptCoreを使うBunでは提供できないのです。
-
-## 実践での課題
-
-実際のプロジェクトでは、npmパッケージを大量に使うことになります。Bunがどれだけパッケージエコシステムと相性が良いかを確認してみました。
-
-筆者は自分のプロジェクト（TypeScript + Express + PostgreSQL構成）でBunを試してみたのですが、いくつかの問題に遭遇しました。特に、**ネイティブモジュール**を使うパッケージ（例：`bcrypt`）は動作しないケースがありました。
-
-```javascript
-import bcrypt from 'bcrypt';
-
-const hash = await bcrypt.hash('password', 10);
-```
-
-これを実行すると、ネイティブバインディングの読み込みに失敗しました。Bunは独自のモジュール解決システムを使っているため、Node.jsのネイティブアドオンをそのまま読み込むことができないのです。
-
-代わりに`bcryptjs`（純粋なJavaScript実装）を使うと問題なく動作しました。ネイティブモジュールに依存しているパッケージを使う場合は、代替手段を探す必要があります。
-
-### パフォーマンス
-
-互換性だけでなく、パフォーマンスも重要です。簡単なベンチマークを取ってみました。
-
-```javascript
-const start = performance.now();
-
-for (let i = 0; i < 1000000; i++) {
-  JSON.parse('{"key": "value"}');
+```tsx
+async function UserProfile({ userId }: { userId: string }) {
+  await sleep(1000);
+  const user = await fetchUser(userId);
+  return <div>User: {user.name}</div>;
 }
 
-const end = performance.now();
-console.log(`Time: ${end - start}ms`);
+async function UserPosts({ userId }: { userId: string }) {
+  await sleep(2000);
+  const posts = await fetchPosts(userId);
+  return <div>Posts: {posts.length}</div>;
+}
+
+export default function Page() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading user...</div>}>
+        <UserProfile userId="123" />
+      </Suspense>
+      <Suspense fallback={<div>Loading posts...</div>}>
+        <UserPosts userId="123" />
+      </Suspense>
+    </div>
+  );
+}
 ```
 
-Node.js 18で実行すると約420msでしたが、Bun 1.0では約280msという結果になりました。確かにBunの方が速いようです。
+このパターンでは、`UserProfile`と`UserPosts`がそれぞれ独立したSuspense境界で囲まれています。理論的には、`UserProfile`は1秒後にストリーミングされ、`UserPosts`は2秒後にストリーミングされるはずです。
 
-ただし、これは単純な処理の例であり、実際のアプリケーションでどれだけ速度差が出るかは、使用するパッケージやワークロードに依存します。もっと複雑なケースでの検証も必要でしょう。
+コードを見る限り、最初に両方のfallbackが表示され、1秒後に`UserProfile`が表示され、2秒後に`UserPosts`が表示されると考えられます。これは、それぞれのコンポーネントが独立してストリーミングされていることを示しています。
 
-### 開発者体験
+個人的には少し驚いたのですが、Next.jsのApp Routerでは、Suspense境界を使うだけで自動的に並列でデータ取得が行われるようです。Reactコミュニティでも議論されている特徴で、従来のウォーターフォール型のデータ取得から大きく改善されています。
 
-技術的な互換性とは別に、開発者体験も重要です。Bunを使ってみて感じたのは、エラーメッセージが分かりやすいということです。
+## ネストしたSuspense境界
 
-Node.jsでは動くがBunでは動かない機能を使おうとすると、Bunは明確なエラーメッセージを出してくれます。「この機能はまだ実装されていません」といった形で、何が問題なのかが分かりやすいです。
+ネストしたSuspense境界の挙動を確認してみます。
 
-一方で、ドキュメントはまだ発展途上という印象を受けました。どのAPIがサポートされていて、どれがサポートされていないのか、公式ドキュメントを見ても完全には分からないケースがありました。GitHubのissueを見に行く必要があることも多く、この点は今後の改善に期待したいところです。
+```tsx
+async function UserDetails({ userId }: { userId: string }) {
+  await sleep(1000);
+  const user = await fetchUser(userId);
+  return <div>Details: {user.email}</div>;
+}
 
-## まとめと今後の展望
+async function UserProfile({ userId }: { userId: string }) {
+  await sleep(500);
+  const user = await fetchUser(userId);
 
-Bun 1.0のNode.js互換性を試してみた結果、以下のことが分かりました。
+  return (
+    <div>
+      <div>Name: {user.name}</div>
+      <Suspense fallback={<div>Loading details...</div>}>
+        <UserDetails userId={userId} />
+      </Suspense>
+    </div>
+  );
+}
 
-基本的なNode.js APIは概ね動作します。`node:fs`、`node:path`、`node:http`といったコアモジュールは問題なく使えますし、Expressのようなフレームワークもほぼそのまま動きます。
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading profile...</div>}>
+      <UserProfile userId="123" />
+    </Suspense>
+  );
+}
+```
 
-しかし、高度な機能（`worker_threads`の一部オプション、`node:cluster`、`node:http2`サーバー、`node:vm`の実験的機能など）には制限があります。また、ネイティブモジュールを使うパッケージは動作しないケースがあります。
+このコードでは、外側のSuspenseが`UserProfile`を囲み、内側のSuspenseが`UserDetails`を囲んでいます。
 
-筆者としては、Bun 1.0は「完全な代替」というよりも「多くのケースで使える高速な選択肢」という位置づけだと感じました。新規プロジェクトであれば、Bunの制限を理解した上で採用するのは良い選択かもしれません。一方、既存のNode.jsプロジェクトを移行する場合は、依存パッケージとの相性を慎重に確認する必要があるでしょう。
+理論的には、まず外側のfallbackが表示され、500ms後に`UserProfile`のName部分と内側のfallbackが表示され、さらに1000ms後に`UserDetails`が表示されるはずです。つまり、ストリーミングが段階的に行われると考えられます。
 
-Bunはまだ1.0がリリースされたばかりです。今後のバージョンアップで互換性が向上していくことが期待されますし、実際にBun 1.1以降では多くの改善が加えられているようです。筆者としても、これからどこまで進化していくのか見守っていきたいと思います。
+:::details ネストしたSuspenseのエラーハンドリングについて
+ネストしたSuspense境界では、エラーハンドリングも階層的に行われます。内側のコンポーネントでエラーが発生した場合、最も近いError Boundaryまでバブルアップするはずです。ただし、Server Componentsでのエラーハンドリングは通常のReactとは異なる挙動を示すことがあるため、注意が必要です。
+
+GitHubで関連する議論があるようですが、エラーバウンダリの配置戦略についてはまだベストプラクティスが確立されていないように見えます。
+:::
+
+## `use`フックとの組み合わせ
+
+React 19で導入予定の**useフック**を使うと、クライアントコンポーネントでもPromiseを扱えるようになります。
+
+```tsx
+'use client';
+
+import { use } from 'react';
+
+function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
+  const user = use(userPromise);
+  return <div>{user.name}</div>;
+}
+```
+
+このパターンでは、親のServer Componentでデータ取得を開始し、そのPromiseをクライアントコンポーネントに渡します。
+
+```tsx
+async function Page() {
+  const userPromise = fetchUser('123');
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <UserProfile userPromise={userPromise} />
+    </Suspense>
+  );
+}
+```
+
+この実装で重要なのは、Promiseを親コンポーネントで作成し、子コンポーネントに渡している点です。子コンポーネント内でPromiseを作成すると、再レンダリングのたびに新しいPromiseが作られてしまい、無限ループに陥る可能性があります。
+
+筆者はこのパターンを初めて見たとき、少し奇妙に感じました。通常、Reactではデータ取得ロジックをコンポーネント内に閉じ込める方がカプセル化の観点から良いとされているからです。しかし、ストリーミングの文脈では、Promiseを外部で管理する必要があるようです。
+
+## ストリーミングの制限事項
+
+ストリーミングには、いくつか制限事項があります。
+
+まず、**動的レンダリング**が必要なコンポーネントでは、ストリーミングが効果的に機能しないことがあります。例えば、`cookies()`や`headers()`を使うコンポーネントは、リクエスト時にしか値が確定しないため、ストリーミングの恩恵を受けにくいはずです。
+
+また、Next.jsのApp Routerでは、ルート全体が動的レンダリングになると、ストリーミングの挙動が変わることがあります。筆者はここの詳細をまだ完全には理解していないのですが、静的レンダリングと動的レンダリングの境界でストリーミングの動作が異なると考えられます。
+
+:::message
+ストリーミングを活用する際は、動的レンダリングの範囲を最小限に抑えることが重要です。`cookies()`や`headers()`の呼び出しは、必要な箇所だけに限定するとよいでしょう。
+:::
+
+さらに、ストリーミング中のエラーハンドリングも複雑です。サーバー側でエラーが発生した場合、すでにクライアントに送信済みのHTMLをどう扱うかという問題があります。Next.js 14では、エラーが発生するとストリーミングが中断され、Error Boundaryが表示されるはずですが、この挙動は将来変わる可能性があります。
+
+筆者としては、ストリーミング中のエラーハンドリングについてはまだ試していない部分が多く、今後の実験が必要だと感じています。
+
+## まとめ
+
+Server Componentsのストリーミングは、初期表示の高速化と段階的なレンダリングを実現する強力な機能です。Suspense境界を適切に配置することで、ユーザー体験を大幅に改善できると考えられます。
+
+筆者としては、今後もストリーミングの活用パターンが進化していくと考えられます。特に、React 19の`use`フックとの組み合わせは、クライアントコンポーネントでのデータ取得パターンを変える可能性があり、注目しています。
+
+ただし、ストリーミングには制限事項もあり、すべてのケースで有効というわけではありません。動的レンダリングとの兼ね合いや、エラーハンドリングの複雑さなど、考慮すべき点は多いです。
+
+これからどう実装パターンが洗練されていくか、見守っていきたいと思います。

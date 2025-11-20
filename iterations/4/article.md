@@ -1,274 +1,251 @@
 ---
-title: "Next.js 14のServer Actionsを試してエラーハンドリングの挙動を調べる"
-emoji: "🔥"
+title: "Viteのビルド最適化とTree Shakingの実践テクニック"
+emoji: "🌳"
 type: "tech"
-topics: ["nextjs", "react", "typescript", "serveractions"]
+topics: ["vite", "javascript", "performance", "build"]
 published: true
 ---
 
-皆さんこんにちは。Next.js 14で正式リリースされた**Server Actions**を本格的に使い始めたのですが、エラーハンドリングの挙動が予想と違って困った場面がありました。今回はその挙動を調べた結果を共有します。
+皆さんこんにちは。Viteの採用が進む中、本番ビルドの最適化について考える機会が増えてきました。筆者も最近、**Tree Shaking**の挙動を詳しく調べる必要があったのですが、意外と理解が浅かったことに気づきました。
 
-## Server Actionsの基本的なエラー
+Tree Shakingはバンドルサイズを削減する重要な仕組みです。実際にどこまで最適化されるのか、どういったコードパターンが最適化を妨げるのか、試してみないとわからない部分が多いです。
 
-まず、Server Actionsで例外が発生した場合にどうなるのか、シンプルなケースから見ていきます。
+この記事では、Viteのビルド最適化とTree Shakingについて、実際にコードを書きながら挙動を確認していきます。
 
-```typescript
-'use server'
+## Tree Shakingの基本原理
 
-export async function submitForm(formData: FormData) {
-  const name = formData.get('name')
+Tree Shakingは、使われていないコードを削除することでバンドルサイズを削減する技術です。**ESモジュール**の静的な構造を利用して、実際に参照されているexportだけを残します。
 
-  if (!name) {
-    throw new Error('名前が入力されていません')
-  }
+Viteは内部で**Rollup**を使っているため、RollupのTree Shaking機能がそのまま利用できます。基本的には、`import`していない関数や変数は最終的なバンドルから削除されるはずです。
 
-  // 処理続行
-  return { success: true }
-}
-```
-
-このコードをクライアントコンポーネントから呼び出すと、エラーが発生します。
-
-```tsx
-'use client'
-
-export default function MyForm() {
-  async function handleSubmit(formData: FormData) {
-    const result = await submitForm(formData)
-    console.log(result)
-  }
-
-  return (
-    <form action={handleSubmit}>
-      <input name="name" />
-      <button type="submit">送信</button>
-    </form>
-  )
-}
-```
-
-これを試したところ、ブラウザのコンソールに `Error: 名前が入力されていません` が出力されました。ただし、ここで注目すべきは**クライアント側でcatchしていないのに、アプリケーション全体がクラッシュしない**という点です。
-
-筆者は最初、これはサーバー側の例外なので何らかの形でアプリケーションが落ちると思っていました。しかし実際には、Next.jsがServer Actionsの例外を内部的にキャッチして、クライアント側にエラー情報を伝播させる仕組みになっています。
-
-## try-catchで処理した場合の挙動
-
-では、クライアント側でtry-catchを使った場合はどうなるのか試してみます。
-
-```tsx
-'use client'
-
-export default function MyForm() {
-  const [error, setError] = useState<string | null>(null)
-
-  async function handleSubmit(formData: FormData) {
-    try {
-      const result = await submitForm(formData)
-      console.log(result)
-      setError(null)
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message)
-      }
-    }
-  }
-
-  return (
-    <form action={handleSubmit}>
-      {error && <div className="error">{error}</div>}
-      <input name="name" />
-      <button type="submit">送信</button>
-    </form>
-  )
-}
-```
-
-これを実行すると、`名前が入力されていません` というメッセージが正常にキャッチできました。つまり、Server Actionsで投げたErrorオブジェクトは、ネットワークを経由してクライアント側で再構築されるということです。
-
-ところで、エラーメッセージ以外のプロパティはどうなるのか気になったので、カスタムエラークラスを試してみました。
+まずは簡単な例から。次のようなユーティリティモジュールを考えます。
 
 ```typescript
-'use server'
-
-class ValidationError extends Error {
-  code: string
-
-  constructor(message: string, code: string) {
-    super(message)
-    this.code = code
-  }
+// utils.ts
+export function usedFunction() {
+  return "This will be included";
 }
 
-export async function submitForm(formData: FormData) {
-  throw new ValidationError('入力エラー', 'VALIDATION_ERROR')
+export function unusedFunction() {
+  return "This will be removed";
 }
+
+export const USED_CONSTANT = 42;
+export const UNUSED_CONSTANT = 100;
 ```
-
-このコードをクライアントで受け取って `e.code` を参照したところ、undefinedでした。どうやら、Server Actionsのエラーは `message` と `stack` のみがシリアライズされて送信されるようです。Next.jsのissue #55180でも同じような議論がされていて、カスタムプロパティを渡したい場合は別の方法を考える必要があることがわかりました。
-
-## 非同期処理中のエラー
-
-次に、Server Action内で非同期処理を実行している最中にエラーが発生した場合を調べます。
 
 ```typescript
-'use server'
+// main.ts
+import { usedFunction, USED_CONSTANT } from './utils';
 
-export async function fetchUserData(userId: string) {
-  // 外部APIを呼び出す想定
-  const response = await fetch(`https://api.example.com/users/${userId}`)
-
-  if (!response.ok) {
-    throw new Error(`APIエラー: ${response.status}`)
-  }
-
-  return response.json()
-}
+console.log(usedFunction());
+console.log(USED_CONSTANT);
 ```
 
-このコードで、APIが500エラーを返した場合、クライアント側では `APIエラー: 500` という例外を受け取ることができます。個人的にはちょっとびっくりしたのですが、非同期処理のエラーもServer Actionsの枠組みの中で適切に処理されていました。
+このコードをビルドすると、`unusedFunction`と`UNUSED_CONSTANT`は最終的なバンドルに含まれないはずです。実際にViteでビルドして確認してみましょう。
 
-ただし、ここで注意が必要なのは、fetchが完全にタイムアウトした場合です。
+```bash
+npm run build
+```
+
+生成されたバンドルを見ると、確かに`unusedFunction`のコードは削除されているはずです。これがTree Shakingの基本的な動作です。
+
+## Viteでのビルド最適化設定
+
+Viteのビルド設定は`vite.config.js`で細かく調整できます。Tree Shakingに関連する主要な設定を確認してみます。
+
+```javascript
+// vite.config.js
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
+    },
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+});
+```
+
+`manualChunks`は、依存関係をどのチャンクに分割するかを制御します。`node_modules`の中身を別チャンクにすることで、アプリケーションコードの変更時にvendorチャンクをキャッシュできるようになります。
+
+`minify`オプションで圧縮方法を指定できます。デフォルトは`esbuild`ですが、`terser`を使うとより細かい制御が可能です。ただし、terserの方が遅いので、ビルド時間とのトレードオフになります。
+
+筆者としては、開発時は`esbuild`で高速に、本番ビルドだけ`terser`を使うというのが現実的な選択肢だと考えています。
+
+## 実際のバンドルサイズを確認する
+
+理論だけでなく、実際のバンドルサイズを測定してみるのが重要です。Viteには`rollup-plugin-visualizer`を組み込むことで、バンドル内容を可視化できます。
+
+```bash
+npm install -D rollup-plugin-visualizer
+```
+
+```javascript
+// vite.config.js
+import { defineConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+
+export default defineConfig({
+  plugins: [
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
+});
+```
+
+ビルド後、`stats.html`が生成されて自動的にブラウザで開かれます。このビジュアライゼーションを見ると、どのモジュールがバンドルサイズに寄与しているかが一目でわかります。
+
+よく見られるケースとして、lodashのような大きなライブラリを丸ごとインポートしている例があります。
 
 ```typescript
-'use server'
+// ❌ 悪い例：lodashを丸ごとインポート
+import _ from 'lodash';
 
-export async function slowFetch() {
-  // 60秒以上かかる処理
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 70000)
-
-  const response = await fetch('https://slow-api.example.com/data', {
-    signal: controller.signal
-  })
-
-  clearTimeout(timeoutId)
-  return response.json()
-}
+const result = _.debounce(fn, 300);
 ```
-
-このコードを実行すると、Next.jsのServer Actionsのデフォルトタイムアウト（確か60秒だったはず？）に引っかかって、クライアント側では `AbortError` が発生します。推測ですが、Next.js側で設定されているタイムアウトと、fetch自体のタイムアウトが競合する可能性があるので、長時間実行される処理には注意が必要です。
-
-## ネストしたServer Actionsでのエラー伝播
-
-Server Actionsは他のServer Actionsを呼び出すことができます。この場合、エラーがどのように伝播するのか見ていきます。
 
 ```typescript
-'use server'
+// ✅ 良い例：必要な関数だけインポート
+import debounce from 'lodash/debounce';
 
-async function validateUser(userId: string) {
-  if (!userId) {
-    throw new Error('ユーザーIDが必要です')
-  }
-  return true
-}
-
-async function fetchUserProfile(userId: string) {
-  await validateUser(userId)
-
-  // プロフィール取得処理
-  return { name: 'test user' }
-}
-
-export async function updateProfile(formData: FormData) {
-  const userId = formData.get('userId') as string
-  const profile = await fetchUserProfile(userId)
-
-  // 更新処理
-  return { success: true }
-}
+const result = debounce(fn, 300);
 ```
 
-このコードで `userId` を空にして実行すると、`validateUser` で投げたエラーが `fetchUserProfile` を経由して、最終的に `updateProfile` を呼び出したクライアント側まで伝播しました。
+後者の方が、Tree Shakingが効きやすくなるはずです。visualizerで確認すると、バンドルサイズが数十KB削減されることもあります。これは実際のプロジェクトでよく見られる最適化ポイントです。
 
-つまり、Server Actions内部でどれだけ深く関数がネストしていても、エラーは適切に上位まで伝播するということです。これは普通のJavaScriptの挙動と同じなので当たり前といえば当たり前なのですが、ネットワーク境界を越えてこの挙動が保たれているのは便利です。
+## Tree Shakingが効かないケース
 
-ただし、ここで問題が一つあります。内部的に複数のServer Actionsを呼び出している場合、どの関数でエラーが発生したのか特定しづらいです。スタックトレースを見れば分かるのですが、本番環境ではスタックトレースが省略されることがあるので、エラーメッセージに十分な情報を含めておく必要があります。
+Tree Shakingには限界があります。いくつか典型的なケースを試してみます。
 
-## 実際のプロジェクトで遭遇した罠
+### 副作用のあるコード
 
-筆者が開発している社内の問い合わせ管理ツールで、Server Actionsを使ったフォーム送信を実装したときに、予想外の挙動に遭遇しました。
-
-具体的には、フォームのバリデーションエラーとデータベース接続エラーを区別して表示したかったのですが、Server Actionsで投げたErrorオブジェクトのカスタムプロパティがクライアント側で受け取れなかったため、エラーメッセージだけで判断するしかありませんでした。
-
-最初は、こんなコードを書いていました。
+**副作用**（side effect）があるコードは、Tree Shakingで削除されません。
 
 ```typescript
-'use server'
-
-class ValidationError extends Error {
-  statusCode = 400
+// side-effect.ts
+export function setup() {
+  console.log("Setting up...");
 }
 
-class DatabaseError extends Error {
-  statusCode = 500
-}
+// グローバルな副作用
+console.log("This file has side effects");
+```
 
-export async function submitInquiry(formData: FormData) {
-  const email = formData.get('email')
+このファイルを`import`すると、たとえ`setup`関数を使わなくても、ファイル全体が評価されます。`console.log("This file has side effects")`は必ず実行されるはずです。
 
-  if (!email) {
-    throw new ValidationError('メールアドレスが必要です')
-  }
+これを回避するには、`package.json`の`sideEffects`フィールドで明示的に指定する必要があります。
 
-  try {
-    await db.insert(email)
-  } catch (e) {
-    throw new DatabaseError('データベースエラー')
-  }
+```json
+{
+  "sideEffects": false
 }
 ```
 
-これをクライアント側で受け取って `error.statusCode` を見ようとしたところ、undefinedでした。先ほど説明したように、カスタムプロパティはシリアライズされないからです。
+`sideEffects: false`と宣言すると、バンドラーは「このパッケージには副作用がない」と判断して、より積極的にTree Shakingを行います。
 
-結局、こういう実装に変更しました。
+ただし、CSSファイルのインポートなど、実際に副作用が必要な場合もあります。その場合は配列で指定する形になります。
+
+```json
+{
+  "sideEffects": ["*.css", "*.scss"]
+}
+```
+
+この設定により、CSS以外のファイルは副作用がないと扱われます。筆者が観察する限り、この設定が正しく機能すると、バンドルサイズが大幅に削減されるケースがあるはずです。
+
+### 動的インポートとTree Shaking
+
+動的インポート（`import()`）は、Tree Shakingとの相性が微妙です。
 
 ```typescript
-'use server'
-
-export async function submitInquiry(formData: FormData) {
-  const email = formData.get('email')
-
-  if (!email) {
-    return { error: 'メールアドレスが必要です', type: 'validation' }
-  }
-
-  try {
-    await db.insert(email)
-    return { success: true }
-  } catch (e) {
-    return { error: 'データベースエラー', type: 'database' }
+async function loadModule(name: string) {
+  if (name === 'feature-a') {
+    const module = await import('./feature-a');
+    return module.default;
   }
 }
 ```
 
-例外を投げるのではなく、エラー情報を含むオブジェクトを返す方式に変更したわけです。これで、クライアント側でエラーの種類を判別できるようになりました。
+このコードでは、`feature-a`が実際に使われるかどうかが実行時にしか決まらないため、静的解析が困難です。結果として、Tree Shakingの効果が限定的になる可能性があります。
 
-この方式は、Twitterで見たのですが、Remixコミュニティでも一般的なパターンらしいです。Server ActionsとRemixのactionは似た仕組みなので、参考になるノウハウは多いと感じています。
+動的インポートを使う場合は、チャンク分割とのトレードオフを考慮する必要があります。コード分割によって初期ロードサイズは削減できますが、Tree Shakingの最適化度合いは下がる傾向にあります。この点は実装時に注意が必要です。
 
-ただ、この実装には問題もあって、すべてのServer Actionsで統一的なエラーハンドリングを強制できないという点です。型システムで `Result<T, E>` みたいなパターンを強制できれば良いのですが、まだそこまで整理できていません。zodみたいなライブラリと組み合わせる方法を今後試してみたいと思っています。
+## 最適化の限界を探る
 
-## エラーバウンダリとの関係
+最後に、Tree Shakingの限界を少し深掘りしてみます。
 
-最後に、React 19の**エラーバウンダリ**とServer Actionsの関係についても少し調べました。
+TypeScriptの**enum**は、Tree Shakingが効きにくいことで知られています。
 
-```tsx
-'use client'
-
-import { ErrorBoundary } from 'react-error-boundary'
-
-export default function MyPage() {
-  return (
-    <ErrorBoundary fallback={<div>エラーが発生しました</div>}>
-      <MyForm />
-    </ErrorBoundary>
-  )
+```typescript
+// enums.ts
+export enum Status {
+  Active = "active",
+  Inactive = "inactive",
+  Pending = "pending",
 }
 ```
 
-この構成で、Server Actionsが例外を投げた場合、エラーバウンダリがキャッチしてくれるのか試したところ、キャッチされませんでした。
+```typescript
+// main.ts
+import { Status } from './enums';
 
-理由を考えてみたのですが、Server Actionsの例外は非同期処理の結果として伝播するため、Reactのレンダリングフロー外で発生します。そのため、エラーバウンダリの範囲外になるということだと思います。
+console.log(Status.Active);
+```
 
-まだ試してないのですが、Next.js 15のドキュメントには**unhandled rejection**に関する記述があったので、そちらの仕組みで対応できる可能性があります。筆者としては、この辺りの挙動がどう変わっていくのか見守っていきたいと思います。
+TypeScriptのenumは、コンパイル後にオブジェクトとして展開されます。この展開されたコードは、バンドラーから見ると「オブジェクト全体が使われている」と判断される可能性が高いです。筆者もこの挙動には注意が必要だと感じています。
 
-ちなみに、Server Componentsで発生したエラーはエラーバウンダリでキャッチできるので、Server ActionsとServer Componentsでエラーハンドリングの方式が異なるという点は注意が必要です。この境界が曖昧で、最初は混乱しました。
+```javascript
+// コンパイル後（簡略化）
+const Status = {
+  Active: "active",
+  Inactive: "inactive",
+  Pending: "pending",
+};
+```
+
+結果として、`Status.Active`しか使っていなくても、enum全体がバンドルに含まれるはずです。
+
+この問題を回避する方法として、const enumを使う選択肢があります。
+
+```typescript
+export const enum Status {
+  Active = "active",
+  Inactive = "inactive",
+  Pending = "pending",
+}
+```
+
+const enumは、使用箇所がリテラルに置き換えられるため、enum定義そのものがバンドルに含まれません。ただし、const enumには別の制約（isolatedModulesとの非互換性など）があるため、プロジェクトによっては使えないこともあります。
+
+筆者の考えとしては、enumの代わりに**union型**を使う方が、型安全性とバンドルサイズの両立ができると考えられます。
+
+```typescript
+export type Status = "active" | "inactive" | "pending";
+```
+
+これなら型情報だけで済むため、ランタイムコードが生成されません。Viteのような最新のビルドツールでは、こういった型ベースのアプローチが推奨されることが多いです。
+
+## まとめ
+
+ViteのTree Shakingは強力ですが、完璧ではありません。副作用のあるコード、動的インポート、TypeScriptのenumなど、Tree Shakingが効きにくいパターンは確かに存在します。これらの特性を理解しておくことが重要です。
+
+実際のプロジェクトでは、`rollup-plugin-visualizer`のようなツールで定期的にバンドル内容を確認し、意図しない肥大化が起きていないかチェックするのが重要です。
+
+筆者としては、今後Vite 6やRollup 4の進化によって、さらに最適化が進むことを期待しています。特に、動的インポート周りの静的解析がどこまで賢くなるか、見守っていきたいと思います。

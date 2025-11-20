@@ -1,25 +1,26 @@
-# AI-Driven Technical Article Generation - Orchestrator Guide (Season 3)
+# AI-Driven Technical Article Generation - Orchestrator Guide (Season 4)
 
 This document guides Claude Code instances to orchestrate the iterative process of generating human-quality technical articles through continuous refinement.
 
 ## Project Goal
 
-**Season 3 Goal**: Generate Japanese technical articles about TypeScript, JavaScript, React, and frontend technologies that match **uhyo's specific writing voice** (9.0+/10).
+**Season 4 Goal**: Generate Japanese technical articles about TypeScript, JavaScript, React, and frontend technologies that match **uhyo's specific writing voice** (9.0+/10) AND are **factually reliable** (Reliability ≥ 8.5/10).
 
-The project uses an iterative feedback loop with specialized sub-agents to progressively improve article quality. Season 3 builds on Season 2's human-quality foundation by adding author-specific voice patterns.
+The project uses an iterative feedback loop with specialized sub-agents to progressively improve article quality. Season 4 builds on Season 3's uhyo-voice achievement by adding reliability/honesty requirements.
 
-**Post-Season 3 Enhancement**: The review process now uses **four specialized reviewer agents** instead of a single reviewer, enabling more sophisticated analysis and preventing context overload.
+**Season 4 Enhancement**: The review process now uses **five specialized agents** (four parallel reviewers + score synthesizer) with a new **Reliability Reviewer** to detect fabrications and ensure honesty.
 
 **Evolution**:
 - Season 1: Basic technical articles
 - Season 2: Human-quality articles (8.0-8.2/10) - indistinguishable from humans
-- **Season 3**: uhyo-specific voice (9.0+/10 target) - indistinguishable from uhyo's articles
+- Season 3: uhyo-specific voice (9.0+/10) - indistinguishable from uhyo's articles
+- **Season 4**: Reliable uhyo-voice (9.0+/10 + Reliability 8.5+/10) - honest AND engaging
 
 ## Architecture
 
 ### Sub-Agents
 
-Six specialized agents work together in each iteration:
+Seven specialized agents work together in each iteration:
 
 1. **Writer Agent** (`.claude/agents/writer.md`)
    - Generates technical articles based on topics and the current style guide
@@ -49,14 +50,21 @@ Six specialized agents work together in each iteration:
    - **MUST NOT read previous iterations** to maintain independence
    - Outputs: `iterations/{N}/author_voice_review.md`
 
-5. **Score Synthesizer** (`.claude/agents/score_synthesizer.md`)
-   - Combines three specialized reviews into unified assessment
-   - Calculates Base Quality Score (Technical + Linguistic)
-   - Applies Author Voice Cap using Season 3 two-layer formula
+5. **Reliability Reviewer** (`.claude/agents/reliability_reviewer.md`) **🆕 SEASON 4**
+   - Detects fabricated experiences, false verification claims, and wrong references
+   - Ensures factual honesty while preserving engaging voice
+   - Focuses exclusively on truthfulness
+   - **MUST NOT read previous iterations** to maintain independence
+   - Outputs: `iterations/{N}/reliability_review.md`
+
+6. **Score Synthesizer** (`.claude/agents/score_synthesizer.md`)
+   - Combines **four** specialized reviews into unified assessment
+   - Calculates Base Quality Score (Technical + Linguistic + **Reliability**)
+   - Applies Author Voice Cap using Season 4 two-layer formula
    - Prioritizes recommendations across all dimensions
    - Outputs: `iterations/{N}/review.md` (unified comprehensive review)
 
-6. **Style Guide Updater Agent** (`.claude/agents/style_guide_updater.md`)
+7. **Style Guide Updater Agent** (`.claude/agents/style_guide_updater.md`)
    - Refines the style guide based on unified review feedback
    - Translates reviewer insights into actionable guidelines
    - **CAN access previous iterations** to track patterns and rule effectiveness
@@ -70,6 +78,7 @@ Six specialized agents work together in each iteration:
   - `article.md` - Generated article
   - `technical_review.md` - Technical quality assessment
   - `linguistic_review.md` - Linguistic quality assessment
+  - `reliability_review.md` - **🆕 SEASON 4:** Reliability assessment
   - `author_voice_review.md` - Author voice assessment
   - `review.md` - Unified comprehensive review (from Score Synthesizer)
   - `style_guide.md` - Copy of the style guide used for this iteration (for version tracking)
@@ -80,21 +89,23 @@ Six specialized agents work together in each iteration:
 The architecture maintains a clean separation of concerns with parallel review:
 
 ```
-                                    ┌─ Technical Reviewer ─┐
-                                    │                       │
-Human Benchmarks ──┬─→ Linguistic Reviewer ─┤              ├─→ Score Synthesizer
-                   │                          │              │          ↓
-                   └─→ Author Voice Reviewer ─┘              │    Unified Review
-                                                              │          ↓
-Style Guide ──→ Writer ──→ Article ──────────────────────────┘   Style Guide Updater
-                                                                         ↓
-                                                                  Updated Style Guide
+                                    ┌─ Technical Reviewer ──┐
+                                    │                        │
+Human Benchmarks ──┬─→ Linguistic Reviewer ──┤              │
+                   │                           │              ├─→ Score Synthesizer
+                   └─→ Author Voice Reviewer ─┤              │          ↓
+                                               │              │    Unified Review
+Style Guide ──→ Writer ──→ Article ────────┬─→ Reliability Reviewer ─┘         ↓
+                                            │                          Style Guide Updater
+                                            └──────────────────────────────────→ ↓
+                                                                          Updated Style Guide
 ```
 
-**Key Points**:
-- Three reviewers run in **parallel** for efficiency (Technical, Linguistic, Author Voice)
+**Key Points (Season 4)**:
+- **Four** reviewers run in **parallel** for efficiency (Technical, Linguistic, Reliability, Author Voice)
 - Each reviewer has a **focused scope** to prevent context overload
-- Score Synthesizer **combines** the three reviews into unified assessment
+- **Reliability Reviewer** ensures honesty without fabrications (NEW!)
+- Score Synthesizer **combines** the four reviews into unified assessment
 - Writer learns patterns from human articles **indirectly through the style guide**
 
 ## Orchestrator Workflow
@@ -172,9 +183,9 @@ Task:
 
 ### Step 5: Invoke Review Agents (Parallel)
 
-After the Writer completes, invoke **all three review agents in parallel** for efficiency:
+After the Writer completes, invoke **all four review agents in parallel** for efficiency:
 
-**IMPORTANT**: Use a single message with three Task tool calls to run these in parallel.
+**IMPORTANT**: Use a single message with **four** Task tool calls to run these in parallel.
 
 #### 5a. Technical Quality Reviewer
 
@@ -252,9 +263,36 @@ Task:
     **IMPORTANT**: Do NOT read previous iterations. Each review must be independent.
 ```
 
+#### 5d. Reliability Reviewer **🆕 SEASON 4**
+
+```
+Task:
+- subagent_type: general-purpose
+- description: Review reliability and factual honesty
+- prompt: |
+    You are the Reliability Reviewer. Read your agent definition at .claude/agents/reliability_reviewer.md.
+
+    Your task:
+    1. Read the article at iterations/{N}/article.md
+    2. Identify fabricated personal experiences
+    3. Flag false verification/testing claims ("実行すると〜となりました")
+    4. Check external references (GitHub issues, docs)
+    5. Assess conditional language usage ("はずです", "と考えられます")
+    6. Count reliability violations:
+       - CRITICAL: Fabricated experiences, false claims, wrong refs (-1.0 to -2.0 each)
+       - MAJOR: Vague fabrications, missing conditionals (-0.5 to -0.8 each)
+    7. Assign reliability score (0-10)
+       - <6.0 = UNPUBLISHABLE (publication blocker)
+    8. Save your review to iterations/{N}/reliability_review.md
+
+    Focus exclusively on truthfulness. Do NOT assess technical correctness or writing style.
+
+    **IMPORTANT**: Do NOT read previous iterations. Each review must be independent.
+```
+
 ### Step 5.5: Invoke Score Synthesizer
 
-After all three reviewers complete, invoke the Score Synthesizer:
+After all **four** reviewers complete, invoke the Score Synthesizer:
 
 ```
 Task:
@@ -264,19 +302,22 @@ Task:
     You are the Score Synthesizer. Read your agent definition at .claude/agents/score_synthesizer.md.
 
     Your task:
-    1. Read all three specialized reviews:
+    1. Read all FOUR specialized reviews:
        - iterations/{N}/technical_review.md
        - iterations/{N}/linguistic_review.md
+       - iterations/{N}/reliability_review.md (🆕 SEASON 4)
        - iterations/{N}/author_voice_review.md
     2. Read the article at iterations/{N}/article.md for context
-    3. Calculate Base Quality Score:
-       - Base = (Technical × 0.4) + (Linguistic × 0.6)
-    4. Apply Author Voice Cap:
+    3. Calculate Base Quality Score (Season 4 Formula):
+       - Base = (Technical × 0.35) + (Linguistic × 0.5) + (Reliability × 0.15)
+    4. Check publication blocker:
+       - If Reliability < 6.0 → UNPUBLISHABLE
+    5. Apply Author Voice Cap:
        - Final Score = min(Base Score, Voice Cap)
-    5. Synthesize feedback across all three dimensions
-    6. Prioritize recommendations (blockers, high-impact, polish)
-    7. Create comprehensive unified review
-    8. Save to iterations/{N}/review.md
+    6. Synthesize feedback across all FOUR dimensions
+    7. Prioritize recommendations (blockers, high-impact, polish)
+    8. Create comprehensive unified review
+    9. Save to iterations/{N}/review.md
 
     Your unified review is what the Style Guide Updater will use to improve the guidelines.
 ```
@@ -317,22 +358,27 @@ After the iteration completes:
 
 **Continue iterating if:**
 - Overall quality score < 9.0/10
+- **Reliability score < 8.5/10** (🆕 SEASON 4)
 - Author voice score < 7 points (less than 70% of uhyo patterns present)
 - Significant gaps remain between AI articles and uhyo's specific voice
-- Reviews identify missing uhyo-specific patterns
+- Reviews identify reliability violations (fabrications, false claims)
 - Fewer than 12 iterations have been completed
 
 **Stop iterating if:**
 - Overall quality score ≥ 9.0/10 for 2+ consecutive iterations
+- **Reliability score ≥ 8.5/10** (honest, minimal fabrications) (🆕 SEASON 4)
 - Author voice score ≥ 8 points (80%+ of uhyo patterns present)
-- Reviews indicate articles match uhyo's distinctive writing style
+- Reviews indicate articles match uhyo's distinctive writing style AND are factually honest
 - No meaningful improvements in recent iterations
 - 12+ iterations completed with diminishing returns
 
-**Season 3 Requirements for Success**:
-- Base Score (Season 2): ≥ 9.0/10 (human-quality foundation)
-- Author Voice: ≥ 7 points (no cap applied)
-- Final Score: ≥ 9.0/10 (both layers passing)
+**Season 4 Requirements for Success**:
+- Technical Quality: ≥ 8.5/10 (accurate concepts)
+- Linguistic Quality: ≥ 9.0/10 (human-like writing)
+- **Reliability: ≥ 8.5/10** (honest, no significant fabrications) (🆕 SEASON 4)
+- Base Score: ≥ 9.0/10 (weighted combination of above)
+- Author Voice: ≥ 8 points (no cap applied)
+- Final Score: ≥ 9.0/10 (all dimensions passing)
 
 ### Step 9: Iterate or Report
 
@@ -393,11 +439,12 @@ Iteration 1:
 ├── Topic: "TypeScript 5.0の新機能について"
 ├── Archive style guide → iterations/1/style_guide.md
 ├── Write article → iterations/1/article.md
-├── Review (parallel):
+├── Review (parallel - 4 reviewers):
 │   ├── Technical review → iterations/1/technical_review.md (Tech: 7.0/10)
 │   ├── Linguistic review → iterations/1/linguistic_review.md (Ling: 6.2/10)
+│   ├── Reliability review → iterations/1/reliability_review.md (Reliability: 5.5/10) 🆕
 │   └── Author voice review → iterations/1/author_voice_review.md (Voice: 4 pts, cap 7.5)
-├── Synthesize → iterations/1/review.md (Final: 6.5/10)
+├── Synthesize → iterations/1/review.md (Final: 6.0/10)
 ├── Update root style guide + Create changelog → iterations/1/changelog.md
 └── Continue (quality below threshold)
 
@@ -442,21 +489,23 @@ Iteration 9:
 
 ## Success Criteria
 
-**Season 3 Success**: The iterative process has succeeded when generated articles:
+**Season 4 Success**: The iterative process has succeeded when generated articles:
 
 1. **Score ≥ 9.0/10 overall** for 2+ consecutive iterations
-2. **Author Voice Score ≥ 8 points** (80%+ of uhyo-specific patterns present)
-3. **Receive reviewer feedback** indicating articles match uhyo's distinctive writing style
-4. **Show mastery of**:
+2. **Reliability Score ≥ 8.5/10** (honest, minimal fabrications) **🆕 SEASON 4**
+3. **Author Voice Score ≥ 8 points** (80%+ of uhyo-specific patterns present)
+4. **Receive reviewer feedback** indicating articles match uhyo's distinctive writing style AND are factually honest
+5. **Show mastery of**:
    - Natural Japanese technical writing (Season 2 baseline)
    - Engaging, conversational tone
    - Accurate technical content
    - Appropriate structure and flow
    - Authentic voice without AI tells
+   - **Factual honesty** (no fabrications, conditional language, verified refs) **🆕 SEASON 4**
    - **uhyo-specific patterns**:
      - Opening formula ("皆さんこんにちは。" + context)
      - Systematic investigation structure
-     - Personal project integration
+     - Personal project integration (generic/hypothetical in Season 4)
      - Meta-commentary on findings
      - Appropriate "筆者" usage (3-8x)
      - Reflective forward-looking conclusions
@@ -467,8 +516,13 @@ Iteration 9:
 
 ## Getting Started
 
-To begin Season 3, start with Step 1. The orchestrator (you) will manage all coordination between agents and track progress toward **uhyo-voice article generation**.
+To begin Season 4, start with Step 1. The orchestrator (you) will manage all coordination between agents and track progress toward **reliable uhyo-voice article generation**.
 
-**Season 3 Focus**: Each article should not only be human-quality (Season 2 baseline maintained), but should specifically match uhyo's distinctive writing patterns and voice.
+**Season 4 Focus**: Each article should:
+- Be human-quality (Season 2 baseline maintained)
+- Match uhyo's distinctive writing patterns (Season 3 achievement maintained)
+- **Be factually honest** (Season 4 NEW requirement)
 
-Good luck! The goal is ambitious but achievable through systematic iteration and refinement. Season 2 achieved 8.0-8.2/10. Season 3 aims for 9.0+/10 by adding author-specific voice.
+The challenge: Maintain engaging, investigative voice while being honest about uncertainty.
+
+Good luck! The goal is ambitious but achievable through systematic iteration and refinement. Season 3 achieved 9.0+/10 with perfect uhyo voice but had reliability issues. Season 4 aims for 9.0+/10 while being factually honest.
