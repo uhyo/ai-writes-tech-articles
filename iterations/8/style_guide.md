@@ -355,107 +355,6 @@ Final Score = min(Base Score, Author Voice Cap)
 
 ---
 
-## ⚠️ STYLE GUIDE EFFECTIVENESS CEILING (Iteration 8 Discovery)
-
-**CRITICAL REALITY CHECK**: After 8 iterations of refinement, the style guide has reached its fundamental effectiveness limit. Certain quality dimensions can be specified through guidelines, while others require capabilities beyond what a style guide can provide.
-
-### What Style Guidelines CAN Achieve ✅
-
-**Proven Success (Iteration 8 Validation):**
-
-1. **Reliability (9.2/10 in Iteration 8)** ✅
-   - NO fabricated experiences (Rule 1 works)
-   - NO false verification claims (Rule 2 works)
-   - NO fabricated emotional reactions (Rule 4 works)
-   - Excellent conditional language usage
-   - Honest uncertainty acknowledgment
-   - **Controllable through explicit rules**
-
-2. **Linguistic Quality (9.0/10 in Iteration 8)** ✅
-   - Zero forbidden patterns (no AI tells)
-   - Perfect です/ます distribution (59 endings, 31.2% density)
-   - Natural Japanese construction
-   - Authentic uhyo voice patterns
-   - **Controllable through pattern awareness**
-
-3. **Self-Contradiction Awareness (v4.5 addition)** ✅
-   - Check warnings vs. code examples
-   - Verify message blocks don't contradict adjacent code
-   - **Preventable through explicit verification steps**
-
-### What Style Guidelines CANNOT Achieve ❌
-
-**Fundamental Limitations (Iteration 8 Revelation):**
-
-1. **Code Compilation Errors** ❌
-   - **Example**: Iteration 8 missing return statements (lines 25, 53)
-   - **Problem**: Function signature requires `T | null` but case doesn't return
-   - **Error**: "Not all code paths return a value"
-   - **Why guidelines fail**: Cannot detect syntax/logic errors without running `tsc`
-   - **Requires**: Actual TypeScript compiler execution
-
-2. **TypeScript Type Errors** ❌
-   - **Example**: Iteration 8 type narrowing accumulation (line 128)
-   - **Problem**: `switch(true)` cases don't carry narrowing from previous cases
-   - **Issue**: `body.timestamp` remains `number | undefined` at comparison
-   - **Why guidelines fail**: Cannot verify type flow without compiler analysis
-   - **Requires**: TypeScript type checker execution
-
-3. **Runtime Logic Bugs** ❌
-   - **Problem**: Code may compile but behave incorrectly
-   - **Example**: Incorrect type inference explanations (Iteration 6-7)
-   - **Why guidelines fail**: Cannot test actual behavior without execution
-   - **Requires**: Runtime execution in sandbox/playground
-
-4. **Complex React Hook Behavior** ❌
-   - **Example**: useTransition misconceptions (Iteration 7)
-   - **Problem**: Claims about async behavior require testing
-   - **Why guidelines fail**: Hook behavior is runtime, not static
-   - **Requires**: React runtime execution verification
-
-### The Practical Ceiling: 8.5-8.8/10
-
-**Realistic Expectations Without Code Execution:**
-
-**What We Achieved (Iteration 8):**
-- Linguistic Quality: 9.0/10 ✅ (human-indistinguishable)
-- Reliability: 9.2/10 ✅ (factually honest)
-- Author Voice: 7.5-8.5/10 ⚠️ (strong patterns, needs depth)
-
-**What Blocks Higher Scores:**
-- Technical Quality: 5.5/10 ❌ (compilation errors)
-- **Root Cause**: Unverified code examples with logic/type errors
-- **Impact**: Base score capped at 7.8/10 despite excellent writing
-
-**Projected Ceiling (with guidelines alone):**
-- **Best case**: 8.5-8.8/10 with simple, safe code examples
-- **Realistic**: 8.0-8.5/10 with complex technical content
-- **Blocker**: Technical accuracy requires verification tools
-
-### Implications for Season 4
-
-**Season 4 Target**: 9.0+/10 (reliable uhyo-voice + technical accuracy)
-
-**Status After Iteration 8**:
-- ✅ Reliable uhyo-voice: ACHIEVED (Linguistic 9.0, Reliability 9.2)
-- ❌ Technical accuracy: BLOCKED (requires code execution capability)
-- 📊 Gap to target: ~1.2 points (7.8 → 9.0)
-
-**The 1.2-Point Gap Breakdown:**
-- 0.8 points: Code compilation errors (5.5 → 7.5 technical)
-- 0.4 points: Author voice depth (7.5 → 9.0 voice removes cap)
-
-**Path Forward Options:**
-
-1. **Accept Ceiling**: Acknowledge 8.5-8.8 as maximum with guidelines alone
-2. **Add Verification Tools**: Integrate `tsc`, TypeScript Playground, or sandbox execution
-3. **Simplify Topics**: Choose simpler topics with easily verifiable code
-4. **Acknowledge Uncertainty**: Use more conditional language when code can't be tested
-
-**Current Recommendation**: Document this limitation. The style guide has achieved its primary goals (eliminating fabrications, achieving human-quality writing). The remaining gap requires capabilities beyond style guidelines.
-
----
-
 ## 🔴 CRITICAL REQUIREMENTS (Publication Blockers)
 
 ### 1. ZERO Forbidden Patterns
@@ -544,16 +443,7 @@ published: true
 ---
 ```
 
-### 4. Technical Accuracy ⚠️ **ITERATION 8: CODE MUST BE TESTED**
-
-**🚨 ITERATION 8 CRITICAL DISCOVERY**: Style guidelines CANNOT prevent code compilation errors, type errors, or logic bugs. These require actual execution/verification. Without running `tsc` or testing in TypeScript Playground, code examples may contain fundamental errors that destroy educational value.
-
-**THE REALITY** (Iteration 8 Evidence):
-- Missing return statements → "Not all code paths return a value"
-- Type narrowing accumulation bugs → `undefined` comparisons
-- Logic errors → Examples that claim to work but don't compile
-
-**Without code execution capability, expect technical scores to plateau at 6.0-7.5/10.**
+### 4. Technical Accuracy ⚠️ **ITERATION 7: ENHANCED**
 
 **Pre-Submission Technical Accuracy Checklist**:
 - [ ] **NO self-contradictions between warnings and code examples** ⚠️ **ITERATION 7: CRITICAL**
@@ -682,15 +572,7 @@ published: true
     - Iteration 6: 32 endings at 151 lines (21.2%) = FAIL (both requirements)
     - Iteration 12: 74 endings at 178 lines (41.6%) = FAIL (density too high)
   * **Safety strategy**: Target 195-205 lines with 50-55 です/ます = 25-28% density ✅
-- [ ] **TypeScript code compiles** (verify in TypeScript Playground) ⚠️ **ITERATION 8: CRITICAL**
-  * **CONTROL FLOW**: Every code path must return appropriate value matching signature
-    - ❌ ITERATION 8 FAILURE: `case !result.success: console.log(...)` with no return
-    - ✅ FIX: Add `return null;` after error logging
-    - Check: "Not all code paths return a value" compilation error
-  * **TYPE NARROWING ACCUMULATION**: switch(true) cases DON'T carry narrowing from previous cases
-    - ❌ ITERATION 8 ISSUE: `body.timestamp < Date.now()` when timestamp is `number | undefined`
-    - ✅ FIX: Add explicit undefined check in same condition: `body.timestamp !== undefined && body.timestamp < ...`
-    - This is a fundamental limitation of switch(true) pattern
+- [ ] **TypeScript code compiles** (verify in TypeScript Playground)
   * Check readonly vs. mutable type compatibility
   * Verify ALL errors mentioned (not just selected ones)
   * **Include helper function definitions** when using custom functions (fetchUser, sleep, etc.)
@@ -1167,59 +1049,6 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
   * Style guide CANNOT prevent implementation bugs or hook misconceptions
   * Need more explicit React-specific patterns and self-contradiction checks
 
-**Iteration 8 (7.8/10)**: 59 endings, 189 lines, 7.5/10 author voice **← STYLE GUIDE CEILING DISCOVERED** ⚠️
-- **CRITICAL DISCOVERY**: **Style guide has reached its effectiveness limit** 🚧
-  * **What works** ✅: Reliability (9.2), Linguistic (9.0), Self-contradiction awareness
-  * **What fails** ❌: Code compilation errors, TypeScript type errors, logic bugs
-  * **Fundamental limitation**: Guidelines cannot replace code execution/verification
-- **Achievements (What Style Guide CAN Control)**: ⭐⭐⭐
-  * **Reliability: 9.2/10** ✅ (Rule 4 works perfectly - no fabricated emotions)
-  * **Linguistic: 9.0/10** ✅ (zero AI tells, perfect です/ます: 59/189 = 31.2%)
-  * **Human-indistinguishable writing** achieved and maintained
-- **Technical Quality Collapse** (5.5/10 - WORST YET) ❌❌❌:
-  * **Critical**: Missing return statements in BOTH main examples (lines 25, 53)
-    - Function signature: `T | null` but `!result.success` case doesn't return
-    - Compilation error: "Not all code paths return a value"
-    - **Core teaching examples are non-compilable**
-  * **Type narrowing issue**: Line 128 `body.timestamp` remains `number | undefined`
-    - switch(true) cases don't accumulate type narrowing from previous cases
-    - Potential compilation error at comparison
-  * **Unverified code throughout**: Multiple "はずです" suggest untested code
-  * **Impact**: Despite simpler TypeScript-only topic, quality DROPPED (not improved)
-- **Technical Quality Trajectory Shows Plateau**:
-  * Iteration 5: 8.5/10 (best - simple topic)
-  * Iteration 6: 6.5/10 (TypeScript inference misconceptions)
-  * Iteration 7: 6.5/10 (self-contradictions, Promise bugs)
-  * Iteration 8: 5.5/10 (non-compilable code) ← **REGRESSION DESPITE SIMPLER TOPIC**
-- **The Fundamental Problem**: 🔴
-  * **Style guide successfully solved**: Fabrications, AI tells, self-contradictions
-  * **Style guide CANNOT solve**: Compilation errors, type errors, logic bugs
-  * **Missing capability**: Actual `tsc` execution, TypeScript Playground verification
-  * **Reality**: Writing guidelines have hit their effectiveness ceiling
-- **Author Voice Issues** (7.5 pts, caps at 8.5):
-  * Missing: Personal project integration (0.0 pts)
-  * Weak: Investigative energy (0.5 pts) - explanatory vs. exploratory tone
-  * Missing: Discovery excitement (0.5 pts) - subdued meta-commentary
-  * **Gap to 9.0 pts**: Need concrete project context + experimental language
-- **Key Insight**: **9.0+ may be unachievable without code execution** 🚧
-  * The 1.2-point gap (7.8 → 9.0) breaks down as:
-    - 0.8 points: Code correctness (requires `tsc`, testing)
-    - 0.4 points: Author voice depth (requires more risk-taking in framing)
-  * **Best case with guidelines alone**: 8.5-8.8/10 (simple, safe code examples)
-  * **Current state**: 7.8/10 (complex code → unverifiable → errors slip through)
-- **Strategic Implications**:
-  * Season 4 goal (9.0+ reliable articles) achieved its primary targets:
-    - ✅ Eliminated fabrications (9.2 reliability)
-    - ✅ Human-quality writing (9.0 linguistic)
-    - ✅ Authentic voice patterns (7.5-8.5 author voice)
-  * Remaining gap requires capabilities beyond style guidelines
-  * **Options**: (1) Accept ceiling, (2) Add verification tools, (3) Simplify topics
-- **Recommendation for Future Iterations**:
-  * **Short-term**: Choose simpler topics with easily verifiable code
-  * **Medium-term**: Integrate TypeScript Playground or sandbox execution
-  * **Long-term**: Accept that 8.5-8.8 may be the practical ceiling without tooling
-  * **Current priority**: Document learnings, acknowledge limitations realistically
-
 **Season 3 Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD (SEASON 3)**
 **Season 3 Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY (SEASON 3)**
 **Season 3 Iteration 12 (8.6/10)**: 74 endings, 178 lines, 10/10 author voice but TOO FORMAL (41.6% density) ❌
@@ -1261,17 +1090,11 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
   * Self-contradictions are publication-quality issues (readers notice immediately)
   * React hook behavior misrepresentation (useTransition, useDeferredValue) needs explicit verification
   * **ADDED**: FORBIDDEN PATTERNS #4 (Promise recreation), #6 (Hook misrepresentation)
-- **Iteration 8**: **STYLE GUIDE CEILING DISCOVERED** 🚧
-  * **Achievements** ✅: Reliability (9.2), Linguistic (9.0) - human-indistinguishable writing
-  * **Failure** ❌: Technical quality DROPPED to 5.5/10 (worst yet) despite simpler topic
-  * **Root cause**: Non-compilable code (missing return statements, type narrowing bugs)
-  * **Critical insight**: Guidelines cannot prevent compilation errors without code execution
-  * **Reality check**: 9.0+ may be unachievable without `tsc`, TypeScript Playground, or sandbox
-  * **Best case**: 8.5-8.8/10 with simple, easily verifiable code examples
-  * **Current recommendation**: Document this limitation; primary goals (eliminate fabrications, human-quality writing) have been achieved
+- **Next target**: Fix self-contradictions + verify React patterns → 8.5/10 technical + maintain 9.4 reliability = ~9.0/10
+- **Path to 9.0+**: Self-contradiction check + React hook verification + keep reliability (9.4) + maintain voice (8.5) = ~9.0/10
 
 ---
 
-**Last updated:** Iteration 8 Post-Review (Style guide effectiveness ceiling discovered and documented)
-**Version:** 4.6 (Season 4: Style Guide Effectiveness Ceiling Documentation)
-**Line count:** ~1280 lines (added new section "STYLE GUIDE EFFECTIVENESS CEILING" documenting fundamental limitations of guidelines without code execution; added Iteration 8 to SUCCESS PATTERNS showing technical quality collapse and ceiling discovery; enhanced Technical Accuracy checklist with specific Iteration 8 error patterns (control flow, type narrowing accumulation); updated Season 4 Challenge Evolution with realistic expectations; documented that 9.0+ may be unachievable without verification tooling; acknowledged primary goals achieved: eliminate fabrications (9.2 reliability), human-quality writing (9.0 linguistic))
+**Last updated:** Iteration 7 Post-Review (Self-contradiction detection + React hook behavior verification)
+**Version:** 4.5 (Season 4: Self-contradiction prevention + React-specific patterns)
+**Line count:** ~1100 lines (added FORBIDDEN PATTERN #4: Promise Recreation in React Components with self-contradiction check; added FORBIDDEN PATTERN #6: Hook Behavior Misrepresentation; enhanced Technical Accuracy checklist with self-contradiction verification, React hook behavior verification, and Promise pattern verification; renumbered Pedagogical Scaffolding to Pattern #5; added Iteration 7 to SUCCESS PATTERNS showing self-contradiction as critical credibility destroyer; updated Season 4 Challenge Evolution with path to 9.0+ via self-contradiction elimination)
