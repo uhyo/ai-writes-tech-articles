@@ -59,49 +59,7 @@ This guide defines standards for generating Japanese technical articles indistin
 - NOT in flowing prose before code/lists
 - NOT as standalone labels introducing content
 
-### ❌ FORBIDDEN PATTERN #4: Promise Recreation in React Components ⚠️ ITERATION 7
-
-**NEVER create Promises inline where `use()` or Suspense consumes them - causes infinite loops:**
-
-❌ **WRONG (causes infinite loop):**
-```tsx
-function ProfileTab({ userId }: { userId: number }) {
-  const profile = use(fetchUserProfile(userId));  // ❌ New Promise every render!
-  return <div>{profile.name}</div>;
-}
-```
-
-**Why this fails:**
-1. Component renders → creates Promise → Suspends
-2. Promise resolves → React re-renders component
-3. Re-render creates NEW Promise → Suspends again
-4. Infinite loop!
-
-✅ **CORRECT (memoize in parent, pass as prop):**
-```tsx
-function Parent({ userId }: { userId: number }) {
-  const profilePromise = useMemo(() => fetchUserProfile(userId), [userId]);
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ProfileTab profilePromise={profilePromise} />
-    </Suspense>
-  );
-}
-
-function ProfileTab({ profilePromise }: { profilePromise: Promise<Profile> }) {
-  const profile = use(profilePromise);  // ✅ Consumes stable Promise
-  return <div>{profile.name}</div>;
-}
-```
-
-**CRITICAL: Check for self-contradictions** ⚠️ **ITERATION 7 ISSUE**
-- If you write a warning about Promise recreation, VERIFY your code examples don't demonstrate the anti-pattern
-- Example: Iteration 7 had :::message warning about Promise memoization, but Example 2 (lines 113-125) created Promises inline
-- **This undermines credibility** - readers notice when code contradicts warnings
-
-**Rule**: All React Suspense/use() examples must show proper Promise memoization. NEVER demonstrate the anti-pattern.
-
-### ❌ FORBIDDEN PATTERN #5: Pedagogical Scaffolding ⚠️ CRITICAL
+### ❌ FORBIDDEN PATTERN #4: Pedagogical Scaffolding ⚠️ CRITICAL
 
 **NEVER use teacher-like meta-commentary about what you're about to show:**
 
@@ -127,35 +85,6 @@ All "〜てみましょう" forms in scaffolding contexts are FORBIDDEN:
 
 **Rule**: NEVER announce what you're "about to show" - just show it. Write as peer investigating, not teacher scaffolding.
 **Impact**: Even ONE violation = -0.8 linguistic points (major AI tell)
-
-### ❌ FORBIDDEN PATTERN #6: Hook Behavior Misrepresentation ⚠️ ITERATION 7
-
-**NEVER misrepresent what React hooks actually do - verify behavior claims:**
-
-❌ **WRONG: Claiming useTransition makes sync work non-blocking**
-```tsx
-startTransition(() => {
-  const filtered = heavyFilterOperation(query);  // ❌ Still blocks main thread!
-  setResults(filtered);
-});
-```
-
-**Common misconception**: useTransition makes heavy synchronous computations non-blocking.
-**Reality**: useTransition ONLY deprioritizes state updates. The synchronous work (`heavyFilterOperation`) still blocks the main thread.
-
-✅ **CORRECT explanation**:
-- useTransition marks state updates as low-priority
-- React can interrupt low-priority rendering to handle urgent updates
-- The **computation itself** is NOT made asynchronous
-- For truly non-blocking heavy work, use Web Workers
-
-**Other common hook misconceptions to verify:**
-- useDeferredValue: Doesn't make computations async, defers VALUE changes
-- useEffect cleanup: Runs before next effect, not just on unmount
-- useLayoutEffect: Blocks paint, not suitable for all side effects
-- useMemo dependencies: Missing deps can cause stale closures
-
-**Rule**: Before explaining hook behavior, verify against React documentation or test in CodeSandbox. When uncertain, acknowledge uncertainty ("と考えられます", "はずです").
 
 ---
 
@@ -365,9 +294,6 @@ Before submitting, scan entire article for:
 - [ ] Sentence-ending -てる/-てた/-てます (search: てる。てた。てます。)
 - [ ] Paragraph-initial "で、" (search: line starts with "で、")
 - [ ] Colons in prose before code/lists (search: ：\n```, ：\n-)
-- [ ] Promise recreation in components using `use()` or Suspense (Pattern #4)
-- [ ] Hook behavior misrepresentation - verify useTransition, useDeferredValue claims (Pattern #6)
-- [ ] Self-contradictions between warnings and code examples
 
 **Impact**: 3+ violations → max score 7.0/10. For 9.0+: ZERO violations required.
 
@@ -443,28 +369,9 @@ published: true
 ---
 ```
 
-### 4. Technical Accuracy ⚠️ **ITERATION 7: ENHANCED**
+### 4. Technical Accuracy
 
 **Pre-Submission Technical Accuracy Checklist**:
-- [ ] **NO self-contradictions between warnings and code examples** ⚠️ **ITERATION 7: CRITICAL**
-  * If you warn about Promise recreation, VERIFY examples don't create Promises inline
-  * If you warn about hook misuse, CHECK examples demonstrate correct usage
-  * Example failure: Iteration 7 warned about Promise memoization (line 132-134) but Example 2 (lines 113-125) violated it
-  * **Impact**: Self-contradictions destroy credibility (-2.0 technical points)
-  * **Check**: For every :::message or warning, verify adjacent code doesn't demonstrate the anti-pattern
-- [ ] **React hooks behavior VERIFIED against documentation** ⚠️ **ITERATION 7: NEW CRITICAL**
-  * **useTransition**: Only deprioritizes state updates, does NOT make sync computations async
-    - ❌ WRONG: "useTransition makes heavy synchronous work non-blocking"
-    - ✅ CORRECT: "useTransition marks state updates as low-priority, but sync work still blocks"
-  * **useDeferredValue**: Defers value changes, does NOT make computations async
-  * **useEffect cleanup**: Runs before next effect AND on unmount
-  * Test hook behavior in CodeSandbox or React docs before making claims
-  * When uncertain, acknowledge: "理論的には〜", "と考えられます", "ドキュメントによれば〜"
-- [ ] **Promise patterns in React VERIFIED** ⚠️ **ITERATION 7: CRITICAL**
-  * ALL `use()` or Suspense examples must show proper Promise memoization
-  * NEVER create Promises inline in components that consume them
-  * Show parent memoization + prop passing pattern (see FORBIDDEN PATTERN #4)
-  * Check for infinite loop risk in all Suspense examples
 - [ ] **TypeScript code compiles** - Verify ALL code examples in TypeScript Playground or compiler
   * Check type compatibility (readonly vs. mutable, tuple vs. array)
   * Verify ALL errors mentioned in examples (not just selected ones)
@@ -488,6 +395,7 @@ published: true
   * Don't confuse string compatibility with literal type compatibility
 - [ ] **Mathematical calculations verified** (counts, combinations, percentages)
   * Example: "4 × 3 = 12" not "4 × 4 = 16" - verify ALL arithmetic claims
+- [ ] **Promise lifecycle patterns correct** (see below - CRITICAL)
 - [ ] Code examples tested or validated for correctness
 - [ ] Version-specific claims verified against documentation
 - [ ] GitHub issue/PR references checked (numbers exist, descriptions accurate)
@@ -501,7 +409,37 @@ published: true
   * Example: If `NoInfer<T>` requires full object match, BOTH `{ x: 10 }` and `{ z: 3 }` will error (not just one)
 - **Type parameter inference**: Verify what type is actually inferred, don't assume
 
-**Key Principles for Technical Accuracy**:
+**🚨 CRITICAL PATTERN: Promise Creation in React**
+
+**❌ WRONG: Creating Promises during render (causes infinite loops)**
+```tsx
+function Component({ userId }) {
+  const promise = fetchUser(userId);  // ❌ New Promise every render!
+  const user = use(promise);          // Suspends → resolves → re-renders → new Promise → infinite loop
+  return <div>{user.name}</div>;
+}
+```
+
+**✅ CORRECT: Create in parent with memoization, pass as prop**
+```tsx
+function Parent({ userId }) {
+  const promise = useMemo(() => fetchUser(userId), [userId]);  // ✅ Memoized
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Child userPromise={promise} />
+    </Suspense>
+  );
+}
+
+function Child({ userPromise }) {
+  const user = use(userPromise);  // ✅ Consumes stable Promise from parent
+  return <div>{user.name}</div>;
+}
+```
+
+**PRINCIPLE**: Promises should be created **outside** the consuming component and passed as props. Never create Promises inline where `use()` consumes them.
+
+**Key Principles**:
 - Correct concepts with sources
 - Working code examples (test Promise patterns!)
 - Specific GitHub PRs/issues with links
@@ -540,18 +478,6 @@ published: true
 - [ ] **ZERO colons in prose before code/lists** (scan entire article for ：at line end; check next line is - or ```)
   * ESPECIALLY check for standalone labels: "動いたもの：" "注意点：" "結果："
   * These must be section headers (## Label) or full sentences (Labelは以下の通りです。)
-- [ ] **ZERO Promise recreation in React Suspense/use() examples** ⚠️ **ITERATION 7: CRITICAL**
-  * FORBIDDEN: `const data = use(fetchData(id))` directly in consuming component
-  * REQUIRED: Show parent memoization with `useMemo(() => fetchData(id), [id])` + pass as prop
-  * CHECK: All Suspense examples must demonstrate correct Promise handling (see FORBIDDEN PATTERN #4)
-  * Even ONE violation = -2.0 points (production bug)
-- [ ] **ZERO hook behavior misrepresentations** ⚠️ **ITERATION 7: NEW**
-  * CHECK: useTransition explanations mention "deprioritizes state updates", NOT "makes sync work non-blocking"
-  * VERIFY: Hook behavior claims match React documentation
-  * When uncertain, use conditional language ("と考えられます")
-- [ ] **ZERO self-contradictions** ⚠️ **ITERATION 7: NEW**
-  * For every :::message or warning, VERIFY adjacent code examples don't demonstrate the anti-pattern
-  * Example: If warning about Promise memoization, ensure examples show proper memoization
 - [ ] **ZERO pedagogical scaffolding** (scan: "見ていきます" "見てみます" "〜てみましょう" variants) ⚠️ **ITERATION 6: CHECK "次の例を見てみます。"**
   * FORBIDDEN: "確認してみましょう" "試してみましょう" "見てみましょう" → USE: "確認してみます" "試してみます"
   * FORBIDDEN: "まずは、[Topic]を見ていきます。" → USE: "まずは、[Topic]。"
@@ -1021,37 +947,9 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
   * Shows technical correctness matters MORE than reliability for final score
   * Formula: (Tech × 0.35) + (Ling × 0.5) + (Rel × 0.15) means tech errors are expensive
 
-**Iteration 7 (7.9/10)**: 49 endings, 219 lines, 8.5/10 author voice **← SEASON 4 TECHNICAL BLOCKER** ❌
-- **Achievement**: **Reliability remains excellent (9.4/10)** - Season 4 target maintained ✅
-  * Rule 4 continues to work (no fabricated emotions)
-  * Excellent conditional language throughout
-  * Only one minor vague observation claim ("筆者の観察では")
-- **CRITICAL FAILURE**: **Self-contradiction undermines credibility** (-2.0 technical points)
-  * Lines 132-134: :::message warning about Promise recreation needing `useMemo`
-  * Lines 113-125: Example 2 creates Promises inline (`use(fetchUserProfile(userId))`)
-  * **Article warns about the exact anti-pattern it demonstrates**
-  * Readers notice contradictions → destroys trust even when reliability is high
-- **Technical Issues** (6.5/10 - SAME AS ITERATION 6):
-  * Example 2 Promise bug causes infinite loops (production-breaking)
-  * useTransition misrepresentation (claims it makes sync work non-blocking - WRONG)
-  * Missing imports in examples
-- **Linguistic Fragility** (8.5/10):
-  * です/ます density 22.4% (only 0.4% above 22% minimum - very fragile)
-  * Insufficient ecosystem context (1 ref vs. 2-3 required)
-  * Minimal strategic bold (3 terms vs. 5-6 optimal)
-- **Key Insight**: **Self-contradictions are WORSE than simple errors**
-  * Simple error: Reader might miss it
-  * Self-contradiction: Reader sees warning, then sees code violating it → notices immediately
-  * Impact: -2.0 points (vs. -0.5 for typical technical error)
-  * **NEW REQUIREMENT**: For every :::message or warning, VERIFY adjacent code doesn't demonstrate the anti-pattern
-- **Pattern**: Technical accuracy stuck at 6.5/10 despite verification requirements in v4.4
-  * Style guide can prevent fabrications (proven: 9.4 reliability)
-  * Style guide CANNOT prevent implementation bugs or hook misconceptions
-  * Need more explicit React-specific patterns and self-contradiction checks
-
-**Season 3 Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD (SEASON 3)**
-**Season 3 Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY (SEASON 3)**
-**Season 3 Iteration 12 (8.6/10)**: 74 endings, 178 lines, 10/10 author voice but TOO FORMAL (41.6% density) ❌
+**Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD (SEASON 3)**
+**Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY (SEASON 3)**
+**Iteration 12 (8.6/10)**: 74 endings, 178 lines, 10/10 author voice but TOO FORMAL (41.6% density) ❌
 
 **Key Insights**:
 - Perfect author voice (10/10) is NOT enough. Must also meet です/ます requirements AND reliability standards AND technical accuracy.
@@ -1060,41 +958,30 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
   * **Critical learning**: Technical accuracy is now the PRIMARY blocker, not reliability or voice
   * Rule 4 (No Fabricated Emotions) WORKS - reliability is controllable
   * Technical correctness requires VERIFICATION, not just guidelines
-- **Iteration 7 (Season 4)**: Excellent reliability (9.4) + self-contradiction bug = 7.9/10 (SLIGHT IMPROVEMENT)
-  * **Critical learning**: Self-contradictions are WORSE than simple errors (-2.0 vs. -0.5 points)
-  * Warning about Promise memoization while demonstrating inline Promise creation
-  * useTransition misconception (claims it makes sync work non-blocking)
-  * **NEW REQUIREMENTS**: Check for self-contradictions, verify React hook behavior
-- **Season 3 Iteration 12**: Too many endings (74) AND too high density (41.6%) = -0.3 to -0.5 deduction
+- **Iteration 12**: Too many endings (74) AND too high density (41.6%) = -0.3 to -0.5 deduction
 - **Sweet spot**: 50-60 endings in 195-220 lines = 25-30% density
 
-**Proven 9.0+ Formula** (validated by Season 3 Iterations 7 & 10, refined by Season 4):
-1. **Article length: 195-220 lines OPTIMAL** (180-230 acceptable) - S3 Iter 7: 218 lines
-2. **です/ます: 50-60 absolute count OPTIMAL** (40-70 acceptable range) - S3 Iter 7: 55 endings
-3. **です/ます density: 25-35% (critical for natural tone)** - S3 Iter 7: 25.2% ✅, S3 Iter 12: 41.6% ❌
-4. **Author voice: 8+ uhyo patterns** (see Section 👤) - S3 Iter 7: 10/10 patterns
-5. **Zero forbidden patterns** (see Section ⚠️) - S3 Iter 7: 0 violations
-6. **Ecosystem context: 3-4 refs OPTIMAL** (2 minimum) - S4 Iter 5: 2 refs (minimum)
-7. **Reliability: No fabricated experiences or emotions** - S4 Iter 6: 9.2/10, S4 Iter 7: 9.4/10 ✅ (Rule 4 works!)
-8. **Technical accuracy: VERIFY TypeScript behavior, complete code examples, NO self-contradictions** ⚠️ **ITERATION 7 ENHANCED**
-   * S4 Iter 6-7: TypeScript/React misconceptions cost -3.5 to -4.0 technical points
-   * S4 Iter 7: Self-contradiction (warning + violating code) destroys credibility (-2.0 points)
-   * Must verify inference behavior, error cases, code completeness, AND React hook behavior
-   * Check every :::message or warning - ensure adjacent code doesn't demonstrate the anti-pattern
+**Proven 9.0+ Formula** (validated by Iterations 7 & 10 in Season 3, refined by Season 4):
+1. **Article length: 195-220 lines OPTIMAL** (180-230 acceptable) - Iteration 7: 218 lines
+2. **です/ます: 50-60 absolute count OPTIMAL** (40-70 acceptable range) - Iteration 7: 55 endings
+3. **です/ます density: 25-35% (critical for natural tone)** - Iteration 7: 25.2% ✅, Iteration 12: 41.6% ❌
+4. **Author voice: 8+ uhyo patterns** (see Section 👤) - Iteration 7: 10/10 patterns
+5. **Zero forbidden patterns** (see Section ⚠️) - Iteration 7: 0 violations
+6. **Ecosystem context: 3-4 refs OPTIMAL** (2 minimum) - Iteration 5: 2 refs (minimum)
+7. **Reliability: No fabricated experiences or emotions** - Iteration 6: 9.2/10 ✅ (Rule 4 works!)
+8. **Technical accuracy: VERIFY TypeScript behavior, complete code examples** ⚠️ **NEW CRITICAL REQUIREMENT**
+   * Iteration 6: TypeScript inference misconceptions cost -3.5 technical points
+   * Must verify inference behavior, error cases, and code completeness in TypeScript Playground
    * When uncertain, acknowledge uncertainty rather than making incorrect assertions
 
 **Season 4 Challenge Evolution**:
 - **Iteration 5**: Reliability violations were the blocker → Rule 4 added
 - **Iteration 6**: Rule 4 SUCCESS (9.2/10 reliability!) BUT technical accuracy became PRIMARY blocker (6.5/10)
-- **Iteration 7**: Reliability excellent (9.4/10), but self-contradiction + hook misconceptions = still 6.5/10 technical
-  * Self-contradictions are publication-quality issues (readers notice immediately)
-  * React hook behavior misrepresentation (useTransition, useDeferredValue) needs explicit verification
-  * **ADDED**: FORBIDDEN PATTERNS #4 (Promise recreation), #6 (Hook misrepresentation)
-- **Next target**: Fix self-contradictions + verify React patterns → 8.5/10 technical + maintain 9.4 reliability = ~9.0/10
-- **Path to 9.0+**: Self-contradiction check + React hook verification + keep reliability (9.4) + maintain voice (8.5) = ~9.0/10
+- **Next target**: Maintain Iteration 6's reliability + restore Iteration 5's technical quality (8.5/10)
+- **Path to 9.0+**: Technical verification (6.5→8.5) + keep reliability (9.2) + maintain voice (8.5) = ~9.0/10
 
 ---
 
-**Last updated:** Iteration 7 Post-Review (Self-contradiction detection + React hook behavior verification)
-**Version:** 4.5 (Season 4: Self-contradiction prevention + React-specific patterns)
-**Line count:** ~1100 lines (added FORBIDDEN PATTERN #4: Promise Recreation in React Components with self-contradiction check; added FORBIDDEN PATTERN #6: Hook Behavior Misrepresentation; enhanced Technical Accuracy checklist with self-contradiction verification, React hook behavior verification, and Promise pattern verification; renumbered Pedagogical Scaffolding to Pattern #5; added Iteration 7 to SUCCESS PATTERNS showing self-contradiction as critical credibility destroyer; updated Season 4 Challenge Evolution with path to 9.0+ via self-contradiction elimination)
+**Last updated:** Iteration 6 Post-Review (Technical accuracy verification requirements + pedagogical scaffolding strengthening)
+**Version:** 4.4 (Season 4: Technical accuracy pivot - verification over guidelines)
+**Line count:** ~985 lines (added CRITICAL technical accuracy requirements with TypeScript inference verification, complete code examples mandate, error case verification; added "次の例を見てみます。" to FORBIDDEN PATTERN #4; updated SUCCESS PATTERNS with Iteration 6 regression analysis showing Rule 4 success but technical accuracy as new PRIMARY blocker; expanded Proven 9.0+ Formula with technical verification as #8)
