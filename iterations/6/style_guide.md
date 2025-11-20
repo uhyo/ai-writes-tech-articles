@@ -63,11 +63,10 @@ This guide defines standards for generating Japanese technical articles indistin
 
 **NEVER use teacher-like meta-commentary about what you're about to show:**
 
-**🚨 MOST COMMON VIOLATIONS (Updated through Iteration 6):**
+**🚨 MOST COMMON VIOLATIONS (Iteration 4 Update):**
 ❌ "まずは、[Topic]を見ていきます。" → ✅ "まずは、[Topic]。" or "まずは[Topic]から。"
 ❌ "では〜見ていきましょう" → ✅ Direct topic entry
 ❌ "次に〜を見てみます" → ✅ "次に、[Topic]。" or direct entry
-❌ "次の例を見てみます。" → ✅ "次の例。" or "次の例：" ⚠️ **ITERATION 6 VIOLATION**
 ❌ "これから〜を見ていきます。" → ✅ Direct topic entry
 ❌ "〜について確認してみましょう" → ✅ "確認してみます" (investigative) ⚠️ **ITERATION 4 VIOLATION**
 ❌ "実際に[action]して確認してみましょう。" → ✅ "確認してみます。" or direct entry
@@ -376,23 +375,6 @@ published: true
   * Check type compatibility (readonly vs. mutable, tuple vs. array)
   * Verify ALL errors mentioned in examples (not just selected ones)
   * Ensure function signatures match usage (e.g., `T[]` vs. `readonly T[]`)
-- [ ] **TypeScript inference behavior VERIFIED** ⚠️ **ITERATION 6: CRITICAL**
-  * **COMMON MISCONCEPTION**: Union types vs. common supertypes
-    - ❌ WRONG: "TypeScript infers union type `"mode" | "development"` from multiple arguments"
-    - ✅ CORRECT: "TypeScript finds common supertype (e.g., `string`) from multiple arguments"
-  * Verify what TypeScript **actually infers** using Playground or compiler, don't assume
-  * Test error cases before asserting behavior - verify the code produces the claimed error
-  * When uncertain about inference algorithm, acknowledge uncertainty ("推測ですが", "と考えられます")
-- [ ] **Code examples are COMPLETE and runnable** ⚠️ **ITERATION 6: CRITICAL**
-  * NO undefined functions (e.g., `isValid` used but never defined)
-  * Include helper function definitions when using custom functions (`fetchUser`, `sleep`, etc.)
-  * Include type interface definitions for custom types (`User`, `Post`, etc.)
-  * All variables referenced must be declared
-  * Code should be copy-pasteable and runnable without modifications
-- [ ] **Error cases VERIFIED, not assumed** ⚠️ **ITERATION 6: CRITICAL**
-  * If claiming "this code produces error X", actually verify in TypeScript Playground
-  * Example issue: Claiming `createConfig("mode", "production")` is OK when it's actually a type error
-  * Don't confuse string compatibility with literal type compatibility
 - [ ] **Mathematical calculations verified** (counts, combinations, percentages)
   * Example: "4 × 3 = 12" not "4 × 4 = 16" - verify ALL arithmetic claims
 - [ ] **Promise lifecycle patterns correct** (see below - CRITICAL)
@@ -478,10 +460,9 @@ function Child({ userPromise }) {
 - [ ] **ZERO colons in prose before code/lists** (scan entire article for ：at line end; check next line is - or ```)
   * ESPECIALLY check for standalone labels: "動いたもの：" "注意点：" "結果："
   * These must be section headers (## Label) or full sentences (Labelは以下の通りです。)
-- [ ] **ZERO pedagogical scaffolding** (scan: "見ていきます" "見てみます" "〜てみましょう" variants) ⚠️ **ITERATION 6: CHECK "次の例を見てみます。"**
+- [ ] **ZERO pedagogical scaffolding** (scan: "見ていきます" "見てみます" "〜てみましょう" variants) ⚠️ **ITERATION 4: CHECK "確認してみましょう"**
   * FORBIDDEN: "確認してみましょう" "試してみましょう" "見てみましょう" → USE: "確認してみます" "試してみます"
   * FORBIDDEN: "まずは、[Topic]を見ていきます。" → USE: "まずは、[Topic]。"
-  * FORBIDDEN: "次の例を見てみます。" → USE: "次の例。" or "次の例：" ⚠️ **NEW ITERATION 6**
   * Even ONE violation = -0.8 points (major AI tell)
 - [ ] Valid frontmatter with all fields
 - [ ] **です/ます DUAL REQUIREMENTS (BOTH must pass):**
@@ -925,63 +906,37 @@ Footnotes for technical asides: "この機能は便利です[^1]。" / `:::detai
 
 ## 📊 SUCCESS PATTERNS (Iterations 5-12 Learning)
 
-**Iteration 5 (8.75/10)**: 45 endings, 180 lines, 9.5/10 author voice, 2 ecosystem refs **← SEASON 4 PREVIOUS BEST**
+**Iteration 5 (8.75/10)**: 45 endings, 180 lines, 9.5/10 author voice, 2 ecosystem refs **← SEASON 4 BEST**
 - **Achievement**: Exceptional voice (9.5 pts), zero AI tells, optimal Zenn formatting (3 blocks)
 - **Issue**: Reliability violations (-1.5 pts) + fragile metrics (exactly 180 lines, 45 です/ます)
 - **Learning**: Need to avoid fabricated emotional reactions while preserving meta-commentary
 
-**Iteration 6 (7.66/10)**: 58 endings, 226 lines, 8.5/10 author voice **← SEASON 4 REGRESSION** ❌
-- **Achievement**: **Reliability breakthrough (9.2/10)** - Rule 4 (No Fabricated Emotional Reactions) WORKED PERFECTLY
-  * Zero fabricated emotions, excellent conditional language, honest uncertainty
-  * Proves engaging voice + complete honesty are compatible ✅
-- **Critical Issues**: **Technical accuracy collapsed (6.5/10)** - became PRIMARY blocker
-  * Incorrect TypeScript inference explanation (union types vs. common supertypes)
-  * Wrong error case explanation (literal type compatibility)
-  * Incomplete code examples (undefined `isValid` function)
-  * Pedagogical scaffolding returned (line 98: "次の例を見てみます。") despite being FORBIDDEN
-- **Key Insight**: Style guide can prevent fabrications, but **cannot prevent incorrect technical explanations**
-  * Reliability violations are controllable through rules (Rule 4 success proves this)
-  * Technical accuracy requires verification, not just rule-following
-  * **Technical accuracy is harder to control than reliability**
-- **Regression**: Iteration 5 (8.75) > Iteration 6 (7.66) despite better reliability
-  * Shows technical correctness matters MORE than reliability for final score
-  * Formula: (Tech × 0.35) + (Ling × 0.5) + (Rel × 0.15) means tech errors are expensive
-
+**Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
 **Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD (SEASON 3)**
 **Iteration 10 (9.5/10)**: 50 endings, 218 lines, 9.5/10 author voice, 5 sections, 0 violations ✅✅ **← PROVEN MASTERY (SEASON 3)**
 **Iteration 12 (8.6/10)**: 74 endings, 178 lines, 10/10 author voice but TOO FORMAL (41.6% density) ❌
 
 **Key Insights**:
-- Perfect author voice (10/10) is NOT enough. Must also meet です/ます requirements AND reliability standards AND technical accuracy.
+- Perfect author voice (10/10) is NOT enough. Must also meet です/ます requirements AND reliability standards.
 - **Iteration 5 (Season 4)**: Strong voice + reliability violations = 8.75/10 (0.25 from target)
-- **Iteration 6 (Season 4)**: Perfect reliability (9.2) + poor technical accuracy (6.5) = 7.66/10 (REGRESSION)
-  * **Critical learning**: Technical accuracy is now the PRIMARY blocker, not reliability or voice
-  * Rule 4 (No Fabricated Emotions) WORKS - reliability is controllable
-  * Technical correctness requires VERIFICATION, not just guidelines
+- **Iteration 6**: Too few endings (32) = 8.0/10 cap
 - **Iteration 12**: Too many endings (74) AND too high density (41.6%) = -0.3 to -0.5 deduction
 - **Sweet spot**: 50-60 endings in 195-220 lines = 25-30% density
 
-**Proven 9.0+ Formula** (validated by Iterations 7 & 10 in Season 3, refined by Season 4):
+**Proven 9.0+ Formula** (validated by Iterations 7 & 10 in Season 3):
 1. **Article length: 195-220 lines OPTIMAL** (180-230 acceptable) - Iteration 7: 218 lines
 2. **です/ます: 50-60 absolute count OPTIMAL** (40-70 acceptable range) - Iteration 7: 55 endings
 3. **です/ます density: 25-35% (critical for natural tone)** - Iteration 7: 25.2% ✅, Iteration 12: 41.6% ❌
 4. **Author voice: 8+ uhyo patterns** (see Section 👤) - Iteration 7: 10/10 patterns
 5. **Zero forbidden patterns** (see Section ⚠️) - Iteration 7: 0 violations
 6. **Ecosystem context: 3-4 refs OPTIMAL** (2 minimum) - Iteration 5: 2 refs (minimum)
-7. **Reliability: No fabricated experiences or emotions** - Iteration 6: 9.2/10 ✅ (Rule 4 works!)
-8. **Technical accuracy: VERIFY TypeScript behavior, complete code examples** ⚠️ **NEW CRITICAL REQUIREMENT**
-   * Iteration 6: TypeScript inference misconceptions cost -3.5 technical points
-   * Must verify inference behavior, error cases, and code completeness in TypeScript Playground
-   * When uncertain, acknowledge uncertainty rather than making incorrect assertions
+7. **Reliability: No fabricated experiences or emotions** - Iteration 5: 2 violations (-1.5 pts)
+8. **Technical accuracy: Verify all mathematical claims** - Iteration 12: Math error cost -0.5
 
-**Season 4 Challenge Evolution**:
-- **Iteration 5**: Reliability violations were the blocker → Rule 4 added
-- **Iteration 6**: Rule 4 SUCCESS (9.2/10 reliability!) BUT technical accuracy became PRIMARY blocker (6.5/10)
-- **Next target**: Maintain Iteration 6's reliability + restore Iteration 5's technical quality (8.5/10)
-- **Path to 9.0+**: Technical verification (6.5→8.5) + keep reliability (9.2) + maintain voice (8.5) = ~9.0/10
+**Season 4 Challenge**: Iteration 5 shows we can achieve exceptional voice (9.5 pts) with human-quality writing. The remaining gap is eliminating reliability violations (fabricated emotional reactions) while maintaining engaging personal tone.
 
 ---
 
-**Last updated:** Iteration 6 Post-Review (Technical accuracy verification requirements + pedagogical scaffolding strengthening)
-**Version:** 4.4 (Season 4: Technical accuracy pivot - verification over guidelines)
-**Line count:** ~985 lines (added CRITICAL technical accuracy requirements with TypeScript inference verification, complete code examples mandate, error case verification; added "次の例を見てみます。" to FORBIDDEN PATTERN #4; updated SUCCESS PATTERNS with Iteration 6 regression analysis showing Rule 4 success but technical accuracy as new PRIMARY blocker; expanded Proven 9.0+ Formula with technical verification as #8)
+**Last updated:** Iteration 5 Post-Review (Fabricated emotional reactions rule + optimal length targets + です/ます safety margins)
+**Version:** 4.3 (Season 4: Reliability refinement - emotional reactions vs. objective observations)
+**Line count:** ~950 lines (added Rule 4: No Fabricated Emotional Reactions with transformation examples, emphasized optimal 195-205 line target with 50-60 です/ます, strengthened ecosystem context to 3-4 refs optimal, added conditional language variety guidance, included helper definition requirements, updated SUCCESS PATTERNS with Iteration 5 analysis)
