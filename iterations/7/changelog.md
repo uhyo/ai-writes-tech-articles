@@ -1,358 +1,329 @@
-# Changelog - Iteration 7
+# Style Guide Changelog - Iteration 7
 
-## Overview
-
-**Style Guide Version**: 2.6 → 2.7
-**Update Type**: Minimal documentation update (no substantive changes)
-**Reason**: Style guide v2.6 is working optimally - validated by 9.5/10 achievement
-
-**Key Achievement**: Iteration 7 scored **9.5/10** - the highest score in Season 3 and validation that the current guidelines produce consistently excellent results.
+## Version 4.4 → 4.5
+**Focus**: Self-contradiction detection + React hook behavior verification
 
 ---
 
-## Changes Made
+## Summary
 
-### 1. Updated Success Patterns Section (DOCUMENTATION ONLY)
+Iteration 7 revealed a critical pattern: **self-contradictions between warnings and code examples destroy credibility more than simple errors** (-2.0 points vs. -0.5 points). The article warned about Promise recreation needing `useMemo` in a :::message block, then immediately demonstrated inline Promise creation in Example 2. Additionally, the article misrepresented useTransition's capabilities, claiming it makes synchronous work non-blocking when it only deprioritizes state updates.
 
-**Location**: Section "📊 SUCCESS PATTERNS"
+**Key Metrics (Iteration 7)**:
+- Overall Score: 7.9/10 (slight improvement from 7.66, but still 1.1 points below 9.0 target)
+- Technical: 6.5/10 (SAME AS ITERATION 6 - still PRIMARY blocker)
+- Linguistic: 8.5/10 (fragile metrics: 22.4% density, only 0.4% above minimum)
+- Reliability: 9.4/10 (EXCELLENT - Season 4 target met, Rule 4 continues to work!)
+- Author Voice: 8.5 points (caps final score at 8.5)
 
-**Change**: Added Iteration 7 as the new gold standard
+**Critical Insight**: Technical accuracy is stuck at 6.5/10 despite verification requirements. The style guide successfully prevents fabrications (9.4 reliability proves this), but **cannot prevent implementation bugs or conceptual misconceptions**. Self-contradictions are particularly damaging because readers notice them immediately.
 
-**Before**:
-```markdown
-## 📊 SUCCESS PATTERNS (Iterations 5-6 Learning)
+---
 
-**Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
-**Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
-```
+## Major Changes
 
-**After**:
-```markdown
-## 📊 SUCCESS PATTERNS (Iterations 5-7 Learning)
+### 1. NEW FORBIDDEN PATTERN #4: Promise Recreation in React Components
 
-**Iteration 5 (9.3/10)**: 51 endings, 231 lines, all 10 uhyo patterns ✅
-**Iteration 6 (8.0/10)**: 32 endings, 151 lines, all 10 uhyo patterns but CAPPED by です/ます ❌
-**Iteration 7 (9.5/10)**: 55 endings, 218 lines, all 10 uhyo patterns ✅✅ **← GOLD STANDARD**
-```
+**Location**: Lines 62-103 (top of guide, before Pedagogical Scaffolding)
+
+**Rationale**: Iteration 7's Example 2 (lines 113-125) created Promises inline in components using `use()`, causing infinite loops. This is a **production-breaking bug** that the style guide must explicitly forbid.
+
+**What was added**:
+- ❌ WRONG pattern: `const profile = use(fetchUserProfile(userId))` in consuming component
+- ✅ CORRECT pattern: Parent memoizes with `useMemo(() => fetchUserProfile(userId), [userId])` and passes as prop
+- Explanation of why inline Promise creation causes infinite loops
+- **NEW: Self-contradiction check** - If you warn about a pattern, verify your code doesn't demonstrate it
+
+**Impact**:
+- Prevents production bugs (infinite loops in React Suspense)
+- Catches self-contradictions (Iteration 7 warned about this pattern at lines 132-134 while violating it at lines 113-125)
+- Forces all Suspense/use() examples to demonstrate correct memoization
+
+### 2. NEW FORBIDDEN PATTERN #6: Hook Behavior Misrepresentation
+
+**Location**: Lines 131-159 (after Pedagogical Scaffolding, renumbered to Pattern #5)
+
+**Rationale**: Iteration 7 claimed useTransition makes synchronous work non-blocking (lines 48-54). This is **technically incorrect** - useTransition only deprioritizes state updates. The heavy filtering operation still blocks the main thread.
+
+**What was added**:
+- Common misconception: useTransition makes sync computations async (WRONG)
+- Reality: useTransition only marks state updates as low-priority
+- Correct explanation: The computation itself is NOT asynchronous
+- Other common hook misconceptions to verify (useDeferredValue, useEffect cleanup, useLayoutEffect, useMemo)
+- Rule: Verify hook behavior against React docs before making claims
+
+**Impact**:
+- Prevents misrepresentation of React hooks
+- Requires verification of behavioral claims
+- Encourages conditional language when uncertain
+
+### 3. Enhanced CRITICAL REQUIREMENTS: Zero Forbidden Patterns
+
+**Location**: Lines 364-371
+
+**What changed**: Added three new checks to the pre-submission scan:
+- [ ] Promise recreation in components using `use()` or Suspense (Pattern #4)
+- [ ] Hook behavior misrepresentation - verify useTransition, useDeferredValue claims (Pattern #6)
+- [ ] Self-contradictions between warnings and code examples
+
+**Rationale**: These are publication-quality issues that must be caught before submission.
+
+### 4. Significantly Enhanced Technical Accuracy Checklist
+
+**Location**: Lines 446-495 (Section 4: Technical Accuracy)
+
+**What changed**: Added THREE new critical checks at the top:
+
+#### 4a. NO Self-Contradictions (NEW - HIGHEST PRIORITY)
+- Check EVERY :::message or warning
+- Verify adjacent code examples don't demonstrate the anti-pattern being warned about
+- Example failure from Iteration 7 documented
+- Impact: -2.0 technical points (destroys credibility)
+
+#### 4b. React Hooks Behavior VERIFIED (NEW - CRITICAL)
+- useTransition: Only deprioritizes state updates, does NOT make sync work async
+- useDeferredValue: Defers value changes, not computations
+- useEffect cleanup: Runs before next effect AND on unmount
+- Requirement: Test hook behavior in CodeSandbox or verify against React docs
+- When uncertain, use conditional language
+
+#### 4c. Promise Patterns in React VERIFIED (NEW - CRITICAL)
+- ALL `use()` or Suspense examples must show proper Promise memoization
+- NEVER create Promises inline in consuming components
+- Show parent memoization + prop passing pattern
+- Check for infinite loop risk in all Suspense examples
 
 **Rationale**:
-- Iteration 7 achieved the highest score (9.5/10) in Season 3
-- Demonstrates perfect application of the proven formula
-- Provides concrete evidence that v2.6 guidelines work optimally
-- Offers a reference point for future articles
+- Self-contradictions are WORSE than simple errors (readers notice immediately)
+- React hook misconceptions mislead readers into ineffective patterns
+- Promise bugs cause production failures
 
-### 2. Enhanced Formula Documentation (CLARIFICATION)
+### 5. Enhanced PRE-SUBMISSION CHECKLIST
 
-**Location**: "Proven 9.0+ Formula" section
+**Location**: Lines 543-554
 
-**Change**: Added specific Iteration 7 metrics to validate each formula component
+**What changed**: Added three new critical checks:
 
-**Addition**:
-```markdown
-**Proven 9.0+ Formula** (validated by Iteration 7's 9.5/10):
-1. Article length: 180-230 lines (sweet spot) - Iteration 7: 218 lines
-2. です/ます: 50-70 absolute count optimal (40+ minimum) - Iteration 7: 55 endings
-3. Author voice: 8+ uhyo patterns (see Section 👤) - Iteration 7: 10/10 patterns
-4. Zero forbidden patterns (see Section ⚠️) - Iteration 7: 0 violations
-5. Ecosystem context: 1-2 GitHub issues/PRs or community refs - Iteration 7: GitHub issue #4721
-```
+1. **ZERO Promise recreation in React Suspense/use() examples** (lines 543-547)
+   - FORBIDDEN: Direct `use(fetchData(id))` in consuming component
+   - REQUIRED: Parent memoization with `useMemo` + pass as prop
+   - Impact: -2.0 points (production bug)
 
-**Rationale**:
-- Shows concrete proof that the formula works
-- Provides specific target numbers based on successful execution
-- Helps Writer Agent understand what optimal execution looks like
-- Validates that 50-70 です/ます range (not just 40-50 minimum) is ideal
+2. **ZERO hook behavior misrepresentations** (lines 548-551)
+   - CHECK: useTransition explanations mention "deprioritizes state updates", NOT "makes sync work non-blocking"
+   - VERIFY: Hook behavior claims match React documentation
+   - When uncertain, use conditional language
 
-### 3. Updated Version Metadata
+3. **ZERO self-contradictions** (lines 552-554)
+   - For every :::message or warning, VERIFY adjacent code doesn't demonstrate the anti-pattern
+   - Example: If warning about Promise memoization, ensure examples show proper memoization
 
-**Changes**:
-- Version: 2.6 → 2.7
-- Last updated: Iteration 6 → Iteration 7
-- Line count: ~400 → ~410
+**Rationale**: These checks must be performed before submission to catch publication-quality issues.
 
----
+### 6. Updated SUCCESS PATTERNS: Iteration 7 Analysis
 
-## What Was NOT Changed (And Why)
+**Location**: Lines 1024-1050
 
-### No Changes to Core Guidelines
+**What changed**: Added comprehensive Iteration 7 analysis showing:
 
-All core sections remain unchanged because they are working optimally:
+**Achievements**:
+- Reliability remains excellent (9.4/10) - Season 4 target maintained
+- Rule 4 (No Fabricated Emotions) continues to work
+- Only one minor vague observation claim
 
-1. **Forbidden Patterns** (Section ⚠️): No changes needed
-   - Iteration 7 had ZERO violations
-   - Current definitions are complete and clear
-
-2. **です/ます Critical Requirements** (Section 🔴): No changes needed
-   - Iteration 7 achieved 55 endings (optimal 50-70 range)
-   - Absolute threshold guidance (40-50 minimum) was correctly applied
-   - Article length guidance (180-230 lines) was followed perfectly
-
-3. **Author Voice Patterns** (Section 👤): No changes needed
-   - All 10 patterns were present in Iteration 7
-   - Pattern descriptions are accurate and actionable
-   - Scoring system (10 points → no cap) worked as designed
-
-4. **Pre-Submission Checklist**: No changes needed
-   - All checklist items were satisfied
-   - No missing requirements identified
-
-5. **Human-Like Writing Patterns** (Section 🟡): No changes needed
-   - Iteration 7 demonstrated natural conversational tone
-   - Meta-commentary was rich and authentic (7 instances)
-   - Code evolution and ecosystem context present
-
----
-
-## Validation of Current Guidelines
-
-### What Iteration 7 Proves
-
-**The 9.5/10 achievement validates that v2.6 guidelines are optimal:**
-
-#### 1. Absolute です/ます Threshold Works
-- **Guideline**: "40-50 です/ます is MANDATORY for 9.0+ scores"
-- **Iteration 7**: 55 です/ます endings
-- **Result**: ✅ Achieved 9.5/10 with optimal count in 50-70 range
-- **Validation**: The absolute threshold (not percentage-based) is correct
-
-#### 2. Article Length Guidance is Accurate
-- **Guideline**: "Target length: 180-230 lines (proven sweet spot)"
-- **Iteration 7**: 218 lines
-- **Result**: ✅ Perfect fit in the sweet spot
-- **Validation**: This range reliably produces natural です/ます distribution
-
-#### 3. All 10 Author Voice Patterns Required
-- **Guideline**: "Implement 8+ of these 10 patterns for 9.0+ quality"
-- **Iteration 7**: All 10 patterns present
-- **Result**: ✅ Perfect author voice score (10/10 points)
-- **Validation**: Comprehensive pattern coverage produces authentic uhyo voice
-
-#### 4. Zero Forbidden Patterns for 9.0+
-- **Guideline**: "ONE violation = unpublishable"
-- **Iteration 7**: 0 violations
-- **Result**: ✅ No score caps applied
-- **Validation**: Forbidden pattern elimination is essential
-
-#### 5. Ecosystem Context Requirement
-- **Guideline**: "1-2 GitHub issues/PRs OR community mentions (required for 9.0+)"
-- **Iteration 7**: GitHub issue #4721 referenced
-- **Result**: ✅ Met ecosystem context requirement
-- **Validation**: Specific issue/PR references (not just repo links) satisfy requirement
-
----
-
-## Comparison with Previous Iterations
-
-### Why Iteration 7 Outperformed Others
-
-| Metric | Iteration 5 (9.3/10) | Iteration 6 (8.0/10) | Iteration 7 (9.5/10) |
-|--------|---------------------|---------------------|---------------------|
-| です/ます count | 51 | 32 ❌ | 55 ✅ |
-| Article length | 231 lines | 151 lines ❌ | 218 lines ✅ |
-| Author voice | 10/10 ✅ | 10/10 ✅ | 10/10 ✅ |
-| Forbidden patterns | 0 ✅ | 0 ✅ | 0 ✅ |
-| です/ます range | 40-50 range ✓ | Below 40 threshold ❌ | 50-70 optimal ✅✅ |
+**Critical Failures**:
+- Self-contradiction undermines credibility (-2.0 technical points)
+  * Lines 132-134: Warning about Promise recreation
+  * Lines 113-125: Example 2 creates Promises inline
+  * Article warns about the exact anti-pattern it demonstrates
+- Technical issues same as Iteration 6 (6.5/10)
+  * Example 2 Promise bug (production-breaking)
+  * useTransition misrepresentation (conceptual error)
 
 **Key Insights**:
+- Self-contradictions are WORSE than simple errors
+  * Simple error: Reader might miss it
+  * Self-contradiction: Reader sees warning, then sees code violating it → notices immediately
+  * Impact: -2.0 points vs. -0.5 for typical error
+- Technical accuracy stuck at 6.5/10 despite v4.4 verification requirements
+- Style guide can prevent fabrications (9.4 reliability proves this)
+- Style guide CANNOT prevent implementation bugs or hook misconceptions
+- Need explicit React-specific patterns and self-contradiction checks
 
-1. **Iteration 5 vs 7**: Both achieved 9.0+ scores with similar patterns
-   - Iteration 5: 51 endings (just above minimum threshold)
-   - Iteration 7: 55 endings (in optimal 50-70 range)
-   - Iteration 7's higher score (9.5 vs 9.3) reflects better positioning in optimal range
+### 7. Updated Season 4 Challenge Evolution
 
-2. **Iteration 6 Failure**: Perfect author voice wasn't enough
-   - Had all 10 uhyo patterns (10/10 points)
-   - BUT only 32 です/ます endings (below 40 minimum)
-   - Article too short (151 lines) to reach threshold naturally
-   - Result: Capped at 8.0/10 despite perfect voice
+**Location**: Lines 1086-1094
 
-3. **The Winning Formula** (Iteration 7):
-   - です/ます in **optimal** 50-70 range (not just minimum 40-50)
-   - Article length in **sweet spot** 180-230 lines
-   - All 10 author voice patterns present
-   - Zero forbidden patterns
-   - Strong ecosystem context (specific GitHub issue)
+**What changed**: Added Iteration 7 evolution step:
 
----
+**Iteration 7 Status**:
+- Reliability excellent (9.4/10) ✅
+- Self-contradiction + hook misconceptions = still 6.5/10 technical ❌
+- Self-contradictions are publication-quality issues (readers notice immediately)
+- React hook behavior misrepresentation needs explicit verification
+- **ADDED**: FORBIDDEN PATTERNS #4 (Promise recreation), #6 (Hook misrepresentation)
 
-## Reviewer's Assessment
+**Next Target**:
+- Fix self-contradictions + verify React patterns
+- Target: 8.5/10 technical + maintain 9.4 reliability = ~9.0/10
 
-### Direct Quotes from Review
+**Path to 9.0+**:
+- Self-contradiction check
+- React hook verification
+- Keep reliability (9.4)
+- Maintain voice (8.5)
+- = ~9.0/10
 
-> "**No changes needed** - Style guide v2.6 is working perfectly."
+### 8. Renumbered Pedagogical Scaffolding
 
-> "Style guide is at optimal state. No updates required."
+**Location**: Changed from Pattern #4 to Pattern #5
 
-> "The current guidance successfully produced an article that:
-> - Meets the absolute です/ます threshold (55 in 50-70 optimal range)
-> - Maintains appropriate length (218 lines in 180-230 target)
-> - Implements all 10 uhyo-specific patterns
-> - Avoids all forbidden patterns
-> - Includes ecosystem context (GitHub issue reference)"
-
-### Minor Notes (Not Issues)
-
-The reviewer identified only two extremely minor points, **both explicitly stated as acceptable**:
-
-1. **GitHub reference format**: Article used full URL format "(https://github.com/vitest-dev/vitest/issues/4721)" instead of casual "#4721" format
-   - **Reviewer's verdict**: "Acceptable" - satisfies ecosystem context requirement
-   - **Style guide action**: No change needed - both formats are valid
-
-2. **Personal project depth**: Article's project reference was "acceptable" level (tech stack + problem + motivation) rather than "rich" level (nitrogql-style deep integration)
-   - **Reviewer's verdict**: "Sufficient for 9.0+ when other patterns are strong"
-   - **Style guide action**: No change needed - style guide already documents acceptable vs rich levels
-
-**Conclusion**: These are not weaknesses requiring guideline changes. Both aspects were sufficient for 9.5/10 achievement.
+**Rationale**: Inserted new Promise Recreation pattern as #4 (higher priority, production-breaking), moved Pedagogical Scaffolding to #5, and added Hook Misrepresentation as #6.
 
 ---
 
-## Why This Is a "Documentation-Only" Update
+## Minor Changes
 
-### The Style Guide Formula Is Complete
+### Removed Duplicate Promise Pattern Section
 
-**Evidence**:
-1. ✅ Iteration 7 followed all guidelines correctly
-2. ✅ Achieved 9.5/10 (highest Season 3 score)
-3. ✅ Reviewer found no systematic issues
-4. ✅ All critical requirements met
-5. ✅ All author voice patterns present
-6. ✅ Zero forbidden patterns
+**Location**: Removed old "🚨 CRITICAL PATTERN: Promise Creation in React" from Technical Accuracy section (was lines 412-441)
 
-**Conclusion**: No substantive changes needed. The guidelines are comprehensive, accurate, and produce excellent results when followed.
-
-### What Changed: Recording Success
-
-The only update was **documenting the success**:
-- Added Iteration 7 to success patterns
-- Marked it as "gold standard"
-- Added specific metrics to formula section
-- Updated version metadata
-
-**Purpose**: Provide concrete proof that the formula works and offer a reference example for future iterations.
+**Rationale**: Moved this to FORBIDDEN PATTERNS section for higher visibility and added self-contradiction check. The old section was buried in the checklist; the new location makes it a top-level requirement.
 
 ---
 
-## Impact Assessment
+## What These Changes Address
 
-### For Writer Agent
+### Primary Issues from Iteration 7
 
-**Benefits of this update**:
-1. **Concrete target numbers**: Can see exactly what 9.5/10 execution looks like
-   - 55 です/ます endings (in 50-70 optimal range)
-   - 218 lines (in 180-230 sweet spot)
-   - All 10 uhyo patterns implemented
+1. **Example 2 Promise Recreation Bug** (lines 113-125 in article)
+   - **Issue**: Created Promises inline where `use()` consumes them → infinite loops
+   - **Fix**: FORBIDDEN PATTERN #4 with correct memoization pattern
+   - **Impact**: -2.0 technical points prevented
 
-2. **Gold standard reference**: Iteration 7 serves as proof the formula works
-   - No need to wonder "is this good enough?"
-   - Clear evidence that following guidelines produces 9.0+ results
+2. **Self-Contradiction** (warning at 132-134 vs. code at 113-125)
+   - **Issue**: Article warns about Promise memoization need, then violates it
+   - **Fix**: Self-contradiction check in Pattern #4, Technical Accuracy checklist, and PRE-SUBMISSION checklist
+   - **Impact**: -2.0 credibility points prevented
 
-3. **Confidence in guidelines**: Validated system reduces uncertainty
-   - Trust that です/ます threshold is correct
-   - Trust that article length guidance is accurate
-   - Trust that author voice patterns are complete
+3. **useTransition Misrepresentation** (lines 48-54 in article)
+   - **Issue**: Claims useTransition makes sync work non-blocking (conceptually wrong)
+   - **Fix**: FORBIDDEN PATTERN #6 with correct explanation
+   - **Impact**: Prevents reader misconceptions about React hooks
 
-### For Reviewer Agent
+4. **Fragile Linguistic Metrics** (22.4% density)
+   - **Not directly addressed**: This is a writing execution issue, not a guideline issue
+   - **Existing guidance**: Style guide already recommends 50-60 です/ます in 195-205 lines for safety margin
 
-**Benefits**:
-1. Updated success patterns for comparison
-2. Clear gold standard (Iteration 7) to reference
-3. Validation that scoring system works correctly
-
-### For Future Iterations
-
-**Path forward**:
-- No major guideline overhauls needed
-- Focus shifts to consistent execution
-- Writer can reference Iteration 7 as exemplar
-- Goal: Achieve second consecutive 9.0+ score to complete Season 3
+5. **One Vague Observation Claim** (line 193: "筆者の観察では")
+   - **Not directly addressed**: Rule 4 (No Fabricated Emotional Reactions) already covers this
+   - **Impact**: Minor (-0.6 points), not a primary focus for v4.5
 
 ---
 
-## Season 3 Progress
+## Why These Changes Matter
 
-### Iteration History
+### Self-Contradictions Are Credibility Destroyers
 
-| Iteration | Score | です/ます | Length | Author Voice | Status |
-|-----------|-------|----------|--------|--------------|--------|
-| 1 | 6.5/10 | ? | ? | ? | Learning |
-| 2 | 7.2/10 | ? | ? | ? | Improving |
-| 5 | 9.3/10 | 51 | 231 | 10/10 | ✅ First 9.0+ |
-| 6 | 8.0/10 | 32 ❌ | 151 ❌ | 10/10 | Regression |
-| 7 | 9.5/10 | 55 ✅ | 218 ✅ | 10/10 | ✅✅ Gold Standard |
+**Insight from Iteration 7**: Self-contradictions have **2-4x worse impact** than simple errors.
 
-### Season 3 Completion Status
+**Simple error** (-0.5 points):
+- Reader may not notice
+- If noticed, seen as oversight
+- Affects technical score only
 
-**Goal**: Generate Japanese technical articles that match uhyo's specific writing voice (9.0+/10)
+**Self-contradiction** (-2.0 points):
+- Reader WILL notice (warning draws attention)
+- Seen as lack of understanding or carelessness
+- Destroys trust in entire article
+- Affects technical score AND perceived reliability
 
-**Current Status**:
-- ✅ Achieved 9.5/10 in Iteration 7 (highest score)
-- ✅ Demonstrated mastery of uhyo-specific voice (10/10 patterns)
-- ✅ Validated proven formula works consistently
-- ⚠️ **Need**: 2+ consecutive 9.0+ iterations (currently: 1 consecutive after Iteration 6 broke streak)
+**Example from Iteration 7**:
+- Lines 132-134: "この実装例では簡略化のため、コンポーネント内で直接 Promise を作成していますが、実際のアプリケーションでは、Promise を親コンポーネントで useMemo を使ってメモ化し、props として渡す必要があります。"
+- Lines 113-125: Example 2 code creates Promises inline with `use(fetchUserProfile(userId))`
+- **Result**: Reader sees warning, then sees code doing exactly what was warned against
 
-**Next Steps**:
-- Run one more iteration to achieve second consecutive 9.0+ score
-- Confirm consistent application of formula
-- Complete Season 3 success criteria
+### React Hooks Need Explicit Verification
+
+**Pattern from Iterations 6-7**: TypeScript misconceptions (Iter 6) and React hook misconceptions (Iter 7) show that **conceptual understanding cannot be assumed**.
+
+**Iteration 6**: TypeScript inference (union types vs. common supertypes)
+**Iteration 7**: useTransition behavior (deprioritizes updates vs. makes work async)
+
+**Both**: Plausible but incorrect mental models
+
+**Solution**: Explicit verification requirements for common misconceptions:
+- useTransition: Only affects state update priority
+- useDeferredValue: Only defers value changes
+- Promise patterns: Must be memoized before consumption
+
+### Style Guide Limitations Acknowledged
+
+**Key Insight**: The style guide is effective at **preventing fabrications** (9.4 reliability proves this) but **cannot prevent technical implementation bugs**.
+
+**What the style guide CAN control**:
+- ✅ Fabricated experiences (Rule 1)
+- ✅ False verification claims (Rule 2)
+- ✅ Unverified references (Rule 3)
+- ✅ Fabricated emotions (Rule 4)
+- ✅ Linguistic patterns (Forbidden Patterns)
+- ✅ Self-contradictions (NEW in v4.5)
+
+**What the style guide CANNOT control**:
+- ❌ TypeScript inference misconceptions (requires testing)
+- ❌ React hook behavior misunderstanding (requires documentation verification)
+- ❌ Promise lifecycle bugs (requires code review)
+- ❌ Mathematical calculation errors (requires verification)
+
+**Strategy**: Add explicit verification steps for high-risk areas rather than relying on general guidelines.
 
 ---
 
-## Technical Details
+## Expected Impact on Next Iteration
 
-### Style Guide Metrics
+### If Guidelines Are Followed
 
-**Before (v2.6)**:
-- Line count: ~400 lines
-- Success examples: Iterations 5-6
-- Last validation: Iteration 6 (regression taught absolute threshold importance)
+**Prevented Issues**:
+- ✅ No Promise recreation bugs (Pattern #4)
+- ✅ No self-contradictions (explicit check)
+- ✅ No React hook misrepresentations (Pattern #6)
+- ✅ Continued excellent reliability (Rule 4 working)
 
-**After (v2.7)**:
-- Line count: ~410 lines (+10 for documentation)
-- Success examples: Iterations 5-7
-- Last validation: Iteration 7 (9.5/10 gold standard)
+**Potential Score Improvement**:
+- Technical: 6.5 → 8.0-8.5 (if self-contradictions eliminated + hooks verified)
+  * +1.5 points from fixing Example 2 bug
+  * +0.3 points from correct useTransition explanation
+  * +0.2-0.5 points from other improvements
+- Linguistic: 8.5 → 8.5-9.0 (if です/ます density improved + ecosystem refs added)
+- Reliability: 9.4 → 9.5-10.0 (if "筆者の観察では" removed)
+- Author Voice: 8.5 → 8.5-9.0 (if investigative tone strengthened)
 
-**Change magnitude**: ~2.5% documentation increase, 0% substantive changes
+**Estimated Next Score**: 8.5-9.0/10 (achievable if all new checks followed)
+
+### Remaining Challenges
+
+**Beyond Style Guide Control**:
+1. **Technical verification discipline**: Writer must actually test code examples
+2. **React documentation consultation**: Can't assume hook behavior
+3. **です/ます execution**: Need to hit 50-55 endings in 195-205 lines consistently
+4. **Ecosystem context**: Need to insert 3-4 refs (currently only 1)
+
+**These require execution discipline, not just guidelines.**
 
 ---
 
 ## Conclusion
 
-### Summary
+Version 4.5 addresses Iteration 7's critical self-contradiction issue and adds explicit React-specific patterns. The key innovation is recognizing that **self-contradictions are worse than simple errors** and adding verification steps at multiple points (FORBIDDEN PATTERNS, Technical Accuracy checklist, PRE-SUBMISSION checklist).
 
-**What happened**: Iteration 7 achieved 9.5/10 by perfectly executing v2.6 guidelines
+**Strategic Direction**:
+- **v4.1-4.3**: Focused on preventing fabrications → SUCCESS (9.4 reliability)
+- **v4.4**: Focused on TypeScript verification → PARTIAL (still 6.5 technical)
+- **v4.5**: Focused on self-contradictions + React verification → TO BE TESTED
 
-**What changed**: Minimal documentation update to record this success
+**Path Forward**:
+- Iteration 8 will test whether self-contradiction checks + React hook verification can break through the 6.5 technical plateau
+- If successful, technical score should reach 8.0-8.5
+- Combined with maintained reliability (9.4) and voice (8.5), could achieve ~9.0/10
 
-**What stayed the same**: All core guidelines (they're working optimally)
-
-**What this means**: The style guide has reached stable, optimal state
-
-### The Proven Formula (Validated)
-
-**To achieve 9.0+ quality, articles must have**:
-
-1. ✅ Article length: 180-230 lines
-2. ✅ です/ます: 50-70 absolute count (40+ minimum)
-3. ✅ All 10 uhyo author voice patterns
-4. ✅ Zero forbidden patterns
-5. ✅ Ecosystem context (GitHub issues/PRs or community refs)
-
-**Iteration 7 proves**: When this formula is applied correctly, we achieve 9.5/10 quality with authentic uhyo voice indistinguishable from his published work.
-
-### Looking Forward
-
-**Style guide status**: **Optimal and complete**
-- No further major updates anticipated
-- Future changes will be minimal (if any)
-- Focus shifts to consistent execution
-
-**Season 3 status**: **One iteration away from completion**
-- Need one more consecutive 9.0+ score
-- Formula is proven and validated
-- Success is within reach
-
----
-
-**Changelog prepared by**: Style Guide Updater Agent
-**Date**: Iteration 7
-**Confidence**: High (validated by 9.5/10 achievement)
+**Ultimate Goal**: Prove that explicit verification checklists can prevent conceptual errors, not just fabrications.

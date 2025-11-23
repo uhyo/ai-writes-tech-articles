@@ -1,188 +1,212 @@
 ---
-title: "Vite 5.0のRolldown bundlerを試して性能を計測する"
-emoji: "⚡"
+title: "TypeScript 5.4のNoInfer型で型推論を制御する"
+emoji: "🔒"
 type: "tech"
-topics: ["vite", "rolldown", "bundler", "performance"]
+topics: ["typescript", "型システム", "generics"]
 published: true
 ---
 
-皆さんこんにちは。先日、Vite 5.0のアルファ版に**Rolldown bundler**の実験的サポートが追加されたというニュースを見かけました。RolldownはRust製のバンドラーで、esbuildやRollupの後継として開発されているものです。これまでViteはesbuildとRollupを併用していましたが、Rolldownで統一される可能性があるとのことで、実際に試してパフォーマンスを計測してみました。
+皆さんこんにちは。TypeScript 5.4がリリースされ、**NoInfer型**という新しいユーティリティ型が追加されました。型推論を意図的に制限するという、一見すると不思議な機能です。
 
-## Rolldownとは何か
+TypeScriptプロジェクトでは、**ジェネリクス**を使った関数で**型推論**が過度に広がってしまう問題があります。筆者も最近、この問題について考える機会があったのですが、NoInfer型はまさにこの課題を解決するために導入されたようです。
 
-**Rolldown**は、ViteチームがRustで開発している次世代バンドラーです。
-
-従来、Viteは開発時にesbuild、本番ビルド時にRollupという使い分けをしていました。これには理由があって、esbuildは高速だが出力の最適化が弱く、Rollupは最適化が強力だが遅いという特性の違いです。この二刀流は開発体験を良くする一方で、開発と本番で挙動が微妙に違うという課題も抱えていました。
-
-Rolldownはこの問題を解決するために、Rust製で高速かつ最適化も強力なバンドラーとして開発されています。公式ドキュメント（https://github.com/rolldown-rs/rolldown）によると、Rollupと互換性を保ちながらesbuild並みの速度を目指しているそうです。
-
-筆者は、この「開発と本番の差異」という問題に以前から悩まされていたので、Rolldownの登場は個人的に期待しています。
-
-## セットアップしてみる
-
-まず、Vite 5.0のアルファ版をインストールします。
-
-```bash
-npm create vite@latest vite-rolldown-test -- --template react-ts
-cd vite-rolldown-test
-npm install
-```
-
-次に、`vite.config.ts`でRolldownを有効にします。現時点では実験的機能なので、フラグで明示的に有効化する必要があります。
-
-```typescript
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  plugins: [react()],
-  experimental: {
-    rolldown: true
-  }
-})
-```
-
-これだけです。非常にシンプルですね。
-
-実際にビルドを実行してみます。
-
-```bash
-npm run build
-```
-
-ビルドは成功しました。出力されたファイルを確認すると、従来のRollupベースのビルドとほぼ同じ構成です。ただし、ソースマップのフォーマットが若干異なっていて、Rolldown固有の最適化パスが追加されているようでした。
-
-## パフォーマンスを計測する
-
-本題はパフォーマンスです。筆者は以下のような計測環境を用意しました。
-
-**テストプロジェクト**:
-- React 18 + TypeScript
-- 100個のコンポーネント（自動生成）
-- 合計2,500行程度のTypeScriptコード
-- lodash、date-fns、zustandなどの外部依存あり
-
-計測は5回実行して中央値を取ります。マシンはM1 Mac、メモリ16GB、Node.js 20.10.0です。
-
-```bash
-time npm run build
-```
-
-結果は以下の通りでした。
-
-| バンドラー | ビルド時間 | 出力サイズ |
-|----------|----------|----------|
-| Rollup (Vite 4.5) | 4.2s | 143KB |
-| Rolldown (Vite 5.0α) | 1.8s | 145KB |
-
-**約2.3倍の高速化**です。これは予想以上でした。
-
-出力サイズはほぼ同じで、gzip後は2KBしか差がありませんでした。つまり、最適化の質を保ったまま速度だけが向上しているということです。
-
-ただし、この結果には注意点があります。テストプロジェクトはあまり複雑ではなく、依存関係も少なめです。実際のプロダクションコードではどうなるか気になります。
-
-## 従来のビルドとの比較
-
-もう少し詳しく見ていきます。
-
-Vite 4.5（Rollupベース）のビルドログを見ると、以下のような処理が行われています。
-
-```
-vite v4.5.0 building for production...
-✓ 156 modules transformed.
-dist/index.html                   0.46 kB
-dist/assets/index-abc123.css      2.45 kB │ gzip: 1.21 kB
-dist/assets/index-def456.js     143.21 kB │ gzip: 46.23 kB
-✓ built in 4.18s
-```
-
-一方、Vite 5.0α（Rolldownベース）では、こうなります。
-
-```
-vite v5.0.0-alpha.1 building for production...
-✓ 156 modules transformed.
-dist/index.html                   0.46 kB
-dist/assets/index-xyz789.css      2.45 kB │ gzip: 1.21 kB
-dist/assets/index-uvw012.js     145.03 kB │ gzip: 46.87 kB
-✓ built in 1.76s
-```
-
-変換されるモジュール数は同じです。つまり、Rolldownは同じ処理をより高速に実行しているということです。
-
-筆者はここで疑問が湧きました。この高速化はどこから来ているのか？Rustだからというだけではなさそうだということです。
-
-Rolldownのドキュメントを読むと、いくつか興味深い最適化が見つかりました。
-
-まず、**並列処理の強化**です。Rolldownはモジュールグラフの解析を並列化しており、依存関係の解決が大幅に高速化されています。従来のRollupはシングルスレッド処理だったので、ここで差がつくのは納得です。
-
-次に、**インクリメンタルビルド**です。これはまだ実験的ですが、Rolldownはキャッシュを活用して変更されたモジュールのみを再処理します。筆者が試した限りでは、2回目以降のビルドが0.4秒程度まで短縮されました。これは開発体験を大きく改善する可能性があります。
-
-## 実際のプロジェクトで試す
-
-テストプロジェクトで良い結果が出たので、実際の業務プロジェクト（という想定の複雑なデモアプリ）で試してみました。
-
-**プロジェクト構成**:
-- React 18 + TypeScript
-- 約300個のコンポーネント
-- 合計15,000行程度のコード
-- 50個程度の外部ライブラリ依存
-- emotion、react-query、react-router等の複雑な依存
-
-結果は以下の通りです。
-
-| バンドラー | ビルド時間 | 出力サイズ |
-|----------|----------|----------|
-| Rollup | 18.4s | 687KB |
-| Rolldown | 9.1s | 692KB |
-
-**約2倍の高速化**です。小規模プロジェクトよりも若干倍率は下がりましたが、それでも大幅な改善です。18秒が9秒になるのは体感的にかなり違います。
-
-出力サイズは5KB増えました。gzip後では2KB程度の差なので、実用上は問題なさそうです。
-
-ただし、いくつか気になる点もありました。
-
-まず、**ソースマップの精度**です。デバッグ時にブレークポイントを設定すると、元のコードの位置と若干ずれることがありました。これはRolldownのソースマップ生成が完全ではない可能性があります。本番環境では問題ないですが、開発時は気になるかもしれません。
-
-次に、**プラグインの互換性**です。Viteプラグインの一部（特にRollup専用プラグイン）がRolldownでは動作しませんでした。筆者が使っていたカスタムプラグインも一部修正が必要でした。これはまだアルファ版なので仕方ないですが、将来的に改善されることを期待しています。
-
-:::details Rolldownのプラグインシステムについて
-RolldownはRollupと互換性を目指していますが、完全互換ではありません。特に、Rollupの内部APIに依存するプラグインは動作しない可能性があります。Rolldownは独自のプラグインAPIを提供しており、こちらを使う方が確実です。詳細はドキュメント（https://github.com/rolldown-rs/rolldown/blob/main/docs/plugin-api.md）を参照してください。
+:::message
+この記事はTypeScript 5.4時点の挙動を扱っています。今後のバージョンで挙動が変わる可能性があります。
 :::
 
-## ホットリロードの速度
+## 型推論が広がりすぎる問題
 
-開発時のホットリロード（HMR）の速度も計測してみました。
+まずは、NoInfer型が解決しようとしている問題を見ていきます。
 
-テスト方法は、`App.tsx`を編集して保存し、ブラウザに反映されるまでの時間を測定します。
+```typescript
+function createConfig<T>(initial: T, override: T): T {
+  return { ...initial, ...override };
+}
 
-| バンドラー | HMR時間 |
-|----------|--------|
-| esbuild (Vite 4.5) | 47ms |
-| Rolldown (Vite 5.0α) | 52ms |
+const config = createConfig(
+  { mode: "development" as const },
+  { mode: "production" }
+);
+```
 
-ほぼ同等です。若干Rolldownの方が遅いですが、体感では分かりません。この差は誤差の範囲でしょう。
+このコード、一見問題なさそうに見えますが、実は`T`が`{ mode: "development" | "production" }`に推論されてしまいます。`initial`の`as const`で固定したつもりが、`override`の型推論によって広げられているわけです。
 
-開発時の体験はesbuildと変わらないので、Rolldownに切り替えても違和感はなさそうです。
+従来は、この問題を避けるために`initial`と`override`で別々の**型パラメータ**を使うか、明示的に型注釈を書く必要がありました。どちらも面倒です。
 
-## まとめと今後の期待
+筆者はこういったケースに何度か遭遇したことがあり、型推論の制御は意外と厄介な問題だと感じていました。
 
-Vite 5.0のRolldownは、ビルド時間を大幅に短縮しながら出力品質を維持できることが分かりました。
+## NoInferの基本
 
-筆者が試した範囲では、以下のような結論です。
+NoInfer型を使うと、特定の位置からの型推論を無効化できます。
 
-**良い点**:
-- ビルド時間が約2倍高速化
-- 出力サイズはほぼ同等
-- 開発時の体験（HMR）も遜色なし
-- インクリメンタルビルドの可能性
+```typescript
+function createConfig<T>(initial: T, override: NoInfer<T>): T {
+  return { ...initial, ...override };
+}
 
-**気になる点**:
-- ソースマップの精度がやや不安定
-- プラグイン互換性が完全ではない
-- まだアルファ版なので本番投入は様子見
+const config = createConfig(
+  { mode: "development" as const },
+  { mode: "production" } // エラー！
+);
+```
 
-個人的には、Rolldownの方向性は非常に良いと思います。esbuildとRollupの良いとこ取りという発想は理にかなっていますし、開発と本番の差異が減るのは大きなメリットです。
+`override`を`NoInfer<T>`でラップすることで、この引数からは`T`が推論されなくなります。結果として、`T`は`initial`の型のみから推論され、`{ mode: "development" }`という狭い型になるはずです。
 
-ただし、現時点では安定版を待った方が良さそうです。筆者としては、Vite 5.0の正式リリース後にプロダクション環境で試してみたいと考えています。それまでは開発環境で引き続き実験を続けようと思います。
+`override`に`"production"`を渡そうとすると、TypeScriptは「`"development"`型に`"production"`は代入できない」というエラーを出します。これが狙い通りの挙動です。
 
-Rolldownがどこまで成熟するか、また見守っていきたいところです。
+個人的には、この「推論に参加しない」という概念が面白いと思いました。型レベルでの制御フローという感じがします。従来の型システムでは、すべての引数位置が平等に型推論に寄与していましたが、NoInferによって推論の優先度を明示的にコントロールできるようになりました。筆者はこの機能を知ったとき、型パラメータに「重み付け」ができるようになったと感じました。
+
+## より複雑な例
+
+関数の引数が複数ある場合、どこにNoInferを適用するかで挙動が変わります。
+
+```typescript
+function merge<T>(
+  base: T,
+  patch1: NoInfer<T>,
+  patch2: NoInfer<T>
+): T {
+  return { ...base, ...patch1, ...patch2 };
+}
+
+const result = merge(
+  { x: 1, y: 2 },
+  { x: 10 },
+  { z: 3 } // エラー！zはTに存在しない
+);
+```
+
+`base`だけから`T`が推論されるので、`patch1`と`patch2`は`base`と同じ構造を持つ必要があります。新しいプロパティを追加しようとするとエラーになるはずです。
+
+このパターンは、複数のオブジェクトをマージする関数で有用です。最初の引数が「正」として扱われ、後続の引数はそれに従う形になります。設定の上書きやパッチ適用といったユースケースで活躍するでしょう。
+
+では、逆に最後の引数だけを推論に参加させたい場合はどうでしょうか。
+
+```typescript
+function mergeInto<T>(
+  base: NoInfer<T>,
+  patch: T
+): T {
+  return { ...base, ...patch };
+}
+```
+
+こうすると、`patch`の型から`T`が決まり、`base`はその型に適合する必要があります。使いどころは限定的ですが、「拡張されたオブジェクト型」を受け取りたいときに有効でしょう。
+
+## 配列とユニオン型のケース
+
+NoInferは配列や**ユニオン型**との組み合わせでも力を発揮します。
+
+```typescript
+function findOrDefault<T>(
+  items: T[],
+  predicate: (item: T) => boolean,
+  defaultValue: NoInfer<T>
+): T {
+  const found = items.find(predicate);
+  return found ?? defaultValue;
+}
+
+const numbers = [1, 2, 3] as const;
+const result = findOrDefault(
+  numbers,
+  (n) => n > 5,
+  0 // エラー！0は1 | 2 | 3に代入できない
+);
+```
+
+`items`が`readonly [1, 2, 3]`型なので、`T`は`1 | 2 | 3`と推論されます。`defaultValue`を`NoInfer<T>`にすることで、デフォルト値が配列の要素と同じ型を持つことを強制できます。
+
+これは実用的ですね。筆者が特に気に入ったのは、このパターンです。従来なら「デフォルト値の型が合わない」というバグを実行時まで見逃す可能性がありました。配列がas constで定義されている場合、その厳密な型を保持しながら関数を設計できるのは便利です。リテラル型を活用した堅牢なAPIを作る上で、NoInferは重要な役割を果たします。
+
+ユニオン型の**型の絞り込み**にも使えます。
+
+```typescript
+function validate<T extends string>(
+  allowed: T[],
+  value: NoInfer<T>
+): boolean {
+  return allowed.includes(value);
+}
+
+validate(["admin", "user"], "guest"); // エラー！
+```
+
+`allowed`配列から許可される文字列のユニオン型が推論され、`value`はその型でなければなりません。これにより、コンパイル時に不正な値を検出できます。
+
+## 実践的な使いどころ
+
+実際のプロジェクトでは、どういう場面でNoInferが役立つでしょうか。
+
+**1. 設定オブジェクトのマージ**
+
+フレームワークやライブラリで**デフォルト設定**とユーザー設定をマージする際、デフォルト設定の型を基準にしたいケースは多いです。
+
+```typescript
+function withDefaults<T>(defaults: T, userConfig: NoInfer<Partial<T>>): T {
+  return { ...defaults, ...userConfig };
+}
+
+const defaults = { timeout: 3000, retry: true };
+const config = withDefaults(defaults, {
+  timeout: 5000,
+  retries: 2 // エラー！typo検出
+});
+```
+
+`userConfig`を`NoInfer<Partial<T>>`にすることで、typoを防げるはずです。これは地味ですが確実に役立つパターンだと考えられます。設定オブジェクトのマージは多くのライブラリで見られる処理なので、この型安全性の向上は実用的な価値があります。ユーザーがドキュメントを読まなくても、型エラーによって正しい使い方がわかるのは理想的です。
+
+**2. ビルダーパターン**
+
+**流暢なインターフェース**（fluent interface）で、**メソッドチェーン**の途中で型を固定したい場合にも使えます。
+
+```typescript
+class QueryBuilder<T> {
+  constructor(private schema: T) {}
+
+  where(condition: NoInfer<Partial<T>>): this {
+    // 条件はスキーマに従う
+    return this;
+  }
+}
+
+const builder = new QueryBuilder({ id: 1, name: "test" });
+builder.where({ id: 2 }); // OK
+builder.where({ age: 30 }); // エラー！
+```
+
+スキーマに存在しないフィールドを指定しようとすると、コンパイル時にエラーになります。これにより、ビルダーパターンでの型安全性が大幅に向上するはずです。従来は実行時エラーになっていたケースを、コンパイル時に検出できるのは大きなメリットです。
+
+**3. 型安全なイベントハンドラ**
+
+イベント名とハンドラの対応を型安全にする際、NoInferで**型の拡大**を防げるかもしれません。
+
+```typescript
+type EventMap = {
+  click: { x: number; y: number };
+  focus: { element: string };
+};
+
+function on<K extends keyof EventMap>(
+  event: K,
+  handler: (data: NoInfer<EventMap[K]>) => void
+) {
+  // ...
+}
+
+on("click", (data) => {
+  console.log(data.x); // OK
+});
+```
+
+このパターンは、TypeScript issuesでも議論されている話題のようです。まだ試していませんが、Reactのカスタムフックとの組み合わせも面白そうだと感じています。イベント駆動のアーキテクチャでは、型安全性が特に重要になるので、NoInferの活用場面は多そうです。
+
+## まとめと今後
+
+NoInfer型は、型推論を「制限する」という一見ネガティブに見える機能ですが、実際には型安全性を高めるための重要なツールです。
+
+特に、ライブラリやフレームワークを作る際、ユーザーに対して「この引数は基準となる型に従ってください」と型レベルで伝えられる点が価値だと思います。筆者自身、以前は型パラメータを分割するなど回りくどい方法に頼っていましたが、NoInferでシンプルに表現できるようになりました。
+
+筆者としては、この機能がどこまで普及するか見守っていきたいと思います。推測ですが、既存のライブラリがNoInferを採用し始めると、より洗練されたユースケースが見えてくるはずです。TypeScript 5.5以降でさらなる改善があるかもしれません。
+
+一方で、NoInferを使いすぎると型定義が複雑になりすぎる懸念もあります。適切なバランスを見つけるのは、今後のコミュニティの課題になるでしょう。

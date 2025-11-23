@@ -1,270 +1,215 @@
 ---
-title: "React 19のuse hookを試して既存パターンとの違いを調べる"
+title: "React 19のuseフックとServer Componentsの実践的な使い分け"
 emoji: "🎣"
 type: "tech"
-topics: ["react", "typescript", "react19"]
+topics: ["react", "typescript", "servercomponents"]
 published: true
 ---
 
-皆さんこんにちは。2024年12月5日、React 19が正式リリースされて話題になりました。その中で特に気になっていたのが、新しく追加された**use hook**です。既存のHooksとは違う特徴があるらしいので、実際に試しながら従来のパターンと比較してみます。
+皆さんこんにちは。React 19のCanary版で**useフック**という新しいフックが登場し、Server Componentsとの組み合わせが話題になっています。
+
+筆者も最近、Server Componentsでの非同期データ処理について考える機会があったのですが、useフックはこの領域において興味深い位置づけにあるようです。従来のuseEffectやuseStateとは異なり、Promiseを直接扱える点が特徴的です。
 
 :::message
-この記事では、React 19.0.0を対象としています。
+この記事はReact 19 Canary版（2024年11月時点）の挙動に基づいています。正式リリース時には変更される可能性があります。
 :::
 
-## use hookの基本
+本記事では、useフックの基本的な仕組みから、Server Componentsとの使い分けまで、実践的なパターンを探っていきます。
 
-`use`は、PromiseやContextから値を読み取れるAPIです。ドキュメントを見ると、他のHooksと違って条件分岐の中でも呼べるらしい。これは結構な変更点だなと思いました。
+## useフックとServer Componentsの関係性
 
-まずは簡単な例から試してみます。
+useフックは、**Promise**や**Context**を引数に取り、その値を解決して返すフックです。Promiseを渡した場合、そのPromiseがresolveされるまでコンポーネントはSuspendされます。
 
-```typescript
+```tsx
 import { use } from 'react';
-import { ThemeContext } from './ThemeContext';
-
-function Button() {
-  const theme = use(ThemeContext);
-  return <button className={theme}>Click me</button>;
-}
-```
-
-このコードは普通に動きます。`useContext`と同じような感じ。
-
-## useContextとの違いを確認する
-
-従来の`useContext`と何が違うのか、実際にコードで比べてみました。
-
-```typescript
-// 従来のパターン
-function OldButton({ show }: { show: boolean }) {
-  const theme = useContext(ThemeContext);
-
-  if (!show) return null;
-  return <button className={theme}>Old</button>;
-}
-
-// use を使った場合
-function NewButton({ show }: { show: boolean }) {
-  if (!show) return null;
-
-  const theme = use(ThemeContext);
-  return <button className={theme}>New</button>;
-}
-```
-
-このコードを実行すると、`OldButton`は問題なく動作しますが、これは`useContext`をコンポーネントのトップレベルで呼んでいるから。一方、`NewButton`の方は条件分岐の後に`use`を呼んでいます。
-
-従来のHooksのルールだと、条件分岐の後でHookを呼ぶのはNG。でも`use`は大丈夫。試してみたところ、エラーなく動きました。筆者はこの結果が一番驚きだったのですが、確かにこれができると不要なContext読み込みを避けられる。
-
-```typescript
-function ConditionalTheme({ needsTheme }: { needsTheme: boolean }) {
-  if (needsTheme) {
-    const theme = use(ThemeContext);
-    return <div className={theme}>Themed content</div>;
-  }
-  return <div>No theme needed</div>;
-}
-```
-
-こういうパターンが書けるようになるわけです。`useContext`では、条件に関係なく常にContextを読み取る必要がありました。
-
-:::details Context読み取りの最適化について
-実は`useContext`でもReactの内部最適化で不要な再レンダリングは避けられていたのですが、それでもHook呼び出し自体は発生していました。`use`なら、そもそも条件に入らなければ呼び出しすらされない。パフォーマンス的には微々たる差かもしれないけど、コードの意図が明確になるメリットはある気がします。
-:::
-
-## Promiseを読み取る
-
-ここからが本題です。`use`のもう一つの機能は、Promiseから値を読み取れること。
-
-```typescript
-async function fetchUser(id: string) {
-  const res = await fetch(`/api/users/${id}`);
-  return res.json();
-}
 
 function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
   const user = use(userPromise);
+
   return <div>{user.name}</div>;
 }
 ```
 
-このコードでは、`userPromise`という解決済みかもしれないし未解決かもしれないPromiseを`use`に渡しています。Promiseが未解決の場合、Reactは自動的にSuspenseします。
+このコードを実行すると、`userPromise`が解決されるまでコンポーネントは表示されず、最も近い**Suspense境界**でfallbackが表示されるはずです。
 
-実際に動かすには、Suspense境界が必要。
+従来、非同期データを扱う場合はuseEffectとuseStateの組み合わせが一般的でした。しかし、この方法だと初回レンダリング時にローディング状態を自分で管理する必要があります。useフックを使えば、Suspenseの仕組みに乗せられるため、コードがシンプルになると考えられます。
 
-```typescript
-function App() {
-  const userPromise = fetchUser('123');
+個人的には、この「Promiseを直接扱える」という点が新鮮でした。
+
+一方で、Server Componentsの存在も重要です。Server Componentsは、サーバー側で実行されるコンポーネントであり、非同期関数として定義できます。
+
+```tsx
+// Server Component
+async function UserProfile({ userId }: { userId: string }) {
+  const user = await fetchUser(userId);
+
+  return <div>{user.name}</div>;
+}
+```
+
+このように、Server ComponentsではコンポーネントをAsync Functionとして定義し、直接awaitが使えます。これは非常に直感的です。
+
+しかし、Client Componentsでは非同期コンポーネントは使えません。ここでuseフックの出番となります。useフックは、Client ComponentsでもPromiseを扱えるようにするための仕組みと言えます。
+
+筆者はこの設計について、「なぜServer Componentsではasync/awaitが使えるのに、Client Componentsではuseフックが必要なのか？」と疑問に思っていました。これは、クライアント側では再レンダリングの概念があり、非同期処理をフックのライフサイクルに統合する必要があるためと考えられます。Server Componentsは1回しか実行されないため、async/awaitで十分なわけです。
+
+この違いを理解することが、使い分けの第一歩になります。
+
+## 簡単な使用例から始める
+
+まずは、useフックの基本的な使い方を見ていきます。
+
+```tsx
+'use client';
+
+import { use, Suspense } from 'react';
+
+function Comments({ commentsPromise }: { commentsPromise: Promise<Comment[]> }) {
+  const comments = use(commentsPromise);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <UserProfile userPromise={userPromise} />
+    <ul>
+      {comments.map(comment => (
+        <li key={comment.id}>{comment.text}</li>
+      ))}
+    </ul>
+  );
+}
+
+function CommentsSection() {
+  const commentsPromise = fetchComments();
+
+  return (
+    <Suspense fallback={<div>読み込み中...</div>}>
+      <Comments commentsPromise={commentsPromise} />
     </Suspense>
   );
 }
 ```
 
-これを実行すると、Promiseが解決するまで`Loading...`が表示され、解決後にユーザー名が表示されました。
+このコードでは、`fetchComments()`が返すPromiseを`Comments`コンポーネントに渡し、その中でuseフックを使って値を取り出しています。
 
-## 既存パターンとの比較
+重要なのは、Promiseの生成とその消費が分離されている点です。`CommentsSection`でPromiseを作り、`Comments`で値を取り出す。この分離により、複数のコンポーネントで同じPromiseを共有することも可能になるはずです。
 
-従来、Promiseからデータを取得するには`useEffect`と`useState`を組み合わせていました。
+ただし、ここで気をつけるべきは、`fetchComments()`が毎回新しいPromiseを生成してしまうと、再レンダリングのたびにfetchが走る可能性があることです。推測ですが、useMemoなどでPromiseをメモ化する必要があるケースもあるかもしれません。
 
-```typescript
-function OldUserProfile({ userId }: { userId: string }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+```tsx
+function CommentsSection() {
+  const commentsPromise = useMemo(() => fetchComments(), []);
 
-  useEffect(() => {
-    setLoading(true);
-    fetchUser(userId)
-      .then(data => {
-        setUser(data);
-        setLoading(false);
-      });
-  }, [userId]);
-
-  if (loading) return <div>Loading...</div>;
-  if (!user) return null;
-
-  return <div>{user.name}</div>;
+  return (
+    <Suspense fallback={<div>読み込み中...</div>}>
+      <Comments commentsPromise={commentsPromise} />
+    </Suspense>
+  );
 }
 ```
 
-このパターンと比べると、`use`を使った方がコード量は確実に減ります。ローディング状態もSuspenseに委譲できるし、エラーハンドリングもError Boundaryに任せられる。
+このようにuseMemoで囲むことで、Promiseが再生成されるのを防げるはずです。ただ、依存配列の管理が必要になるため、このあたりのベストプラクティスはまだ確立されていないように思います。
 
-ただし注意点がある。`use`に渡すPromiseをコンポーネント内で直接作ってはいけない。
+## より複雑なパターンを試す
 
-```typescript
-// これはダメ（毎レンダリングで新しいPromiseが作られる）
-function BadExample({ userId }: { userId: string }) {
-  const user = use(fetchUser(userId)); // 無限ループ！
-  return <div>{user.name}</div>;
-}
-```
+次に、条件分岐を含むパターンを見てみます。
 
-このコードを実行すると、レンダリングのたびに新しいPromiseが作られて無限ループに陥りました。実装は詳しく知らないのですが、おそらくPromiseが変わるたびにSuspenseして、Suspense解除後に再レンダリングされて、また新しいPromiseが作られて...という感じ。
+```tsx
+function UserContent({ userId }: { userId: string | null }) {
+  if (userId === null) {
+    return <div>ログインしてください</div>;
+  }
 
-正しくは、親コンポーネントやServer Componentから渡すか、useMemoでキャッシュするか、React QueryのようなSuspense対応ライブラリを使う必要があります。
-
-```typescript
-// 親から渡す（推奨）
-function Parent() {
-  const userPromise = fetchUser('123');
-  return <Child userPromise={userPromise} />;
-}
-
-// またはuseMemoでキャッシュ
-function WithMemo({ userId }: { userId: string }) {
-  const userPromise = useMemo(() => fetchUser(userId), [userId]);
+  const userPromise = fetchUser(userId);
   const user = use(userPromise);
+
+  return <div>こんにちは、{user.name}さん</div>;
+}
+```
+
+useフックは、条件分岐の中でも呼び出せる点が興味深いです。従来のフックの「フックは条件分岐の外で呼ぶべき」というルールとは異なる挙動となります。
+
+Reactの公式ドキュメントによれば、useフックは条件分岐やループの中でも使用可能とされています。これは、useフックが内部的に異なる仕組みで実装されているためのようです。
+
+筆者はここの挙動が一番驚きでした。通常のフックとは異なるルールを持つという点で、useフックは特殊な位置づけにあると言えます。
+
+もう一つ、エラーハンドリングのパターンも見ておきます。
+
+```tsx
+function UserContent({ userPromise }: { userPromise: Promise<User> }) {
+  const user = use(userPromise);
+
   return <div>{user.name}</div>;
 }
-```
 
-筆者は最初この制限に気づかず、なぜ無限ループするのか10分くらい悩んだ記憶があります。
-
-## 条件付きでPromiseを使う
-
-`use`の特徴を活かして、条件付きでデータを取得するパターンも試してみました。
-
-```typescript
-function OptionalData({
-  showDetails,
-  detailsPromise
-}: {
-  showDetails: boolean;
-  detailsPromise: Promise<Details>;
-}) {
-  if (!showDetails) {
-    return <div>Basic view</div>;
-  }
-
-  const details = use(detailsPromise);
-  return <div>Details: {details.content}</div>;
+function UserPage() {
+  return (
+    <ErrorBoundary fallback={<div>エラーが発生しました</div>}>
+      <Suspense fallback={<div>読み込み中...</div>}>
+        <UserContent userPromise={fetchUser()} />
+      </Suspense>
+    </ErrorBoundary>
+  );
 }
 ```
 
-これは普通に動きます。`showDetails`がfalseの場合、Promiseは読み取られないし、Suspenseも発生しない。従来のパターンだと、こういう条件付きデータ取得は結構面倒でした。
+Promiseがrejectされた場合、Error Boundaryでキャッチされるはずです。これはSuspenseと同様の仕組みを使っていると考えられます。
 
-```typescript
-// 従来の方法
-function OldOptionalData({ showDetails, detailsId }: Props) {
-  const [details, setDetails] = useState<Details | null>(null);
+:::details Contextでのuse使用について
 
-  useEffect(() => {
-    if (showDetails) {
-      fetchDetails(detailsId).then(setDetails);
-    }
-  }, [showDetails, detailsId]);
+useフックはPromiseだけでなく、Contextも引数に取れます。
 
-  if (!showDetails) return <div>Basic view</div>;
-  if (!details) return <div>Loading...</div>;
-
-  return <div>Details: {details.content}</div>;
-}
+```tsx
+const theme = use(ThemeContext);
 ```
 
-比べると、`use`の方がシンプル。ただ、Promiseを外から渡す必要があるのは変わらないので、親コンポーネント側の責務が増える感じはします。
+これはuseContextの代替として機能しますが、条件分岐の中でも使える点が異なります。ただし、筆者はまだこのパターンを実際の開発で使ったことがないため、実用性については評価できていません。
 
-## ループの中で使う
+:::
 
-ドキュメントによると、`use`はループの中でも呼べるらしい。試してみました。
+## 実践的な使い分けの指針
 
-```typescript
-function MultipleContexts({ contexts }: { contexts: Context<string>[] }) {
-  const values = contexts.map(ctx => use(ctx));
-  return <div>{values.join(', ')}</div>;
-}
-```
+では、useフックとServer Componentsをどう使い分けるべきでしょうか。筆者なりの考えをまとめてみます。
 
-このコードに対してTypeScriptとReactを実行すると、残念ながらエラーが出ました。よく見たら、これは`map`の中で`use`を呼んでいるけど、`map`のコールバックは別の関数スコープになるからダメなのかもしれない。
+### Server Componentsを使うケース
 
-```typescript
-// これならいける？
-function BetterLoop({ count }: { count: number }) {
-  const themes = [];
-  for (let i = 0; i < count; i++) {
-    themes.push(use(ThemeContext));
-  }
-  return <div>{themes.length} themes</div>;
-}
-```
+以下のような場合は、Server Componentsで非同期処理を行うのが適切だと考えられます。
 
-こっちは動いた気がする。でも、同じContextを複数回読み取る意味はあまりないので、実用的かどうかは微妙。配列から動的にContextを読み取りたい場合、結局は別のパターンが必要そうです。まだ全部のケースを試したわけじゃないけど。
+- 初期表示に必要なデータを取得する場合
+- データベースやAPIへの直接アクセスが必要な場合
+- SEOが重要なコンテンツの場合
+- 機密情報を含むロジックを実行する場合
 
-## 「Promiseが一級市民になった」という話
+Server Componentsはサーバー側で実行されるため、データベースへの直接アクセスや環境変数の使用が安全に行えます。また、生成されたHTMLがクライアントに送られるため、SEOにも有利です。
 
-`use`の導入により、ReactにおいてPromiseが**一級市民**になったと言えます。これは筆者が個人的に面白いと思った概念で、従来はPromiseを扱うために`useEffect`というワンクッションが必要でした。つまり、Promiseは直接Reactコンポーネントで扱えるものではなかった。
+パフォーマンス面でも、Server Componentsは初期表示が速いという利点があります。データ取得がサーバー側で完了してからHTMLが送られるため、クライアント側での待ち時間が短くなります。
 
-でも`use`があれば、Promiseをpropsとして渡して、直接読み取れる。Server ComponentsからClient Componentsへデータを橋渡しする仕組みとしても使えます。
+### useフックを使うケース
 
-```typescript
-// Server Component
-async function ServerParent() {
-  const dataPromise = fetchData(); // Promiseを作るだけ
-  return <ClientChild dataPromise={dataPromise} />;
-}
+一方、以下のケースではClient Componentsでuseフックを使うのが適しているはずです。
 
-// Client Component
-'use client';
-function ClientChild({ dataPromise }: { dataPromise: Promise<Data> }) {
-  const data = use(dataPromise);
-  return <div>{data.value}</div>;
-}
-```
+- ユーザーインタラクション後のデータ取得
+- クライアント側でのみ利用可能なAPIを使う場合
+- リアルタイムでデータを更新する必要がある場合
+- ブラウザのローカルストレージなどを使う場合
 
-このパターンは、Server Componentsとの統合を考えると結構強力かもしれません。まだ本格的なプロジェクトで試してないけど、筆者としては今後どう活用されていくか見守っていきたいと思います。
+例えば、ボタンをクリックしたらコメントを読み込む、といったケースではClient Componentが必要になります。この場合、useフックを使ってPromiseを処理するのが自然な実装となるでしょう。
 
-## まとめ
+また、WebSocketやServer-Sent Eventsのようなリアルタイム通信も、Client Componentsの領域です。これらはブラウザ固有のAPIを使うため、Server Componentsでは扱えません。
 
-React 19の`use`を実際に試してみて、既存のHooksとの主な違いは以下でした。
+筆者としては、Server Componentsをデフォルトとし、インタラクティブな処理が必要な部分のみClient Componentsとuseフックを使う、という方針が良さそうに思います。
 
-- 条件分岐やループの中で呼べる（Hooksのルールが一部緩和）
-- PromiseとContextの両方を読み取れる
-- Suspenseとの統合が前提（Error Boundaryも）
-- コンポーネント内でPromiseを直接作れない制限がある
+## まだ見えない可能性
 
-個人的には、条件付きでContextを読めるのは便利だと思いました。Promiseの方は、まだベストプラクティスが固まってない感じがする。Server Componentsとの組み合わせが本命なのかもしれないけど、そのあたりはこれから色々なパターンが出てくるんじゃないかな。
+useフックはまだ新しい機能であり、ベストプラクティスが確立されているとは言えません。
 
-筆者が開発している小規模なプロジェクトでも試してみたいと思っていますが、無限ループの罠にハマらないように気をつけないと。そのうち、もっと複雑なケースでも検証してみたいですね。
+例えば、エラーハンドリングについてはまだ不明な点が多いです。useフックで処理中のPromiseがrejectされた場合、Error Boundaryでキャッチされるはずですが、その際の挙動やリトライ戦略については、実際のプロジェクトで試行錯誤が必要になると考えられます。
+
+また、Server ComponentsとClient Componentsの境界でのデータの受け渡しについても、Promiseをpropsとして渡すパターンが推奨されるのか、それとも別の方法が確立されていくのか、まだ見守る必要があります。Promiseを直接propsで渡すのは少し不思議な感覚がありますが、これがReact 19の新しいパラダイムなのかもしれません。
+
+React issuesでも、useフックの使い方やパフォーマンスについて活発に議論されているようです。今後、コミュニティからより実践的なパターンが出てくるのではないかと期待しています。
+
+個人的に気になっているのは、Promiseのキャッシュ戦略です。同じデータを複数のコンポーネントで使う場合、Promiseをどう共有するのがベストなのか、まだ明確な答えがありません。状態管理ライブラリとの統合も含めて、今後の発展が楽しみな領域です。
+
+筆者としては、まだ試していないパターンも多いため、実際のプロジェクトでの経験を積みながら、この新しいフックの可能性を探っていきたいと思います。
+
+React 19のuseフックは、Client ComponentsでPromiseを扱うための新しい手段を提供します。Server Componentsが直接async/awaitを使えるのに対し、Client Componentsではuseフックを通じてSuspenseの仕組みに統合されます。実践的には、Server Componentsをベースとし、インタラクティブな処理が必要な部分でClient Componentsとuseフックを組み合わせるアプローチが有効と考えられます。
+
+筆者としては、この新しいパラダイムがReactの非同期処理をどう変えていくのか、引き続き見守っていきたいと思います。

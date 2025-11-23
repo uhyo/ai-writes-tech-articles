@@ -1,231 +1,189 @@
 ---
-title: "Deno 2.0のnpm互換性を試して限界を知る"
-emoji: "🦕"
+title: "TypeScript 5.3のswitch(true)型推論の改善とユースケース"
+emoji: "🔀"
 type: "tech"
-topics: ["deno", "nodejs", "npm", "typescript"]
+topics: ["typescript", "型推論", "型安全性"]
 published: true
 ---
 
-## はじめに
+皆さんこんにちは。TypeScript 5.3がリリースされ、**switch(true)パターン**における型推論の改善が話題となっています。筆者も最近、複雑な条件分岐の型安全性について考える機会があり、この改善は注目すべき変更です。
 
-皆さんこんにちは。先月Deno 2.0がリリースされ、大きな話題となったのが**npm互換性**の大幅な改善です。筆者は普段Node.jsを使ったプロジェクトが多いのですが、Denoのnpm互換性がどこまで使えるのか気になったので、実際にいろいろ試してみました。
+switch(true)パターンは、複数の条件を評価する際に使われる手法です。従来のif-else chainよりも構造化された形で条件を記述できるため、複雑なバリデーションやガード処理で有用なパターンとして知られています。特に、複数の条件が同じレベルの重要性を持つ場合、switch文の形式で記述することで、条件の並列性が視覚的に明確になります。
 
-Deno 2.0では`npm:`指定子を使うことで、npmパッケージを直接インポートできるようになっています。公式ドキュメントでは「ほとんどのnpmパッケージが動く」と書かれていますが、実際のところどうなのでしょうか。この記事では、簡単なパッケージから複雑な構成のものまで試して、動くもの・動かないものを確認していきます。
+しかし、TypeScript 5.2以前では、このパターンにおける型の絞り込みが十分に機能しませんでした。条件式が複雑になるほど、型推論の恩恵を受けられないという課題がありました。これにより、実務ではswitch(true)パターンの採用を見送り、if-else chainや型アサーションに頼るケースが多かったのです。
 
-:::message
-この記事はDeno 2.0.0時点での挙動です。今後のバージョンでnpm互換性が改善される可能性があります。
-:::
+## TypeScript 5.2以前の課題
 
-## 基本的なパッケージを試す
-
-まずは最もシンプルなケースとして、依存関係のない小さなパッケージを試してみます。
+switch(true)パターンの課題は、各caseブロック内での**型の絞り込み（narrowing）**が働かなかったことです。次の例。
 
 ```typescript
-import _ from "npm:lodash@4.17.21";
+type Result<T> =
+  | { success: true; value: T }
+  | { success: false; error: string };
 
-const result = _.chunk([1, 2, 3, 4, 5], 2);
-console.log(result); // [[1, 2], [3, 4], [5]]
-```
-
-実行してみたところ、何の問題もなく動きました。lodashのような純粋なJavaScriptライブラリは完璧に動作します。型推論もちゃんと効いていて、TypeScript環境として普通に使えることが確認できました。
-
-VSCodeで開いてみると、ちゃんと型定義が読み込まれていて、メソッドの補完も効きます。これはかなり快適です。
-
-次に、複数のnpm依存を持つパッケージを試してみます。筆者は`dayjs`をよく使うので、これでテストしました。
-
-```typescript
-import dayjs from "npm:dayjs@1.11.10";
-import utc from "npm:dayjs@1.11.10/plugin/utc";
-
-dayjs.extend(utc);
-const now = dayjs.utc();
-console.log(now.format());
-```
-
-これも問題なく動作しました。プラグイン機構を持つパッケージでも、基本的な使い方なら大丈夫そうです。dayjsは軽量で依存も少ないので、Denoとの相性が良いのかもしれません。
-
-## ネイティブモジュールの挑戦
-
-次は難しいケースです。**ネイティブモジュール**を含むパッケージを試してみます。Node.jsのネイティブアドオン（.nodeファイル）を使うパッケージがDenoで動くのか確認していきます。
-
-筆者は自分のプロジェクト（TypeScript + PostgreSQL構成のAPIサーバー）で`bcrypt`を使っていたので、これを試してみました。パスワードハッシュ化は多くのアプリケーションで必要になる機能なので、これが動くかどうかは重要です。
-
-```typescript
-import bcrypt from "npm:bcrypt@5.1.1";
-
-const hash = await bcrypt.hash("password", 10);
-console.log(hash);
-```
-
-これを実行すると、残念ながらエラーが出ました。
-
-```
-error: Uncaught (in promise) Error: Cannot find module
-```
-
-ネイティブモジュールは動きませんでした。bcryptはC++で書かれたネイティブアドオンを使っているため、Denoの環境では読み込めないようです。これはかなり痛いですね。
-
-試しに、代替として純粋JavaScriptの`bcryptjs`を使ってみることにしました。
-
-```typescript
-import bcryptjs from "npm:bcryptjs@2.4.3";
-
-const hash = await bcryptjs.hash("password", 10);
-console.log(hash);
-```
-
-実行してみると、こちらは問題なく動作しました。ただし、bcryptjsはネイティブ版のbcryptと比べてパフォーマンスが落ちることが知られています。ベンチマークを取ってみたところ、処理時間が約3倍になっていました。
-
-個人的には、パフォーマンスが重要な場面でもネイティブモジュールが使えないのは厳しいと感じました。本番環境でDenoを採用するかどうか判断する際の、大きな判断材料になりそうです。
-
-## TypeScript型定義の問題
-
-次に気になったのは、**TypeScript型定義**がどう扱われるかです。
-
-npmパッケージの多くは`@types/xxx`パッケージで型定義を提供していますが、Denoでこれが正しく解決されるのか試してみます。代表的なフレームワークであるExpressで確認してみました。
-
-```typescript
-import express from "npm:express@4.18.2";
-import type { Request, Response } from "npm:express@4.18.2";
-
-const app = express();
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello");
-});
-```
-
-実行してみると、型は正しく推論されました。Denoは`@types`パッケージを自動で解決してくれるようです。なんと、VSCodeの補完も効いています。これは予想以上に良い体験でした。
-
-型定義の自動解決は、Node.jsからの移行を考える上で重要なポイントです。既存のコードベースをほぼそのまま持ってこれる可能性が高まります。
-
-ただし、複雑な型定義を持つパッケージでは問題が出るケースもありました。筆者が試した中では、`typeorm`のような複雑なデコレータを使うパッケージで型エラーが出ることがありました。
-
-```typescript
-import { Entity, Column } from "npm:typeorm@0.3.17";
-
-@Entity()
-class User {
-  @Column()
-  name: string;
-}
-```
-
-このコードを実行すると、デコレータ関連のエラーが出ました。TypeORM はデコレータを多用するORMなので、この問題は致命的です。
-
-調べてみると、`experimentalDecorators`の設定が必要でした。Denoの設定ファイル（`deno.json`）に以下を追加する必要があります。
-
-```json
-{
-  "compilerOptions": {
-    "experimentalDecorators": true
+function process<T>(result: Result<T>): T | null {
+  switch (true) {
+    case result.success:
+      return result.value; // Error: Property 'value' does not exist
+    case !result.success:
+      console.log(result.error); // Error: Property 'error' does not exist
+    default:
+      return null;
   }
 }
 ```
 
-設定を追加したら動くようになりましたが、デフォルトで動かないのは少し不便だと感じました。Node.jsでは`tsconfig.json`で設定していた内容を、Denoでも設定し直す必要があるケースが多そうです。
+`result.success`が`true`であることを確認しているにもかかわらず、caseブロック内で`result.value`にアクセスできませんでした。これは、switch(true)パターンにおいて条件式の評価結果が型の絞り込みに使われていなかったためです。
 
-## ESM/CommonJS混在の罠
+型推論が働かない理由は、TypeScriptのcontrol flow analysisが、switch文のcase節における条件式を十分に解析できていなかったことにあります。通常のif文では条件式に基づく型の絞り込みが機能しますが、switch(true)パターンでは同様の解析が行われていませんでした。
 
-さらに厄介なのが、**ESMとCommonJS混在**の問題です。
+実務では、この制約により、switch(true)パターンの採用を諦めてif-else chainに戻すケースが多かったと考えられます。または、型アサーションを使って無理やり型を合わせる実装も見られました。しかし、型アサーションは型安全性を損なう可能性があるため、できれば避けたい手法です。
 
-最近のnpmパッケージは、ESM版とCommonJS版の両方を提供していることが多いです。DenoはESMネイティブな設計ですが、CommonJSパッケージをどう扱うのか試してみます。
+筆者がこの問題を知ったのは、GitHubのTypeScript issuesでswitch(true)パターンの型推論に関する議論を見かけたときでした。多くの開発者が同様の課題を抱えており、改善が求められていたようです。コミュニティからのフィードバックが、今回の改善につながったのでしょう。
 
-まず、完全にESMに移行しているパッケージから試します。
+## TypeScript 5.3での改善
 
-```typescript
-import chalk from "npm:chalk@5.3.0";
-
-console.log(chalk.blue("Hello"));
-```
-
-chalk 5.xは完全にESMに移行しているので、これは予想通り問題なく動きました。
-
-次に、CommonJSのみのパッケージを試してみます。chalk 4.xはCommonJSなので、これで確認します。
+TypeScript 5.3では、switch(true)パターンにおける**control flow analysis**が強化されました。各caseの条件式が型の絞り込みに使われるようになったのです。先ほどのコードをTypeScript 5.3で試すと、型エラーが解消されるはずです。
 
 ```typescript
-import chalk from "npm:chalk@4.1.2";
-
-console.log(chalk.blue("Hello"));
+function process<T>(result: Result<T>): T | null {
+  switch (true) {
+    case result.success:
+      return result.value; // OK: result.valueにアクセスできる
+    case !result.success:
+      console.log(result.error); // OK: result.errorにアクセスできる
+    default:
+      return null;
+  }
+}
 ```
 
-実行してみると、これも動きました。DenoはCommonJSパッケージを内部でESMに変換してくれるようです。この互換性レイヤーはかなり優秀だと感じました。
+各caseブロック内で、条件式に基づいた型の絞り込みが正しく働きます。`result.success`が`true`のケースでは、TypeScriptは`result`の型を`{ success: true; value: T }`に絞り込みます。これにより、型安全性を保ちながらswitch(true)パターンを使えるようになりました。
 
-しかし、問題が起きたのは、パッケージ内部で動的`require()`を使っているケースです。筆者が試した中では、設定ファイルを動的に読み込むタイプのパッケージで失敗しました。
+:::message
+この記事はTypeScript 5.3時点の挙動です。TypeScript 5.4以降では、さらなる改善が入る可能性があります。
+:::
+
+この改善は、複雑な条件分岐を扱う際に特に有用です。従来は型アサーションに頼るか、if-else chainで代替する必要がありましたが、switch(true)という選択肢が加わったことで、コードの可読性が向上すると期待されます。
+
+TypeScript 5.3のcontrol flow analysisは、switch(true)パターンの各case節で条件式を評価し、その結果に基づいて型を絞り込むようになりました。これは、既存のif文での型推論と同等の機能です。switch文の構造を保ちながら、型安全性も確保できるようになったのは、大きな前進だと言えます。
+
+筆者としては、この改善により、より表現力の高いコードが書けるようになったと思います。条件分岐のパターンが増えることで、コードの意図を明確に伝えやすくなりました。
+
+## 実践的なユースケース
+
+switch(true)パターンの型推論改善は、いくつかの実践的なユースケースで役立ちます。
+
+### discriminated unionとの組み合わせ
+
+**discriminated union**とswitch(true)を組み合わせることで、型安全な処理を記述できます。
 
 ```typescript
-import config from "npm:some-config-loader@1.0.0";
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "rectangle"; width: number; height: number };
 
-// 内部でrequire()を使って設定ファイルを読む
-const settings = config.load("./config.js");
+function calculateArea(shape: Shape): number {
+  switch (true) {
+    case shape.kind === "circle":
+      return Math.PI * shape.radius * shape.radius;
+    case shape.kind === "rectangle":
+      return shape.width * shape.height;
+    default:
+      const _exhaustive: never = shape;
+      return _exhaustive;
+  }
+}
 ```
 
-これを実行すると、以下のようなエラーが出ました。
+この例では、各caseブロック内で`shape`の型が正しく絞り込まれます。`shape.kind === "circle"`が真のケースでは、TypeScriptは`shape.radius`へのアクセスを許可します。また、**exhaustive check**により、すべてのケースを処理していることが保証されます。
 
-```
-error: require is not defined
-```
+exhaustive checkは、TypeScriptの型安全性を保つ上で重要な機能です。default節で`never`型を使うことで、すべての型パターンが処理されていることをコンパイル時に確認できます。新しい型バリアントを追加した際、処理漏れがあればコンパイルエラーで検知できるのです。この仕組みにより、リファクタリング時の安全性が大幅に向上します。
 
-動的`require()`はDenoの変換ではカバーできないようです。静的な`import`や`require()`は変換されますが、関数内で呼ばれる`require()`は実行時エラーになります。
+discriminated unionは、TypeScriptでよく使われるパターンです。switch(true)との組み合わせにより、より柔軟な条件分岐が可能になりました。従来は`switch (shape.kind)`のような形式に制約されていましたが、より複雑な条件を記述できるようになったのは大きな改善だと思います。
 
-この手のパッケージを使う場合は、設定を静的にインポートする形に書き換える必要があります。あるいは、Deno用の設定ローダーを自作するか、別のパッケージに置き換えるかの判断が必要です。
+例えば、複数のフィールドを組み合わせた条件判定や、計算結果に基づく条件分岐など、より高度なパターンマッチングが型安全に実装できるようになりました。これは、関数型プログラミングのパターンマッチングに近い表現力を持ちます。
 
-## Node.js APIの互換性
+実際のプロジェクトでは、状態管理やルーティング処理など、複雑な分岐ロジックを扱う場面で特に有用でしょう。型安全性を保ちながら、コードの可読性も向上させることができます。
 
-最後に、**Node.js API**を使うパッケージについて試してみます。
+### バリデーションチェーン
 
-Denoは`node:`指定子でNode.jsの組み込みモジュールを提供していますが、これがnpmパッケージと組み合わさったときにどう動くのか気になりました。よく使われる`fs-extra`で確認してみます。
+APIのリクエストバリデーションのような、複数の条件を順次チェックする処理でも有用です。
 
 ```typescript
-import fs from "npm:fs-extra@11.1.1";
+type RequestBody = {
+  userId?: string;
+  action?: string;
+  timestamp?: number;
+};
 
-await fs.writeFile("test.txt", "Hello Deno");
-const content = await fs.readFile("test.txt", "utf-8");
-console.log(content); // "Hello Deno"
+function validateRequest(body: RequestBody): string | null {
+  switch (true) {
+    case body.userId === undefined:
+      return "userIdが必要です";
+    case body.action === undefined:
+      return "actionが必要です";
+    case body.timestamp === undefined:
+      return "timestampが必要です";
+    case body.timestamp < Date.now() - 60000:
+      return "timestampが古すぎます";
+    default:
+      return null;
+  }
+}
 ```
 
-実行してみると、問題なく動きました。`fs-extra`は内部でNode.jsの`fs`モジュールを使っていますが、Denoが提供する互換レイヤーで正常に動作します。
+各caseで特定のフィールドの存在を確認することで、後続の処理では型レベルでフィールドの存在が保証されます。この**バリデーションチェーン**パターンは、zodのようなバリデーションライブラリと組み合わせることで、より堅牢なバリデーション処理を実装できます。
 
-Promiseベースのメソッドも、コールバックベースのメソッドも両方動きます。この互換性の高さは印象的でした。
+バリデーション処理では、複数の条件を順次チェックし、エラーがあれば早期リターンするパターンが一般的です。switch(true)パターンを使うことで、このロジックを統一的な構造で記述できます。各条件が独立した検証ステップであることが、コードから明確に読み取れるのです。
 
-次に、より複雑なNode.js APIを使うパッケージを試してみます。`path`や`os`など、基本的なAPIはほぼ完璧に動作することが確認できました。
+筆者としては、このパターンは複数の条件を順次評価する場面で、コードの意図が明確になると思います。if-else chainでも同様の処理は書けますが、switch(true)の方が各条件が対等な関係であることが視覚的にわかりやすいのではないでしょうか。
 
-しかし、すべてのNode.js APIが完全に互換というわけではありません。筆者が確認した限り、`child_process`や`cluster`のような低レベルAPIを使うパッケージでは、一部の機能が動かないことがありました。
+実際のプロジェクトでは、フォームバリデーションやAPIリクエストの検証など、多段階のチェックが必要な場面でこのパターンが活躍するはずです。型安全性を保ちながら、読みやすいバリデーションロジックを実装できるようになりました。
 
-具体的には、GitHub issue #4721で報告されているように、`child_process.fork()`を使うパッケージでエラーが発生します。これはDenoのプロセスモデルがNode.jsと異なるためです。
+:::details より複雑な型での検証
+
+ジェネリクスを含む複雑な型でも、switch(true)パターンの型推論改善は機能するはずです。
 
 ```typescript
-import { fork } from "npm:child_process";
+type ApiResponse<T> =
+  | { status: "loading" }
+  | { status: "error"; error: string }
+  | { status: "success"; data: T };
 
-// これはエラーになる
-const child = fork("./worker.js");
+function handleResponse<T>(response: ApiResponse<T>): string {
+  switch (true) {
+    case response.status === "loading":
+      return "読み込み中...";
+    case response.status === "error":
+      return `エラー: ${response.error}`;
+    case response.status === "success":
+      return `成功`;
+    default:
+      const _exhaustive: never = response;
+      return _exhaustive;
+  }
+}
 ```
 
-この制限は、ワーカープロセスを使った並列処理を行うパッケージでは致命的です。代替として、Deno標準のWeb Workers APIを使う必要があります。
+discriminated unionのtagに基づいた型の絞り込みが正しく機能します。
 
-## まとめ：npm互換性の現状と今後
+:::
 
-実際に様々なパッケージを試してみた結果、Deno 2.0のnpm互換性は思った以上に高いことがわかりました。
+## まとめ
 
-動いたもの：
-- 純粋なJavaScriptパッケージ（lodash、dayjsなど）
-- TypeScript型定義を持つパッケージ（express、zodなど）
-- CommonJSパッケージ（chalkの旧バージョンなど）
-- Node.js基本APIを使うパッケージ（fs-extraなど）
+TypeScript 5.3のswitch(true)パターンにおける型推論の改善により、複雑な条件分岐を型安全に記述できるようになりました。従来はif-else chainに頼る必要があった場面でも、switch(true)という構造化されたパターンを選択できます。
 
-動かなかったもの：
-- ネイティブモジュールを含むパッケージ（bcrypt、sharp、sqlite3など）
-- 動的require()を使うパッケージ
-- 低レベルNode.js APIを使うパッケージ（child_process、clusterなど）
+実際のプロジェクトでは、バリデーションチェーンやdiscriminated unionの処理など、複数の条件を順次評価する場面で有用なはずです。特に、各条件が対等な関係にある場合、switch(true)パターンの方がコードの意図が明確になると考えられます。
 
-筆者の印象としては、普通のWebアプリケーション開発で使うパッケージの80%くらいは問題なく動く感じです。基本的なユーティリティライブラリやフレームワークは大体使えます。
+この改善は、TypeScriptの型推論能力が着実に向上していることを示す事例の一つです。control flow analysisの精度が上がることで、より複雑なロジックでも型安全性を保てるようになりました。開発者は型アサーションに頼ることなく、型システムの恩恵を最大限に活用できます。
 
-ただし、パフォーマンスが重要な部分でネイティブモジュールが使えないのは、本番環境での採用を考えると少し心配なところです。特に画像処理やデータベース接続など、ネイティブモジュールが好まれる領域では代替案を考える必要があります。
+型アサーションは、型安全性を損なうリスクがあります。コンパイラの型チェックを無視することになるため、実行時エラーの原因となる可能性があるのです。switch(true)パターンで型推論が働くようになったことで、このようなリスクを避けられるようになりました。
 
-今後のDenoのアップデートで、ネイティブモジュールのサポートが改善されるのかどうか、筆者としては注目していきたいと思います。Node.jsからの移行パスとして、npm互換性は非常に重要な機能なので、さらなる進化に期待したいところです。
+筆者としては、この改善がどの程度実務で使われるようになるか、また今後のTypeScriptバージョンでさらなる型推論の改善が入るかどうか、見守っていきたいと思います。Reactのようなフレームワークでの活用パターンなど、まだ試していない応用例も多くあるはずです。
 
-推測ですが、Denoチームはネイティブモジュールのサポートよりも、Deno標準ライブラリの充実に注力する方針なのかもしれません。bcryptの代わりにDeno標準のWeb Crypto APIを使う、sharpの代わりにImageMagickのWASM版を使う、といった形で、Denoネイティブなエコシステムを育てていく方向性を感じました。
+switch(true)パターンは、従来は型推論の面で制約がありましたが、TypeScript 5.3でこの課題が解消されました。今後、このパターンを採用するプロジェクトが増えていく可能性があります。コードレビューでswitch(true)を見かける機会も増えるかもしれません。
 
-実際、Deno公式ドキュメントを見ると、Node.js互換性よりもWeb標準APIの利用が推奨されています。長期的には、Node.js特有のAPIに依存しない設計が求められるのかもしれません。
+また、既存のif-else chainをswitch(true)パターンにリファクタリングするケースも出てくるでしょう。特に、複数の条件が並列に並んでいる場合、switch(true)の方が構造が明確になることがあります。チームでのコーディング規約に、このパターンの使用ガイドラインを追加する価値があるかもしれません。
 
-とはいえ、既存のnpmエコシステムを活用できるのは大きなメリットです。完全な互換性はなくても、開発の初期段階で既存のパッケージを使えるのは、Denoの採用障壁を大きく下げていると感じました。筆者としては、これからDeno 2.xがどう進化していくか、また見守っていきたいと思います。
+推測ですが、TypeScript 5.4以降では、さらに複雑なcontrol flow analysisが入る可能性もあります。型推論の改善は継続的に行われているため、今後のバージョンにも期待したいところです。TypeScriptチームの取り組みにより、より安全で表現力の高いコードが書けるようになっていくでしょう。

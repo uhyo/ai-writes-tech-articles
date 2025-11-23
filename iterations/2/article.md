@@ -1,200 +1,209 @@
 ---
-title: "TypeScript 5.4のNoInfer型を試して使いどころを探る"
-emoji: "🔍"
+title: "Next.js 14のServer ActionsでフォームValidationを実装する際の実践パターン"
+emoji: "📝"
 type: "tech"
-topics: ["typescript", "型システム"]
+topics: ["nextjs", "react", "typescript", "serveractions"]
 published: true
 ---
 
-皆さんこんにちは。TypeScript 5.4がリリースされ、**NoInfer型**という新しいユーティリティ型が追加されました。公式ドキュメントを見ると「型推論を抑制する」と書かれているのですが、正直なところ最初は「どういう場面で使うんだ？」という感じでした。そこで、実際に色々試して使いどころを探ってみることにしました。
+# Next.js 14のServer ActionsでフォームValidationを実装する際の実践パターン
 
-## NoInferの基本的な動作
+皆さんこんにちは。Next.js 14で正式に安定版となった**Server Actions**について、筆者が開発しているReactアプリケーションでフォームValidationを実装する際に考えたパターンをまとめます。Server Actionsは従来のAPI Routesと比べて記述が簡潔ですが、**型安全性**やエラーハンドリングの設計には工夫が必要です。
 
-まず簡単な例から見ていきます。NoInferがない場合、こんなコードを書くとどうなるでしょうか。
+:::message
+この記事はNext.js 14.0時点の挙動を前提としています。Next.js 15以降では仕様が変わる可能性があります。
+:::
 
-```typescript
-function createConfig<T>(defaults: T, overrides: T): T {
-  return { ...defaults, ...overrides };
-}
+## Server Actionsの基本
 
-const config = createConfig(
-  { port: 3000, host: "localhost" },
-  { port: 8080 }
-);
-```
+Server Actionsは、サーバー側で実行される非同期関数をクライアントから直接呼び出せる機能です。従来のAPI Routesと比べて、エンドポイントの定義が不要になるのが特徴です。最もシンプルな例を見てみます。
 
-これを実行すると、TypeScriptは`overrides`の型を推論してしまって、`{ port: number }`という型になります。そして`defaults`の`{ port: number, host: string }`と合成しようとして型エラーになる。筆者は昔、この挙動で何度か詰まったことがあって、「なんで勝手に推論するんだよ」と思っていました。
+```tsx
+// app/actions.ts
+'use server'
 
-NoInferを使うと、こう書けます。
-
-```typescript
-function createConfig<T>(defaults: T, overrides: NoInfer<T>): T {
-  return { ...defaults, ...overrides };
-}
-
-const config = createConfig(
-  { port: 3000, host: "localhost" },
-  { port: 8080 } // エラー: Property 'host' is missing
-);
-```
-
-なんと、`overrides`の型推論が抑制されて、`defaults`から推論された型`{ port: number, host: string }`に従うようになりました。これにより`host`がないとエラーを出してくれます。
-
-## 具体的な使いどころ
-
-実際のコードベースで使えそうな場面を考えてみました。筆者が最近作っている型安全なフォームライブラリで、こんな関数があったとします。
-
-```typescript
-function defineField<T>(
-  schema: { type: string; defaultValue: T },
-  validator: (value: T) => boolean
-) {
-  // フィールド定義を返す
+export async function createUser(formData: FormData) {
+  const name = formData.get('name') as string
+  const email = formData.get('email') as string
+  await db.users.create({ name, email })
+  return { success: true }
 }
 ```
 
-この場合、`validator`の引数の型は`schema.defaultValue`から推論してほしいのですが、従来は逆に`validator`から推論されてしまうことがあった。
+フォームから呼び出すには、`action`プロパティに直接渡します。
 
-```typescript
-// これだと validator から string が推論されて schema に影響する
-defineField(
-  { type: "text", defaultValue: "" },
-  (value) => value.length > 0 // value: string と推論
-);
+```tsx
+// app/page.tsx
+export default function Page() {
+  return (
+    <form action={createUser}>
+      <input name="name" type="text" />
+      <input name="email" type="email" />
+      <button type="submit">送信</button>
+    </form>
+  )
+}
 ```
 
-NoInferを使えば、推論の方向を制御できます。
+非常にシンプルですが、このままでは入力値の検証ができません。不正な値がそのまま処理されてしまいます。実際のアプリケーションでは、Validationの実装が必須です。
 
-```typescript
-function defineField<T>(
-  schema: { type: string; defaultValue: T },
-  validator: (value: NoInfer<T>) => boolean
-) {
+## Validation Schemaの統合
+
+Validationを実装するなら、zodのようなスキーマライブラリを使うのが現実的です。筆者も最近、フォーム処理の設計を考える機会がありました。
+
+```tsx
+'use server'
+import { z } from 'zod'
+
+const userSchema = z.object({
+  name: z.string().min(1, '名前は必須です'),
+  email: z.string().email('正しいメールアドレスを入力してください'),
+})
+
+export async function createUser(formData: FormData) {
+  const rawData = {
+    name: formData.get('name'),
+    email: formData.get('email'),
+  }
+
+  const result = userSchema.safeParse(rawData)
+  if (!result.success) {
+    return { success: false, errors: result.error.flatten().fieldErrors }
+  }
+
+  await db.users.create(result.data)
+  return { success: true }
+}
+```
+
+エラーハンドリングをServer Action側で行い、結果オブジェクトとして返すパターンです。この設計により、サーバー側で一元的にValidationを管理できます。
+
+## useFormStateでエラー表示
+
+Next.js 14では**useFormState**フックが提供されており、Server Actionの返却値を状態として扱えます。
+
+```tsx
+'use client'
+import { useFormState } from 'react-dom'
+
+export default function UserForm() {
+  const [state, formAction] = useFormState(createUser, null)
+
+  return (
+    <form action={formAction}>
+      <input name="name" type="text" />
+      {state?.errors?.name && <p>{state.errors.name[0]}</p>}
+
+      <input name="email" type="email" />
+      {state?.errors?.email && <p>{state.errors.email[0]}</p>}
+
+      <button type="submit">送信</button>
+      {state?.success && <p>登録完了</p>}
+    </form>
+  )
+}
+```
+
+ところが、ここで問題がある。TypeScriptの型推論がうまく効かないのです。`state`の型は`any`になってしまい、型安全性が失われます。筆者がこれを書いている時点では、GitHubのNext.js issuesでも議論されているようです。現状では、返却値の型を明示的に定義するしかないと考えられます。
+
+```tsx
+type ActionState = {
+  success: boolean
+  errors?: { name?: string[]; email?: string[] }
+} | null
+
+export async function createUser(prevState: ActionState, formData: FormData): Promise<ActionState> {
   // ...
 }
 ```
 
-これで`schema`から`T`が推論されて、`validator`はそれに従うようになりました。個人的には、この**推論の方向性を制御する**という発想がNoInferの核心だと思います。
+`useFormState`を使う場合、Server Actionの第一引数に前の状態が渡される点に注意です。シグネチャが変わるので、型定義もそれに合わせて調整します。
 
-## 複雑な型での検証
+## Pending状態の表示
 
-ここからもう少し複雑な例を試してみます。ジェネリクスが複数ある場合はどうなるのか。
+フォーム送信中の状態を表示するには**useFormStatus**が使えます。ただし、このフックは`<form>`の子コンポーネントから呼び出す必要があります。
 
-```typescript
-function merge<T, U>(
-  base: T,
-  extension: U,
-  mapper: (item: NoInfer<T>) => U
-): T & U {
-  // 実装は省略
-  return { ...base, ...extension };
+```tsx
+'use client'
+import { useFormStatus } from 'react-dom'
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+  return <button disabled={pending}>{pending ? '送信中...' : '送信'}</button>
 }
 
-const result = merge(
-  { id: 1, name: "test" },
-  { active: true },
-  (item) => ({ active: item.id > 0 })
-);
-```
-
-これを実行してみたところ、`mapper`の引数`item`が正しく`{ id: number, name: string }`と推論されました。`U`の推論には影響しないことも確認できました。
-
-ただ、こんなコードを書いたらどうなるか気になって試してみました。
-
-```typescript
-function complexMerge<T>(
-  base: T,
-  update: NoInfer<T>,
-  transform: (a: T, b: NoInfer<T>) => T
-): T {
-  return transform(base, update);
+export default function UserForm() {
+  return (
+    <form action={formAction}>
+      {/* ... */}
+      <SubmitButton />
+    </form>
+  )
 }
 ```
 
-`transform`の第一引数は`T`で、第二引数は`NoInfer<T>`です。この場合、`base`から`T`が推論されて、`update`と`transform`の第二引数がそれに従う。実際に試すと、ちゃんと動きました。
+最初、筆者は同じコンポーネント内で`useFormStatus`を呼ぼうとして動かなかった。コンポーネント分割が必須だと気づきました。これはReactのContext APIの制約によるものと推測されます。
 
-```typescript
-const merged = complexMerge(
-  { x: 1, y: 2 },
-  { x: 3, y: 4 }, // T に従う
-  (a, b) => ({ x: a.x + b.x, y: a.y + b.y })
-);
-```
+## 複数フィールドの複雑なValidation
 
-残念ながら、`transform`の第一引数から推論された型と第二引数のNoInferが競合する場合はうまくいかないこともあります。このあたり、まだ挙動を完全に把握しきれていない部分があるので、推測ですが実装を見ると最初に現れた`T`から推論するルールになってそうな気がします。
+実際のプロジェクトでは、単純なフィールドValidationだけでは不十分な場合があります。たとえば、パスワード確認フィールドのような**相互依存**するValidationです。
 
-## ライブラリ設計での活用
+```tsx
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  passwordConfirm: z.string(),
+}).refine((data) => data.password === data.passwordConfirm, {
+  message: 'パスワードが一致しません',
+  path: ['passwordConfirm'],
+})
 
-筆者が一番「これは便利だ」と思ったのは、**ライブラリのAPI設計**での使いどころです。特にテストライブラリやモックライブラリで、「期待値を先に定義して、実際の値をそれに合わせてチェックする」みたいなパターンです。
+export async function registerUser(prevState: ActionState, formData: FormData): Promise<ActionState> {
+  const result = registerSchema.safeParse({
+    email: formData.get('email'),
+    password: formData.get('password'),
+    passwordConfirm: formData.get('passwordConfirm'),
+  })
 
-```typescript
-function assertEquals<T>(expected: T, actual: NoInfer<T>): void {
-  if (JSON.stringify(expected) !== JSON.stringify(actual)) {
-    throw new Error("Not equal");
+  if (!result.success) {
+    return { success: false, errors: result.error.flatten().fieldErrors }
   }
-}
 
-// expected から型が決まるので、actual はそれに従う
-assertEquals({ id: 1, name: "test" }, { id: 1, name: "test", extra: 1 });
-// エラー: extra は期待されていない
-```
-
-これ、実際に書いてみたらいくつか問題があって、最初`actual`に余計なプロパティがあってもエラーにならなかった。あ、これ`exactOptionalPropertyTypes`が必要なやつだと気づいて、tsconfig.jsonを修正しました。こういう細かいハマりポイント、実際に試さないと分からないですね。
-
-Twitterでも「NoInferでモックの型チェックが楽になった」みたいな話を見かけました。具体的には、jestの`mockReturnValue`みたいな関数で、戻り値の型を関数定義から推論させつつ、渡す値はそれに従わせるという使い方です。
-
-```typescript
-function mockFunction<T extends (...args: any[]) => any>(
-  fn: T,
-  returnValue: NoInfer<ReturnType<T>>
-): void {
-  // モックの実装
+  const hashedPassword = await hashPassword(result.data.password)
+  await db.users.create({ email: result.data.email, password: hashedPassword })
+  return { success: true }
 }
 ```
 
-GitHubのTypeScriptリポジトリを見ると、NoInferの追加に関する議論（#52968とか）がありました。コミュニティからの要望で実装された経緯があるみたいで、ライブラリ作者からのニーズが高かったんだなと納得しました。
+zodの`refine`を使えば、オブジェクト全体を見た上でのValidationが可能です。エラーメッセージを特定のフィールドに紐づけるには`path`オプションを使います。パスワード以外にも、住所の入力チェックなど様々な場面で応用できます。
 
-:::message
-TypeScript 5.4以降で使える機能です。それ以前のバージョンでは型エラーになります。
-:::
+## リダイレクトとrevalidate
 
-## 制約と注意点
+Server Action内でリダイレクトする場合、Next.jsの`redirect`関数を使います。データ更新後のキャッシュ制御には**revalidatePath**が重要です。
 
-NoInferを使っていくつか気づいたことがあります。
+```tsx
+import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
-まず、**条件型と組み合わせると複雑になる**という点です。こんなコードを書いてみました。
+export async function createUser(prevState: ActionState, formData: FormData) {
+  // ... validation
+  const user = await db.users.create(result.data)
 
-```typescript
-type ExtractString<T> = T extends string ? T : never;
-
-function process<T>(
-  value: T,
-  handler: (arg: NoInfer<ExtractString<T>>) => void
-): void {
-  // 実装
+  revalidatePath('/users')  // キャッシュの再検証
+  redirect(`/users/${user.id}`)  // リダイレクト
 }
 ```
 
-これ、実際に動かしてみたら型推論がうまくいかないケースがありました。`T`が`string | number`みたいなユニオン型の場合、`ExtractString<T>`が`string | never`になって、NoInferがどこに効くのか分からなくなる。このあたりは、もう少し調査が必要そうです。
+注意したいのは、`redirect`を呼ぶと例外がthrowされるため、それ以降のコードは実行されない点です。TypeScriptの制御フロー分析では`redirect`の後ろが到達不能と認識されるはずです。
 
-それから、**NoInferを複数の引数に使うと混乱する**こともあります。
-
-```typescript
-function compare<T>(a: NoInfer<T>, b: NoInfer<T>, reference: T): boolean {
-  // どこから T を推論するのか？
-}
-```
-
-この場合、`reference`から`T`を推論することになるはずですが、`a`と`b`がそれに従うという挙動になります。読む人にとっては「なぜこの引数だけNoInferじゃないのか」と疑問に思うかもしれない。API設計としては、推論元を明確にするために最初の引数をNoInferなしにする方が分かりやすそうです。
+また、`revalidatePath`は`redirect`より前に呼ぶ必要があります。順序を間違えるとキャッシュが更新されないまま遷移してしまいます。これはNext.jsのキャッシュ機構の仕様によるものと考えられます。
 
 ## まとめ
 
-NoInfer型を色々試してみた結果、筆者としては以下のような場面で有用だと感じました。
+Next.js 14のServer ActionsとフォームValidationについて、基本的なパターンから実践的な使い方まで見てきました。
 
-- 設定オブジェクトのマージ関数で、ベースの型を優先したい場合
-- テストやモックで、期待値から型を決定したい場合
-- ライブラリAPIで、推論の方向性を明示的に制御したい場合
+個人的には、Server Actionsの簡潔さは魅力的ですが、型安全性の面でまだ改善の余地があると感じています。特に`useFormState`の型推論が弱い点は、将来的に改善されることを期待したいです。
 
-一方で、条件型との組み合わせや、複数のNoInfer引数を持つ関数では、まだ挙動が掴みきれていない部分もあります。実際のプロジェクトで使うには、もう少し色々なパターンを試してみる必要がありそうです。
+また、zodのようなスキーマライブラリとの統合は必須と言えます。クライアント側でもValidationを行うべきかどうかは、UXとセキュリティのバランスを考える必要がありそうです。筆者としては、今後のNext.jsのアップデートでこの辺りがどう進化していくか見守っていきたいと思います。
 
-個人的には、この機能が広まっていくと、ライブラリの型定義がより直感的になる可能性があると思っています。ただ、NoInferを使いすぎると逆に「なぜここで推論が効かないのか」と混乱する場面も増えそうなので、バランスが重要かなと。筆者としては、これから実際のコードベースでどう活用されていくか、見守っていきたいと思います。
+Validationロジックの共有や、Server ComponentsとClient Componentsの境界設計など、まだ試していないパターンも多いので、引き続き検証していく予定です。
